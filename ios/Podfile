@@ -14,6 +14,8 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+
+
 target 'MyFittingRoomAI' do
   config = use_native_modules!
 
@@ -32,4 +34,11 @@ target 'MyFittingRoomAI' do
       # :ccache_enabled => true
     )
   end
+end
+
+
+
+
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
 end

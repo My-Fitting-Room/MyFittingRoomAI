@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Satoshi-Variable.ttf",
+      "sha1": "d49872a745842f389bc9d24b73d0a3090fce50b1"
+    },
+    {
+      "path": "assets/fonts/Satoshi-VariableItalic.ttf",
+      "sha1": "62c34444221ff17e93a8e1cadfea5a8c68ea705b"
+    },
+    {
+      "path": "assets/fonts/Switzer-Variable.ttf",
+      "sha1": "3226e9d8bad0aebbbbbd85768da49677045b126e"
+    },
+    {
+      "path": "assets/fonts/Switzer-VariableItalic.ttf",
+      "sha1": "e1552454db483cf2c556a12e9c39e507e882d68c"
+    }
+  ]
+}
