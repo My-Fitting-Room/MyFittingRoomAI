@@ -263,9 +263,7 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
     <View style={styles.container}>
       <Text style={styles.heading}>Models</Text>
       
-      <Text style={styles.subheading}>
-        Images of Models you"ve uploaded appear here.
-      </Text>
+      
 
       {modelImages.length > 0
         ? (
@@ -466,7 +464,8 @@ const styles = StyleSheet.create({
   uploadSection: {
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 40,
+    marginTop: 40,
+    marginBottom : 20
   },
   uploadIconContainer: {
     width: 80,
@@ -488,7 +487,6 @@ const styles = StyleSheet.create({
   tip: {
     fontSize: 16,
     textAlign: "center",
-    marginTop: 20,
     fontFamily: FONTS.SATOSHI
   },
 });

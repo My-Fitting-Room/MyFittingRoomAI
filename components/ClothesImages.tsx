@@ -262,10 +262,6 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Clothing</Text>
-      
-      <Text style={styles.subheading}>
-        Images of Clothes you"ve uploaded appear here.
-      </Text>
 
       {clothesImages.length > 0
         ? (
@@ -466,7 +462,8 @@ const styles = StyleSheet.create({
   uploadSection: {
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 40,
+    marginTop: 40,
+    marginBottom : 20
   },
   uploadIconContainer: {
     width: 80,
@@ -488,7 +485,6 @@ const styles = StyleSheet.create({
   tip: {
     fontSize: 16,
     textAlign: "center",
-    marginTop: 20,
     fontFamily: FONTS.SATOSHI
   },
 });

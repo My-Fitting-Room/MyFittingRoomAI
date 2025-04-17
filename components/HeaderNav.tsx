@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingTop: 40,
+    paddingBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
     backgroundColor: "#fff",
@@ -53,6 +54,9 @@ const styles = StyleSheet.create({
   logoContainer: {
     flexDirection: "row",
     alignItems: "center",
+    paddingTop: 5,
+  
+
   },
   logoImage: {
     width: 40,
@@ -61,8 +65,8 @@ const styles = StyleSheet.create({
   },
   logoText: {
     fontSize: 22,
-    fontWeight: "400",
-    color: "#4052FF",
+    fontWeight: "600",
+    color: "#000000",
     marginLeft: 12,
     fontFamily: FONTS.SWITZER,
   },
@@ -70,3 +74,6 @@ const styles = StyleSheet.create({
     padding: 8,
   },
 });
+
+
+
