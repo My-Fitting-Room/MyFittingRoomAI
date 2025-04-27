@@ -59,6 +59,8 @@ export default function TryOnScreen({ navigation }) {
           return;
         }
 
+        console.log(planData)
+
         if (planData) {
           const response = await fetch("https://my-fitting-room-server.onrender.com/api/tokens/renewal-date", {
             method: "GET",
@@ -68,8 +70,12 @@ export default function TryOnScreen({ navigation }) {
             }
           });
         
+
           if (!response.ok) {
+
             const errorData = await response.json();
+            console.log(errorData)
+
             return null;
           } else {
             const data = await response.json();
@@ -107,7 +113,7 @@ export default function TryOnScreen({ navigation }) {
         <TryOnImages profile={profile} navigation={navigation} />
         <ModelImages setInputModelImage={setInputModelImage} profile={profile} navigation={navigation} />
         <ClothesImages setInputClothImage={setInputClothImage}  profile={profile}  navigation={navigation}/>
-        <TryOnButton disabled={(plan === null)} inputClothImage={inputClothImage}  inputModelImage={inputModelImage} tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} />
+        <TryOnButton disabled={false} inputClothImage={inputClothImage}  inputModelImage={inputModelImage} tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} plan={plan} />
         <TokensBox tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} renewalDate={renewalDate} />
         <View style={styles.bottomPadding} />
       </ScrollView>

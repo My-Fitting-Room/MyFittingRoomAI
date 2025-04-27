@@ -17,6 +17,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9D030A9207CA49D0873C8BDD /* Satoshi-VariableItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91EDF566A7FD4DB9BEF25031 /* Satoshi-VariableItalic.ttf */; };
 		AA5E34482DA41D5900BC5160 /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AA5E34412DA41D5900BC5160 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AA980EDA2DB7D510003632DA /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA980ED92DB7D510003632DA /* StoreKit.framework */; };
 		B8097FA089C70A60E4863F27 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -49,18 +50,19 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = MyFittingRoomAI/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MyFittingRoomAI/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = MyFittingRoomAI/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		2978B359295F443A8455F0E4 /* Switzer-Variable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Switzer-Variable.ttf"; path = "../assets/fonts/Switzer-Variable.ttf"; sourceTree = "<group>"; };
+		2978B359295F443A8455F0E4 /* Switzer-Variable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Switzer-Variable.ttf"; path = "../assets/fonts/Switzer-Variable.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-MyFittingRoomAI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFittingRoomAI.debug.xcconfig"; path = "Target Support Files/Pods-MyFittingRoomAI/Pods-MyFittingRoomAI.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-MyFittingRoomAI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFittingRoomAI.release.xcconfig"; path = "Target Support Files/Pods-MyFittingRoomAI/Pods-MyFittingRoomAI.release.xcconfig"; sourceTree = "<group>"; };
 		5D838CF6F3A043E98EB6683A /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-MyFittingRoomAI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyFittingRoomAI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6BC1943C4AD2486B8E7A42F8 /* Satoshi-Variable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Satoshi-Variable.ttf"; path = "../assets/fonts/Satoshi-Variable.ttf"; sourceTree = "<group>"; };
+		6BC1943C4AD2486B8E7A42F8 /* Satoshi-Variable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Satoshi-Variable.ttf"; path = "../assets/fonts/Satoshi-Variable.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = MyFittingRoomAI/AppDelegate.swift; sourceTree = "<group>"; };
-		7640D6B680A4430BB308B7B5 /* Switzer-VariableItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Switzer-VariableItalic.ttf"; path = "../assets/fonts/Switzer-VariableItalic.ttf"; sourceTree = "<group>"; };
+		7640D6B680A4430BB308B7B5 /* Switzer-VariableItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Switzer-VariableItalic.ttf"; path = "../assets/fonts/Switzer-VariableItalic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MyFittingRoomAI/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		91EDF566A7FD4DB9BEF25031 /* Satoshi-VariableItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Satoshi-VariableItalic.ttf"; path = "../assets/fonts/Satoshi-VariableItalic.ttf"; sourceTree = "<group>"; };
+		91EDF566A7FD4DB9BEF25031 /* Satoshi-VariableItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Satoshi-VariableItalic.ttf"; path = "../assets/fonts/Satoshi-VariableItalic.ttf"; sourceTree = "<group>"; };
 		965D081A176828CC3EE26A6C /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA5E34412DA41D5900BC5160 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA980ED92DB7D510003632DA /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		AAE0A3802D995E5E00A3E874 /* MyFittingRoomAI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MyFittingRoomAI.entitlements; path = MyFittingRoomAI/MyFittingRoomAI.entitlements; sourceTree = "<group>"; };
 		D898BAAFC24883B3DA24CD13 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -93,6 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-MyFittingRoomAI.a in Frameworks */,
+				AA980EDA2DB7D510003632DA /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +126,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA980ED92DB7D510003632DA /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-MyFittingRoomAI.a */,
 				965D081A176828CC3EE26A6C /* libPods-OneSignalNotificationServiceExtension.a */,
@@ -139,7 +143,6 @@
 				7640D6B680A4430BB308B7B5 /* Switzer-VariableItalic.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {

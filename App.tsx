@@ -11,6 +11,8 @@ import SettingsScreen from "./screens/SettingsScreen";
 import SizingScreen from "./screens/SizingScreen";
 import { LogLevel, OneSignal } from "react-native-onesignal";
 import Config from "react-native-config";
+import Purchases, { LOG_LEVEL } from "react-native-purchases";
+import { Platform } from "react-native";
 
 const supabaseUrl = Config.SUPABASE_URL;
 const supabaseKey = Config.SUPABASE_KEY;
@@ -31,6 +33,13 @@ function App(): React.JSX.Element {
 
   React.useEffect(() => {
 
+    Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+
+    if (Platform.OS === 'ios') {
+       Purchases.configure({apiKey: Config.REVENUECAT_APPLE_KEY});
+    } 
+
+
     //OneSignal.Debug.setLogLevel(LogLevel.Verbose);
     OneSignal.initialize(Config.ONE_SIGNAL_APP_ID);
     OneSignal.Notifications.requestPermission(true);
@@ -39,8 +48,11 @@ function App(): React.JSX.Element {
       async (_event, session) => {
         if(session) {
           OneSignal.login(session.user.id);
+          const { customerInfo, created } = await Purchases.logIn(session.user.id);
+
           setSession(session);
         } else {
+          Purchases.logOut();
           OneSignal.logout();
         }
       }

@@ -3,18 +3,33 @@ import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Alert } from "rea
 import { supabase } from "../App";
 import { useNavigation } from "@react-navigation/native";
 import { FONTS } from "../constants/fonts";
+import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 
 const { width } = Dimensions.get("window");
 
-export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal }) {
+export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,plan }) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  const presentPaywallIfNeeded = async () => {
+    // Present paywall for current offering:
+  if(plan === null) {
+    const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywallIfNeeded({
+      requiredEntitlementIdentifier: "Unlimited"
+  });
+  }
+   
+    // If you need to present a specific offering:
+    
+  }
 
   const handleTryOn = async () => {
     if (!inputClothImage || !inputModelImage || !inputClothImage.slug || !inputModelImage.slug) {
       Alert.alert("Error", "Please select both model and clothing images");
       return;
     }
+
+    await presentPaywallIfNeeded();
 
     setLoading(true);
 
