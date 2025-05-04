@@ -18,6 +18,7 @@ import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
 import { FONTS } from "../constants/fonts";
+import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 
 const CLOTHING_DATA = {
   "clothing_types": {
@@ -242,7 +243,6 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange }) => {
                 <Ionicons name="close" size={24} color="#000" />
               </TouchableOpacity>
             </View>
-            
             <ScrollView style={styles.optionsContainer}>
               {options.map((option) => (
                 <TouchableOpacity
@@ -278,7 +278,11 @@ export default function SizingScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [sizing, setSizing] = useState(null);
-  const [showPaywall, setShowPaywall] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [clothingTypes, setClothingTypes] = useState([]);
+  const [requiredMeasurements, setRequiredMeasurements] = useState([]);
+  const [optionalMeasurements, setOptionalMeasurements] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     brand: "",
@@ -287,11 +291,24 @@ export default function SizingScreen({ navigation }) {
     measurements: {}
   });
 
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [clothingTypes, setClothingTypes] = useState([]);
-  const [requiredMeasurements, setRequiredMeasurements] = useState([]);
-  const [optionalMeasurements, setOptionalMeasurements] = useState([]);
-  const [submitting, setSubmitting] = useState(false);
+  const presentPaywallIfNeeded = async () => {
+    if (profile.price_id === null && !profile.all_access) {
+      const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywallIfNeeded({
+        requiredEntitlementIdentifier: "Unlimited"
+      });    
+
+      switch (paywallResult) {
+        case PAYWALL_RESULT.NOT_PRESENTED:
+        case PAYWALL_RESULT.ERROR:
+        case PAYWALL_RESULT.CANCELLED:
+          Alert.alert("Error", "Purchase Not Succesful");
+          navigation.replace("TryOn");
+        case PAYWALL_RESULT.PURCHASED:
+        case PAYWALL_RESULT.RESTORED:
+
+      }
+    }
+  }
 
   useEffect(() => {
     const checkSession = async () => {
@@ -299,7 +316,7 @@ export default function SizingScreen({ navigation }) {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
-          navigation.navigate("SignIn");
+          navigation.navigate("First");
           return;
         }
 
@@ -313,16 +330,16 @@ export default function SizingScreen({ navigation }) {
           Alert.alert("Error", "Please Try Again Later!");
           return;
         }
-        
-        setProfile(profileData);
-        
-        if (profileData.price_id === null && !profileData.all_access) {
-          setShowPaywall(true);
+
+        if (profileData.onboarding_complete === false) {
+          navigation.navigate("Onboarding");
+          return;
         }
         
+        setProfile(profileData);
         setLoading(false);
       } catch (error) {
-        navigation.navigate("SignIn");
+        navigation.navigate("First");
       }
     };
 
@@ -378,6 +395,8 @@ export default function SizingScreen({ navigation }) {
       return;
     }
 
+    await presentPaywallIfNeeded();
+
     const missingMeasurements = requiredMeasurements.filter(
       measurement => !formData.measurements[measurement]
     );
@@ -387,11 +406,6 @@ export default function SizingScreen({ navigation }) {
         "Missing Measurements",
         `Please provide all required measurements: ${missingMeasurements.join(", ")}`
       );
-      return;
-    }
-    
-    if (profile.price_id === null && !profile.all_access) {
-      setShowPaywall(true);
       return;
     }
 
@@ -440,27 +454,6 @@ export default function SizingScreen({ navigation }) {
         <ActivityIndicator size="large" color="#4052FF" />
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
-    );
-  }
-
-  if (showPaywall) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <HeaderNav navigation={navigation} />
-        <View style={styles.paywallContainer}>
-          <Text style={styles.paywallTitle}>Premium Feature</Text>
-          <Text style={styles.paywallMessage}>
-            Finding your perfect size requires a subscription.
-          </Text>
-          <TouchableOpacity 
-            style={styles.paywallButton}
-            onPress={() => navigation.navigate("Subscription")}
-          >
-            <Text style={styles.paywallButtonText}>Subscribe Now</Text>
-          </TouchableOpacity>
-        </View>
-        <BottomNav navigation={navigation} activeTab="Sizing" />
-      </SafeAreaView>
     );
   }
 
@@ -616,7 +609,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#4052FF",
     fontFamily: FONTS.SATOSHI
-
   },
   content: {
     flex: 1,
@@ -653,7 +645,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: "#333",
     fontFamily: FONTS.SATOSHI
-
   },
   unitText: {
     fontSize: 14,
@@ -682,7 +673,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     fontFamily: FONTS.SATOSHI
-
   },
   dropdownPlaceholder: {
     fontSize: 16,
@@ -776,7 +766,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "#333",
     fontFamily: FONTS.SWITZER
-
   },
   resultContent: {
     alignItems: "center",

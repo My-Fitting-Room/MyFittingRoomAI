@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Alert } from "react-native";
 import { supabase } from "../App";
-import { useNavigation } from "@react-navigation/native";
 import { FONTS } from "../constants/fonts";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 
 const { width } = Dimensions.get("window");
 
-export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,plan }) {
+export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,profile,plan, navigation }) {
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
 
   const presentPaywallIfNeeded = async () => {
-    // Present paywall for current offering:
-  if(plan === null) {
-    const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywallIfNeeded({
-      requiredEntitlementIdentifier: "Unlimited"
-  });
-  }
-   
-    // If you need to present a specific offering:
-    
+    if (profile.price_id === null && !profile.all_access && plan === null) {
+      const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywallIfNeeded({
+        requiredEntitlementIdentifier: "Unlimited"
+      });  
+
+      switch (paywallResult) {
+        case PAYWALL_RESULT.NOT_PRESENTED:
+        case PAYWALL_RESULT.ERROR:
+        case PAYWALL_RESULT.CANCELLED:
+          Alert.alert("Error", "Purchase Not Succesful");
+          navigation.replace("TryOn");
+        case PAYWALL_RESULT.PURCHASED:
+        case PAYWALL_RESULT.RESTORED:
+
+      }
+
+    }
   }
 
   const handleTryOn = async () => {
@@ -42,10 +48,12 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         return;
       }
 
-      if (tokensUsed +1 > tokensTotal) {
-        Alert.alert("Error", "Monthly Token Limit Reached");
-        setLoading(false);
-        return;
+      if (plan?.unlimited_tokens === false && !profile.all_access) {
+        if (tokensUsed +1 > tokensTotal) {
+          Alert.alert("Error", "Monthly Token Limit Reached");
+          setLoading(false);
+          return;
+        }
       }
 
       const requestBody = {
@@ -53,7 +61,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         clothes_image_slug: inputClothImage.slug
       };
 
-      const response = await fetch("https://my-fitting-room-server.onrender.com/api/kling/vton2", {
+      const response = await fetch("https://my-fitting-room-server.onrender.com/api/kling/try-on", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +76,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
 
       const result = await response.json();
       
-      navigation.navigate("TryOn", { result });
+      navigation.replace("TryOn");
       
     } catch (error) {
       Alert.alert("Try-on Failed", "Failed to process your request. Please try again later.");

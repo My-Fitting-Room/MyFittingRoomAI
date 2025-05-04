@@ -1,4 +1,4 @@
-import { View, StyleSheet, TouchableOpacity, Text, Alert, Image, TextInput, Linking } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text, Alert, Image, TextInput, Linking, Pressable } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
@@ -11,6 +11,8 @@ export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [applePressed, setApplePressed] = useState(false);
+  const [googlePressed, setGooglePressed] = useState(false);
 
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],
@@ -137,62 +139,85 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Sign In</Text>
-      
-      <TouchableOpacity style={styles.appleButton} onPress={handleAppleSignIn}>
-        <MaterialIcon name="apple" size={24} color="black" style={styles.buttonIcon} />
-        <Text style={styles.appleButtonText}>Apple</Text>
-      </TouchableOpacity>
+      <View style={styles.topSection}>
+        <Text style={styles.header}>Sign In</Text>
 
-      <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignIn}>
-        <Image source={require("../assets/google-logo.png")} style={styles.googleIcon} />
-        <Text style={styles.googleButtonText}>Google</Text>
-      </TouchableOpacity>
+        <Pressable 
+          style={[
+            styles.authButton, 
+            styles.appleButton,
+            applePressed && styles.buttonPressed
+          ]}
+          onPress={handleAppleSignIn}
+          onPressIn={() => setApplePressed(true)}
+          onPressOut={() => setApplePressed(false)}
+        >
+          <MaterialIcon name="apple" size={24} color="white" style={styles.buttonIcon} />
+          <Text style={styles.appleButtonText}>Continue with Apple</Text>
+        </Pressable>
 
-      <View style={styles.dividerContainer}>
-        <View style={styles.divider} />
-        <Text style={styles.dividerText}>Or</Text>
-        <View style={styles.divider} />
-      </View>
+        <Pressable 
+          style={[
+            styles.authButton, 
+            styles.googleButton,
+            googlePressed && styles.buttonPressed
+          ]}
+          onPress={handleGoogleSignIn}
+          onPressIn={() => setGooglePressed(true)}
+          onPressOut={() => setGooglePressed(false)}
+        >
+          <Image 
+            source={require("../assets/google-logo.png")} 
+            style={styles.googleIcon} 
+          />
+          <Text style={styles.googleButtonText}>Continue with Google</Text>
+        </Pressable>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        placeholderTextColor="#666"
-      />
+        <View style={styles.dividerContainer}>
+          <View style={styles.divider} />
+          <Text style={styles.dividerText}>Or</Text>
+          <View style={styles.divider} />
+        </View>
 
-      <View style={styles.passwordContainer}>
         <TextInput
-          style={styles.passwordInput}
-          placeholder="Password"
-          placeholderTextColor="#666"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={!showPassword}
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
           autoCapitalize="none"
+          placeholderTextColor="#666"
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-          <MaterialIcon name={showPassword ? "visibility" : "visibility-off"} size={24} color="gray" />
+
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            placeholderTextColor="#666"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+            <MaterialIcon name={showPassword ? "visibility" : "visibility-off"} size={24} color="gray" />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={styles.forgotPasswordContainer} onPress={handleForgotPassword}>
+          <Text style={styles.forgotPasswordText}>Forget Password?</Text>
         </TouchableOpacity>
-      </View>
 
-      <TouchableOpacity style={styles.forgotPasswordContainer}  onPress={handleForgotPassword}>
-        <Text style={styles.forgotPasswordText}>Forget Password?</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.signInButton} onPress={handleEmailSignIn}>
-        <Text style={styles.signInButtonText}>Log In</Text>
-      </TouchableOpacity>
-
-      <View style={styles.signUpContainer}>
-        <Text style={styles.signUpText}>Don"t have an account?</Text>
-        <TouchableOpacity onPress={handleSignUp}>
-          <Text style={styles.signUpLink}>Sign Up</Text>
+        <TouchableOpacity style={styles.signInButton} onPress={handleEmailSignIn}>
+          <Text style={styles.signInButtonText}>Log In</Text>
         </TouchableOpacity>
+
+        <View style={styles.signUpContainer}>
+          <Text style={styles.signUpText}>Don't have an account?</Text>
+          <TouchableOpacity onPress={handleSignUp}>
+            <Text style={styles.signUpLink}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -201,60 +226,60 @@ export default function SignInScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "white",
+  },
+  topSection: {
+    flex: 1,
+    padding: 40,
+    paddingHorizontal: 60,
     justifyContent: "center",
   },
   header: {
-    fontSize: 40,
-    color: "#4052FF",
+    fontSize: 32,
+    color: "#000",
     textAlign: "center",
-    marginBottom: 40,
-    fontWeight: "400",
+    marginBottom: 30,
+    fontWeight: "500",
     fontFamily: FONTS.SWITZER
   },
-  appleButton: {
+  authButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 6,
-    padding: 12,
-    marginBottom: 15,
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 22,
   },
-  appleButtonText: {
-    color: "black",
-    fontSize: 16,
-    fontWeight: "400",
-    fontFamily: FONTS.SATOSHI
+  buttonPressed: {
+    backgroundColor: "#333333",
+    transform: [{ scale: 0.98 }],
+  },
+  appleButton: {
+    backgroundColor: "#000",
+  },
+  googleButton: {
+    backgroundColor: "#000",
   },
   buttonIcon: {
     marginRight: 10,
-  },
-  googleButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 6,
-    padding: 12,
-    marginBottom: 20,
-    
   },
   googleIcon: {
     width: 24,
     height: 24,
     marginRight: 10,
+    tintColor: "white", 
+  },
+  appleButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+    fontFamily: FONTS.SATOSHI,
   },
   googleButtonText: {
-    color: "black",
+    color: "white",
     fontSize: 16,
-    fontWeight: "400",
-    fontFamily: FONTS.SATOSHI
+    fontWeight: "500",
+    fontFamily: FONTS.SATOSHI,
   },
   dividerContainer: {
     flexDirection: "row",
@@ -275,7 +300,7 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "#f5f7fb",
-    borderRadius: 6,
+    borderRadius: 12,
     padding: 15,
     marginBottom: 15,
     fontSize: 16,
@@ -285,7 +310,7 @@ const styles = StyleSheet.create({
   passwordContainer: {
     flexDirection: "row",
     backgroundColor: "#f5f7fb",
-    borderRadius: 6,
+    borderRadius: 12,
     marginBottom: 10,
     alignItems: "center",
   },
@@ -293,6 +318,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     fontSize: 16,
+    fontFamily: FONTS.SATOSHI
   },
   eyeIcon: {
     padding: 10,
@@ -308,32 +334,34 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.SATOSHI
   },
   signInButton: {
-    backgroundColor: "#4052FF",
-    borderRadius: 6,
-    padding: 15,
+    backgroundColor: "#000",
+    borderRadius: 18,
+    padding: 16,
     alignItems: "center",
     marginBottom: 20,
   },
   signInButtonText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: "500",
     fontFamily: FONTS.SATOSHI
   },
   signUpContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    marginTop: 10,
   },
   signUpText: {
     color: "gray",
     fontSize: 14,
+    marginRight: 5,
     fontWeight: "400",
     fontFamily: FONTS.SATOSHI
   },
   signUpLink: {
-    color: "#4052FF",
+    color: "#000",
     fontSize: 14,
-    fontWeight: "400",
+    fontWeight: "500",
     fontFamily: FONTS.SATOSHI
   },
 });

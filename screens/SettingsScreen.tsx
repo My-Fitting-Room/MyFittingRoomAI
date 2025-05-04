@@ -24,6 +24,8 @@ export default function SettingsScreen({ navigation }) {
       
       if (data.session) {
         setUser(data.session.user);
+      } else {
+        navigation.navigate("First");
       }
       
       setLoading(false);

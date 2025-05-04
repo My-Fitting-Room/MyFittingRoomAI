@@ -6,7 +6,6 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { FONTS } from "../constants/fonts";
 import Feathericons from "react-native-vector-icons/Feather";
 
-
 const { width } = Dimensions.get("window");
 
 export default function ModelImages({ profile = null, setInputModelImage, navigation }) {
@@ -138,7 +137,6 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
           throw new Error(responseData.message || "Failed to upload image");
         }
         
-        Alert.alert("Success", "Model image uploaded successfully!");
         navigation.replace("TryOn");
       }
     } catch (error) {
@@ -263,8 +261,6 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
     <View style={styles.container}>
       <Text style={styles.heading}>Models</Text>
       
-      
-
       {modelImages.length > 0
         ? (
           <>
@@ -353,14 +349,12 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     marginBottom: 15,
     fontFamily: FONTS.SWITZER,
-
   },
   subheading: {
     fontSize: 14,
     marginBottom: 20,
     fontFamily: FONTS.SATOSHI,
     fontWeight: "400",
-
   },
   loadingContainer: {
     flex: 1,

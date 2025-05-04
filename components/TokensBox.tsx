@@ -2,16 +2,33 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FONTS } from "../constants/fonts";
 
-const TokensBox = ({ tokensUsed, tokensTotal, renewalDate }) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <Text style={styles.tokenText}>
-          Tokens Used: {tokensUsed}/{tokensTotal} | Renew: {renewalDate}
-        </Text>
+const TokensBox = ({ tokensUsed, tokensTotal, renewalDate,plan }) => {
+
+
+  if(plan !== null) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.contentContainer}>
+          {(plan !== null && plan?.unlimited_tokens === true) 
+            ? 
+              (
+                <Text style={styles.tokenText}>
+                  Unlimited Tokens | Renew: {renewalDate}
+                </Text>
+              )
+            : (
+              <Text style={styles.tokenText}>
+                Tokens Used: {tokensUsed}/{tokensTotal} | Renew: {renewalDate}
+              </Text>
+            )
+          }
+        </View>
       </View>
-    </View>
-  );
+    );
+  } else {
+    return <></>
+  }
+ 
 };
 
 const styles = StyleSheet.create({

@@ -55,8 +55,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 5,
-  
-
   },
   logoImage: {
     width: 40,
@@ -74,6 +72,3 @@ const styles = StyleSheet.create({
     padding: 8,
   },
 });
-
-
-

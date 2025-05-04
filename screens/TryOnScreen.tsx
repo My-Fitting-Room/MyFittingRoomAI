@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert , SafeAreaView, ScrollView, StatusBar, Platform, ActivityIndicator } from "react-native";
-
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
@@ -16,7 +15,7 @@ export default function TryOnScreen({ navigation }) {
   const [inputClothImage, setInputClothImage] = useState(null);
   const [inputModelImage, setInputModelImage] = useState(null);
   const [plan, setPlan] = useState(null);
-  const [tokensTotal, setTokensTotal] = useState(null);
+  const [tokensTotal, setTokensTotal] = useState(0);
   const [renewalDate, setRenewalDate] = useState(null);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function TryOnScreen({ navigation }) {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
-          navigation.navigate("SignIn");
+          navigation.navigate("First");
           return;
         }
 
@@ -44,6 +43,11 @@ export default function TryOnScreen({ navigation }) {
           return;
         }
 
+        if (profileData.onboarding_complete === false) {
+          navigation.navigate("Onboarding");
+          return;
+        }
+
         const { data: planData, error: planError } = await supabase
           .from("plans")
           .select("*")
@@ -59,8 +63,6 @@ export default function TryOnScreen({ navigation }) {
           return;
         }
 
-        console.log(planData)
-
         if (planData) {
           const response = await fetch("https://my-fitting-room-server.onrender.com/api/tokens/renewal-date", {
             method: "GET",
@@ -70,13 +72,13 @@ export default function TryOnScreen({ navigation }) {
             }
           });
         
-
           if (!response.ok) {
-
-            const errorData = await response.json();
-            console.log(errorData)
-
-            return null;
+            Alert.alert(
+              "Error",
+              "Please try again later",
+              [{ text: "OK" }]
+            );
+            return;
           } else {
             const data = await response.json();
             const renewalDateData = data.current_period_end;
@@ -113,8 +115,8 @@ export default function TryOnScreen({ navigation }) {
         <TryOnImages profile={profile} navigation={navigation} />
         <ModelImages setInputModelImage={setInputModelImage} profile={profile} navigation={navigation} />
         <ClothesImages setInputClothImage={setInputClothImage}  profile={profile}  navigation={navigation}/>
-        <TryOnButton disabled={false} inputClothImage={inputClothImage}  inputModelImage={inputModelImage} tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} plan={plan} />
-        <TokensBox tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} renewalDate={renewalDate} />
+        <TryOnButton disabled={false} inputClothImage={inputClothImage}  inputModelImage={inputModelImage} tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} profile={profile} plan={plan} navigation={navigation} />
+        <TokensBox tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} renewalDate={renewalDate} plan={plan} />
         <View style={styles.bottomPadding} />
       </ScrollView>
       <BottomNav navigation={navigation} activeTab="TryOn" />

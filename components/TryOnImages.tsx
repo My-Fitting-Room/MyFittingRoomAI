@@ -53,11 +53,11 @@ export default function TryOnImages({ profile = null, navigation }) {
       const pendImages = tryonImagesData.filter(img => img.status === "pending");
   
       if (succImages.length > currentTryonImages.length && currentTryonImages.length !== 0) {
-        Alert.alert('Success', 'Your virtual try on is ready!');
+        Alert.alert("Success", "Your virtual try on is ready!");
       }
   
       if (failImages.length > currentFailedImages.length) {
-        Alert.alert('Error', 'Your virtual try on failed!');
+        Alert.alert("Error", "Your virtual try on failed!");
       }
   
       setTryonImages(succImages || []);

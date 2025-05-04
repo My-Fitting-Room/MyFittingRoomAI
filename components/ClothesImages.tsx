@@ -138,7 +138,6 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
           throw new Error(responseData.message || "Failed to upload image");
         }
         
-        Alert.alert("Success", "Image uploaded successfully!");
         navigation.replace("TryOn");
       }
     } catch (error) {
@@ -351,14 +350,12 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     marginBottom: 15,
     fontFamily: FONTS.SWITZER,
-
   },
   subheading: {
     fontSize: 14,
     marginBottom: 20,
     fontFamily: FONTS.SATOSHI,
     fontWeight: "400",
-
   },
   loadingContainer: {
     flex: 1,
@@ -381,7 +378,6 @@ const styles = StyleSheet.create({
   selectedImage: {
     width: "100%",
     height: "100%",
-
   },
   actionButtonsContainer: {
     flexDirection: "row",
