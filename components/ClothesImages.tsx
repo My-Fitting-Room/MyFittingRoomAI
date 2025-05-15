@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image, Dimensions, Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
@@ -261,6 +260,8 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Clothing</Text>
+      <Text style={styles.subheading}>For best results, use well-lit, front-facing photos</Text>
+
 
       {clothesImages.length > 0
         ? (
@@ -323,9 +324,7 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
               </TouchableOpacity>
             </View>
             
-            <Text style={styles.tip}>
-              For best results, use photos taken in bright lighting with a straight-on angle.
-            </Text>
+            
           </>
         )
       }
@@ -346,16 +345,18 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   heading: {
-    fontSize: 28,
+    fontSize: 16,
     fontWeight: "400",
-    marginBottom: 15,
+    marginBottom: 10,
     fontFamily: FONTS.SWITZER,
   },
   subheading: {
-    fontSize: 14,
+    fontSize: 10,
     marginBottom: 20,
     fontFamily: FONTS.SATOSHI,
     fontWeight: "400",
+    color:"#868686"
+
   },
   loadingContainer: {
     flex: 1,
@@ -474,8 +475,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   uploadText: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 16,
+    fontWeight: "400",
     fontFamily: FONTS.SWITZER
   },
   tip: {

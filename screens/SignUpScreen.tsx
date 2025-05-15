@@ -1,16 +1,61 @@
-import { View, StyleSheet, TouchableOpacity, Text, Alert, Image, Pressable, Linking } from "react-native";
+import { View, TouchableOpacity, Text, Alert, Image, Pressable, Linking, Dimensions } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import { supabase } from "../App";
-import React, { useState } from "react";
+import React from "react";
 import { FONTS } from "../constants/fonts";
 import Config from "react-native-config";
+import Video from "react-native-video";
 
 export default function SignUpScreen({ navigation }) {
-  const [applePressed, setApplePressed] = useState(false);
-  const [googlePressed, setGooglePressed] = useState(false);
-  const [subscribePressed, setSubscribePressed] = useState(false);
+  const { width } = Dimensions.get("window");
+  
+  const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
+
+  const deviceStyles = {
+    small: {
+      mainWrapper: "flex-[2] px-10 mt-40 items-center justify-center pb-0.5",
+      contentWrapper: "w-full",
+      headerText: "text-3xl text-center mb-4 font-bold text-black",
+      subHeader: "px-10 text-sm mb-6",
+      videoHeight: 200,
+      videoWidth: width * 0.95,
+      bottomWrapper: "flex-1 px-16 pt-10 justify-start",
+      authButton: "py-3 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
+      authButtonText: "text-base font-medium",
+      icon: "w-5 h-5 mr-3",
+      videoView: ""
+    },
+    regular: {
+      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center ",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 font-bold text-black",
+      subHeader: "px-2 text-lg mb-6",
+      videoHeight: 240,
+      videoWidth: width * 0.95,
+      bottomWrapper: "flex-1 px-16 justify-start pt-8 mb-4",
+      authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
+      authButtonText: "text-lg font-medium",
+      icon: "w-5 h-5 mr-3",
+      videoView: "mt-4"
+    },
+    proMax: {
+      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 font-bold text-black",
+      subHeader: "px-6 text-lg mb-6",
+      videoHeight: 260,
+      videoWidth: width * 0.95,
+      bottomWrapper: "flex-1 px-16 justify-start pt-5 mb-7",
+      authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
+      authButtonText: "text-lg font-medium",
+      icon: "w-5 h-5 mr-3",
+      videoView: "mt-4"
+    }
+  };
+
+  const styles = deviceStyles[deviceType];
 
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"],
@@ -108,179 +153,87 @@ export default function SignUpScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-white">
       <TouchableOpacity 
-        style={[
-          styles.subscribeBar,
-          subscribePressed && styles.subscribeBarPressed
-        ]}
+        className="absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]"
+        style={{ elevation: 5, zIndex: 10 }}
         onPress={handleSubscribe}
-        onPressIn={() => setSubscribePressed(true)}
-        onPressOut={() => setSubscribePressed(false)}
         activeOpacity={0.9}
       >
-        <Text style={styles.subscribeText}>Subscribe to our email list</Text>
+        <Text 
+          className="text-white text-sm sm:text-base" 
+          style={{ fontFamily: FONTS.SATOSHI, fontWeight: "400" }}
+        >
+          Subscribe to our email list
+        </Text>
       </TouchableOpacity>
       
-      <View style={styles.topSection}>
-        <View style={styles.contentWrapper}>
-          <Text style={styles.mainHeader}>Try-On Clothes From Your Phone.</Text>
-          <Text style={styles.subHeader}>
+      <View className={styles.mainWrapper}>
+        <View className={styles.contentWrapper}>
+          <Text 
+            className={styles.headerText}
+            style={{ fontFamily: FONTS.SWITZER, fontWeight: "600" }}
+          >
+            Try-On Clothes From Your Phone.
+          </Text>
+          <Text 
+            className={`text-gray-800 text-center ${styles.subHeader}`}
+            style={{ 
+              fontFamily: FONTS.SATOSHI,
+              lineHeight: 22 
+            }}
+          >
             Just upload a photo of the clothing you want to try on and a photo of yourself.
           </Text>
-          <Image 
-            source={require("../assets/onboarding.png")} 
-            style={styles.onboardingImage}
-            resizeMode="contain"
-          />
+          
+          <View className={`items-center justify-center ${styles.videoView}`}>
+            <Video
+              source={require("../assets/herovideo.mp4")}
+              style={{
+                width: styles.videoWidth,
+                height: styles.videoHeight,
+                borderRadius: 12, 
+              }}
+              resizeMode="contain"
+              repeat={true}
+              muted={true}
+              playInBackground={false}
+            />
+          </View>
         </View>
       </View>
 
-      <View style={styles.bottomSection}>
+      <View className={styles.bottomWrapper}>
         <Pressable 
-          style={[
-            styles.authButton, 
-            styles.appleButton,
-            applePressed && styles.buttonPressed
-          ]}
+          className={`bg-black ${styles.authButton} active:bg-neutral-800 active:scale-[0.98]`}
           onPress={handleAppleSignUp}
-          onPressIn={() => setApplePressed(true)}
-          onPressOut={() => setApplePressed(false)}
         >
-          <MaterialIcon name="apple" size={24} color="white" style={styles.buttonIcon} />
-          <Text style={styles.appleButtonText}>Continue with Apple</Text>
+          <MaterialIcon name="apple" size={24} color="white" className="mr-3" />
+          <Text 
+            className={`text-white ${styles.authButtonText}`}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Continue with Apple
+          </Text>
         </Pressable>
 
         <Pressable 
-          style={[
-            styles.authButton, 
-            styles.googleButton,
-            googlePressed && styles.buttonPressed
-          ]}
+          className={`bg-black ${styles.authButton} active:bg-neutral-800 active:scale-[0.98]`}
           onPress={handleGoogleSignUp}
-          onPressIn={() => setGooglePressed(true)}
-          onPressOut={() => setGooglePressed(false)}
         >
-          <Image source={require("../assets/google-logo.png")} style={styles.googleIcon} />
-          <Text style={styles.googleButtonText}>Continue with Google</Text>
+          <Image 
+            source={require("../assets/google-logo.png")} 
+            className={styles.icon}
+            style={{ tintColor: "white" }}
+          />
+          <Text 
+            className={`text-white ${styles.authButtonText}`}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Continue with Google
+          </Text>
         </Pressable>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  subscribeBar: {
-    
-    paddingTop:56,
-    backgroundColor: "black",
-    paddingVertical: 12,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 5, // Android elevation
-    position: "absolute", // Position it absolutely
-   
-  },
-  subscribeText: {
-    color: "white",
-    fontSize: 14,
-    fontFamily: FONTS.SATOSHI,
-    fontWeight: "400",
-  },
-  subscribeBarPressed: {
-    backgroundColor: "#333333",
-    transform: [{ scale: 0.98 }],
-  },
-  topSection: {
-    flex: 2,
-    paddingHorizontal: 50,
-    paddingTop: 40, // Added extra padding to account for the absolute positioned bar
-    alignItems: "center",
-    justifyContent: "flex-end", // Push content toward bottom
-    paddingBottom: 2,
-    marginTop: 24, // Add margin to push content below subscribe bar
-  },
-  contentWrapper: {
-    width: "100%",
-  },
-  bottomSection: {
-    flex: 1,
-    paddingHorizontal: 60,
-    justifyContent: "flex-start", // Push content toward top
-    paddingTop: 20,
-    marginBottom: 28
-  },
-  mainHeader: {
-    fontSize: 32,
-    fontWeight: "500",
-    color: "#000",
-    textAlign: "center",
-    marginBottom: 16,
-    fontFamily: FONTS.SWITZER,
-  },
-  subHeader: {
-    fontSize: 16,
-    color: "#666",
-    textAlign: "center",
-    marginBottom: 40,
-    fontFamily: FONTS.SATOSHI,
-    lineHeight: 22,
-    paddingHorizontal: 10,
-  },
-  onboardingImage: {
-    width: "100%",
-    height: 280,
-  },
-  signUpHeader: {
-    fontSize: 28,
-    color: "#000",
-    marginBottom: 34,
-    fontWeight: "400",
-    fontFamily: FONTS.SWITZER,
-    textAlign: "center",
-  },
-  authButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 18,
-    padding: 16,
-    marginBottom: 22,
-  },
-  buttonPressed: {
-    backgroundColor: "#333333",
-    transform: [{ scale: 0.98 }],
-  },
-  appleButton: {
-    backgroundColor: "#000",
-  },
-  googleButton: {
-    backgroundColor: "#000",
-  },
-  buttonIcon: {
-    marginRight: 10,
-  },
-  googleIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 10,
-    tintColor: "white", // Make Google icon white
-  },
-  appleButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-    fontFamily: FONTS.SATOSHI,
-  },
-  googleButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-    fontFamily: FONTS.SATOSHI,
-  },
-});

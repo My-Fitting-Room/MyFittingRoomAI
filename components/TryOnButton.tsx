@@ -19,7 +19,6 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         case PAYWALL_RESULT.NOT_PRESENTED:
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
-          Alert.alert("Error", "Purchase Not Succesful");
           navigation.replace("TryOn");
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:

@@ -4,7 +4,6 @@ import { FONTS } from "../constants/fonts";
 
 const TokensBox = ({ tokensUsed, tokensTotal, renewalDate,plan }) => {
 
-
   if(plan !== null) {
     return (
       <View style={styles.container}>
@@ -12,14 +11,24 @@ const TokensBox = ({ tokensUsed, tokensTotal, renewalDate,plan }) => {
           {(plan !== null && plan?.unlimited_tokens === true) 
             ? 
               (
-                <Text style={styles.tokenText}>
-                  Unlimited Tokens | Renew: {renewalDate}
-                </Text>
+                <>
+                  <Text style={styles.tokenText}>
+                    Unlimited Tokens
+                  </Text>
+                  <Text style={styles.tokenText}>
+                    Renews: {renewalDate}
+                  </Text>
+                </>
               )
             : (
-              <Text style={styles.tokenText}>
-                Tokens Used: {tokensUsed}/{tokensTotal} | Renew: {renewalDate}
-              </Text>
+              <>
+                <Text style={styles.tokenText}>
+                  Tokens Used: {tokensUsed}/{tokensTotal} 
+                </Text>
+                <Text style={styles.tokenText}>
+                  Renews: {renewalDate}
+                </Text>
+              </>
             )
           }
         </View>
@@ -35,19 +44,20 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     alignItems: "center",
-    marginVertical: 15,
+    marginVertical: 10,
   },
   contentContainer: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 10,
     alignItems: "center",
     justifyContent: "center",
   },
   tokenText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "500",
     color: "#666666",
     textAlign: "center",
     fontFamily: FONTS.SATOSHI,
+    marginBottom:6
   },
   divider: {
     height: 1,

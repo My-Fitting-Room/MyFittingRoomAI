@@ -1,14 +1,63 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar, Platform, Image, Alert } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView, StatusBar, Platform, Alert, Dimensions } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
-
 import { supabase } from "../App";
 import { FONTS } from "../constants/fonts";
 
 export default function SettingsScreen({ navigation }) {
+  const { width } = Dimensions.get("window");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
+
+  const deviceStyles = {
+    small: {
+      container: "flex-1 bg-white",
+      header: "flex-row items-center px-4 py-2",
+      backButton: "p-1",
+      profileSection: "items-center mt-2 mb-10",
+      profileImageContainer: "w-20 h-20 rounded-full bg-gray-100 justify-center items-center mb-4",
+      profileName: "text-lg mb-1",
+      profileEmail: "text-sm text-gray-600",
+      settingsContainer: "px-5 flex-1 justify-end mb-8",
+      logoutButton: "bg-black rounded-lg py-3 items-center my-2",
+      logoutButtonText: "text-white text-base font-semibold",
+      iconSize: 24,
+      userIconSize: 42
+    },
+    regular: {
+      container: "flex-1 bg-white",
+      header: "flex-row items-center px-4 py-3",
+      backButton: "p-1.5",
+      profileSection: "items-center mt-4 mb-12",
+      profileImageContainer: "w-24 h-24 rounded-full bg-gray-100 justify-center items-center mb-5",
+      profileName: "text-xl mb-1",
+      profileEmail: "text-base text-gray-600",
+      settingsContainer: "px-6 flex-1 justify-end mb-10",
+      logoutButton: "bg-black rounded-lg py-4 items-center my-2",
+      logoutButtonText: "text-white text-lg font-semibold",
+      iconSize: 28,
+      userIconSize: 50
+    },
+    proMax: {
+      container: "flex-1 bg-white",
+      header: "flex-row items-center px-5 py-3",
+      backButton: "p-2",
+      profileSection: "items-center mt-6 mb-16",
+      profileImageContainer: "w-28 h-28 rounded-full bg-gray-100 justify-center items-center mb-6",
+      profileName: "text-2xl mb-1",
+      profileEmail: "text-lg text-gray-600",
+      settingsContainer: "px-8 flex-1 justify-end mb-12",
+      logoutButton: "bg-black rounded-xl py-4 items-center my-2",
+      logoutButtonText: "text-white text-xl font-semibold",
+      iconSize: 32,
+      userIconSize: 56
+    }
+  };
+
+  const styles = deviceStyles[deviceType];
 
   useEffect(() => {
     getUserInfo();
@@ -57,108 +106,52 @@ export default function SettingsScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-          <Ionicons name="chevron-back" size={28} color="black" />
+    <SafeAreaView className={styles.container} style={{ 
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 
+    }}>
+      <View className={styles.header}>
+        <TouchableOpacity onPress={handleBackPress} className={styles.backButton}>
+          <Ionicons name="chevron-back" size={styles.iconSize} color="black" />
         </TouchableOpacity>
       </View>
 
-      <View style={styles.profileSection}>
-        <View style={styles.profileImageContainer}>
-          <Feathericons name="user" size={50} color="#555" />
+      <View className={styles.profileSection}>
+        <View className={styles.profileImageContainer}>
+          <Feathericons name="user" size={styles.userIconSize} color="#555" />
         </View>
         
         {user && (
           <>
-            <Text style={styles.profileName}>{user.user_metadata?.name || "User"}</Text>
-            <Text style={styles.profileEmail}>{user.email}</Text>
+            <Text 
+              className={styles.profileName}
+              style={{ fontFamily: FONTS.SWITZER, fontWeight: "400" }}
+            >
+              {user.user_metadata?.name || "User"}
+            </Text>
+            <Text 
+              className={styles.profileEmail}
+              style={{ fontFamily: FONTS.SWITZER, fontWeight: "400" }}
+            >
+              {user.email}
+            </Text>
           </>
         )}
       </View>
 
-      <View style={styles.settingsContainer}>
+      <View className={styles.settingsContainer}>
         <TouchableOpacity 
-          style={styles.logoutButton} 
+          className={`${styles.logoutButton} ${loading ? "opacity-60" : ""}`}
           onPress={handleLogOut}
           disabled={loading}
         >
-          <Text style={styles.logoutButtonText}>Log Out</Text>
+          <Text 
+            className={styles.logoutButtonText}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Log Out
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  backButton: {
-    padding: 5,
-  },
-  profileSection: {
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 40,
-  },
-  profileImageContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: "#f0f0f0",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  profileName: {
-    fontSize: 20,
-    fontWeight: "400",
-    marginBottom: 4,
-    fontFamily: FONTS.SWITZER
-  },
-  profileEmail: {
-    fontSize: 16,
-    color: "#666",
-    fontFamily: FONTS.SWITZER,
-    fontWeight: "400",
-  },
-  settingsContainer: {
-    paddingHorizontal: 20,
-    flex: 1,
-    justifyContent: "flex-end",
-    marginBottom: 40,
-  },
-  settingsOptionContainer: {
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f1f1f1",
-  },
-  settingsOption: {
-    fontSize: 16,
-    fontWeight: "500",
-    textAlign: "center",
-  },
-  logoutButton: {
-    backgroundColor: "#000",
-    borderRadius: 10,
-    paddingVertical: 15,
-    alignItems: "center",
-    marginVertical: 10,
-    fontWeight: "400",
-    fontFamily: FONTS.SATOSHI
-  },
-  logoutButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});

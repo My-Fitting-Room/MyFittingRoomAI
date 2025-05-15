@@ -9,12 +9,13 @@ import SignUpScreen from "./screens/SignUpScreen";
 import TryOnScreen from "./screens/TryOnScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SizingScreen from "./screens/SizingScreen";
-import { LogLevel, OneSignal } from "react-native-onesignal";
+import { OneSignal } from "react-native-onesignal";
 import Config from "react-native-config";
 import Purchases, { LOG_LEVEL } from "react-native-purchases";
 import { Platform } from "react-native";
 import FirstScreen from "./screens/FirstScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
+import "./global.css"
 
 const supabaseUrl = Config.SUPABASE_URL;
 const supabaseKey = Config.SUPABASE_KEY;

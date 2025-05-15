@@ -260,7 +260,8 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Models</Text>
-      
+      <Text style={styles.subheading}>For best results, use well-lit, front-facing photos</Text>
+
       {modelImages.length > 0
         ? (
           <>
@@ -322,9 +323,7 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
               </TouchableOpacity>
             </View>
             
-            <Text style={styles.tip}>
-              For best results, use photos taken in bright lighting with a straight-on angle.
-            </Text>
+            
           </>
         )
       }
@@ -345,16 +344,17 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   heading: {
-    fontSize: 28,
+    fontSize: 16,
     fontWeight: "400",
-    marginBottom: 15,
+    marginBottom: 10,
     fontFamily: FONTS.SWITZER,
   },
   subheading: {
-    fontSize: 14,
+    fontSize: 10,
     marginBottom: 20,
     fontFamily: FONTS.SATOSHI,
     fontWeight: "400",
+    color:"#868686"
   },
   loadingContainer: {
     flex: 1,
@@ -474,8 +474,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   uploadText: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 16,
+    fontWeight: "400",
     fontFamily: FONTS.SWITZER
   },
   tip: {

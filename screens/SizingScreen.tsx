@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { 
   View, 
   Text, 
-  StyleSheet, 
   Alert, 
   TouchableOpacity, 
   SafeAreaView, 
-  ScrollView, 
-  Platform, 
+  ScrollView,  
   ActivityIndicator,
   TextInput,
   Dimensions,
@@ -209,17 +207,73 @@ const CLOTHING_DATA = {
   }
 };
 
-const DropdownSelect = ({ label, placeholder, value, options, onChange }) => {
+const DropdownSelect = ({ label, placeholder, value, options, onChange, deviceType }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
+  const styles = {
+    small: {
+      inputGroup: "mb-5",
+      label: " mb-1.5 text-gray-800",
+      dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
+      dropdownText: " text-gray-800",
+      dropdownPlaceholder: " text-gray-800",
+      modalOverlay: "flex-1 justify-center bg-black/50",
+      modalContent: "bg-white rounded-xl px-4 pb-4 mx-4 max-h-[70%]",
+      modalHeader: "flex-row justify-between items-center py-3 border-b border-gray-200",
+      modalTitle: "text-base font-semibold text-gray-800",
+      optionsContainer: "max-h-80",
+      optionItem: "py-3 border-b border-gray-200",
+      selectedOption: "bg-blue-50",
+      optionText: " text-gray-800",
+      selectedOptionText: "text-[#4052FF] font-medium"
+    },
+    regular: {
+      inputGroup: "mb-5",
+      label: "text-base mb-2 text-gray-800",
+      dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
+      dropdownText: " text-gray-800",
+      dropdownPlaceholder: " text-gray-800",
+      modalOverlay: "flex-1 justify-center bg-black/50",
+      modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
+      modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
+      modalTitle: "text-lg font-semibold text-gray-800",
+      optionsContainer: "max-h-80",
+      optionItem: "py-3.5 border-b border-gray-200",
+      selectedOption: "bg-blue-50",
+      optionText: " text-gray-800",
+      selectedOptionText: "text-[#4052FF] font-medium"
+    },
+    proMax: {
+      inputGroup: "mb-5",
+      label: "text-base mb-2 text-gray-800",
+      dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
+      dropdownText: " text-gray-800",
+      dropdownPlaceholder: " text-gray-800",
+      modalOverlay: "flex-1 justify-center bg-black/50",
+      modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
+      modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
+      modalTitle: "text-lg font-semibold text-gray-800",
+      optionsContainer: "max-h-96",
+      optionItem: "py-3.5 border-b border-gray-200",
+      selectedOption: "bg-blue-50",
+      optionText: " text-gray-800",
+      selectedOptionText: "text-[#4052FF] font-medium"
+    }
+  };
+
+  const style = styles[deviceType];
+
   return (
-    <View style={styles.inputGroup}>
-      <Text style={styles.label}>{label}</Text>
+    <View className={style.inputGroup}>
+      <Text className={style.label} style={{ fontFamily: FONTS.SATOSHI }}>{label}</Text>
       <TouchableOpacity
-        style={styles.dropdownButton}
+        className={style.dropdownButton}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={value ? styles.dropdownText : styles.dropdownPlaceholder}>
+        <Text 
+          className={value ? style.dropdownText : style.dropdownPlaceholder}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
           {value ? options.find(opt => opt.value === value)?.label || value : placeholder}
         </Text>
         <Ionicons name="chevron-down" size={20} color="#777" />
@@ -232,35 +286,35 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange }) => {
         onRequestClose={() => setModalVisible(false)}
       >
         <TouchableOpacity
-          style={styles.modalOverlay}
+          className={style.modalOverlay}
           activeOpacity={1}
           onPress={() => setModalVisible(false)}
         >
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{label}</Text>
+          <View className={style.modalContent}>
+            <View className={style.modalHeader}>
+              <Text 
+                className={style.modalTitle}
+                style={{ fontFamily: FONTS.SATOSHI }}
+              >
+                {label}
+              </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Ionicons name="close" size={24} color="#000" />
               </TouchableOpacity>
             </View>
-            <ScrollView style={styles.optionsContainer}>
+            <ScrollView className={style.optionsContainer}>
               {options.map((option) => (
                 <TouchableOpacity
                   key={option.value}
-                  style={[
-                    styles.optionItem,
-                    value === option.value && styles.selectedOption
-                  ]}
+                  className={`${style.optionItem} ${value === option.value ? style.selectedOption : ""}`}
                   onPress={() => {
                     onChange(option.value);
                     setModalVisible(false);
                   }}
                 >
                   <Text 
-                    style={[
-                      styles.optionText,
-                      value === option.value && styles.selectedOptionText
-                    ]}
+                    className={`${style.optionText} ${value === option.value ? style.selectedOptionText : ""}`}
+                    style={{ fontFamily: FONTS.SATOSHI }}
                   >
                     {option.label}
                   </Text>
@@ -284,6 +338,86 @@ export default function SizingScreen({ navigation }) {
   const [optionalMeasurements, setOptionalMeasurements] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
+  const { width } = Dimensions.get("window");
+  const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
+
+  const deviceStyles = {
+    small: {
+      container: "flex-1 bg-gray-100 ",
+      loadingContainer: "flex-1 justify-center items-center bg-white",
+      loadingText: "mt-2.5 text-sm text-[#4052FF]",
+      content: "flex-1 pt-20",
+      contentContainer: "px-3",
+      card: "bg-white rounded-xl p-4 my-2 shadow",
+      formContainer: "w-full ",
+      heading: "text-[20px] font-medium mb-6",
+      inputGroup: "mb-5",
+      label: " mb-1.5 text-gray-800",
+      unitText: "text-xs text-gray-500",
+      input: "border border-gray-300 rounded-lg p-3  bg-white text-gray-800",
+      measurementsSection: "mt-2 mb-2",
+      sectionTitle: "text-base font-normal mb-3 text-gray-800",
+      button: "bg-[#6666FF] rounded-[10px] px-3 py-4 items-center mt-4",
+      buttonText: "text-white  font-normal",
+      resultContainer: "p-4",
+      resultHeader: "flex-row justify-between items-center mb-5",
+      resultTitle: "text-xl font-normal text-gray-800",
+      resultContent: "items-center",
+      sizeText: "text-lg font-normal text-gray-800",
+      bottomPadding: "h-28"
+    },
+    regular: {
+      container: "flex-1 bg-gray-100",
+      loadingContainer: "flex-1 justify-center items-center bg-white",
+      loadingText: "mt-2.5 text-base text-[#4052FF]",
+      content: "flex-1 pt-20",
+      contentContainer: "px-4",
+      card: "bg-white rounded-xl p-4 my-2.5 shadow",
+      formContainer: "w-full ",
+      heading: "text-[20px] font-medium mb-4",
+      inputGroup: "mb-5",
+      label: "text-base mb-2 text-gray-800",
+      unitText: "text-sm text-gray-500",
+      input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
+      measurementsSection: "mt-2 mb-2",
+      sectionTitle: "text-lg font-normal mb-3 text-gray-800",
+      button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
+      buttonText: "text-white  font-normal",
+      resultContainer: "p-4",
+      resultHeader: "flex-row justify-between items-center mb-6",
+      resultTitle: "text-2xl font-normal text-gray-800",
+      resultContent: "items-center",
+      sizeText: "text-xl font-normal text-gray-800",
+      bottomPadding: "h-28"
+    },
+    proMax: {
+      container: "flex-1 bg-gray-100",
+      loadingContainer: "flex-1 justify-center items-center bg-white",
+      loadingText: "mt-2.5 text-base text-[#4052FF]",
+      content: "flex-1 pt-20",
+      contentContainer: "px-4",
+      card: "bg-white rounded-xl p-4 my-2.5 shadow",
+      formContainer: "w-full",
+      heading: "text-[20px] font-medium mb-4",
+      inputGroup: "mb-5",
+      label: "text-base mb-2 text-gray-800",
+      unitText: "text-sm text-gray-500",
+      input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
+      measurementsSection: "mt-2 mb-2",
+      sectionTitle: "text-lg font-normal mb-3 text-gray-800",
+      button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
+      buttonText: "text-white  font-normal",
+      resultContainer: "p-4",
+      resultHeader: "flex-row justify-between items-center mb-6",
+      resultTitle: "text-2xl font-normal text-gray-800",
+      resultContent: "items-center",
+      sizeText: "text-xl font-normal text-gray-800",
+      bottomPadding: "h-28"
+    }
+  };
+
+  const styles = deviceStyles[deviceType];
+
   const [formData, setFormData] = useState({
     brand: "",
     category: "",
@@ -293,7 +427,7 @@ export default function SizingScreen({ navigation }) {
 
   const presentPaywallIfNeeded = async () => {
     if (profile.price_id === null && !profile.all_access) {
-      const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywallIfNeeded({
+      const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
         requiredEntitlementIdentifier: "Unlimited"
       });    
 
@@ -301,11 +435,11 @@ export default function SizingScreen({ navigation }) {
         case PAYWALL_RESULT.NOT_PRESENTED:
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
-          Alert.alert("Error", "Purchase Not Succesful");
           navigation.replace("TryOn");
+          break;
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
-
+          break;
       }
     }
   }
@@ -450,25 +584,41 @@ export default function SizingScreen({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4052FF" />
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text 
+          className={styles.loadingText}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Loading...
+        </Text>
       </View>
     );
   }
 
   const renderForm = () => (
-    <View style={styles.formContainer}>
-      <Text style={styles.heading}>Find My Size</Text>
+    <View className={styles.formContainer}>
+      <Text 
+        className={styles.heading}
+        style={{ fontFamily: FONTS.SWITZER }}
+      >
+        Find My Size
+      </Text>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Brand</Text>
+      <View className={styles.inputGroup}>
+        <Text 
+          className={styles.label}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Brand
+        </Text>
         <TextInput
           placeholderTextColor="#666"
-          style={styles.input}
+          className={styles.input}
           placeholder="Nike"
           value={formData.brand}
           onChangeText={(text) => setFormData(prev => ({ ...prev, brand: text }))}
+          style={{ fontFamily: FONTS.SATOSHI }}
         />
       </View>
 
@@ -481,6 +631,7 @@ export default function SizingScreen({ navigation }) {
           label: category.charAt(0).toUpperCase() + category.slice(1)
         }))}
         onChange={handleCategoryChange}
+        deviceType={deviceType}
       />
 
       {selectedCategory ? (
@@ -493,27 +644,37 @@ export default function SizingScreen({ navigation }) {
             label: type.charAt(0).toUpperCase() + type.slice(1).replace("_", " ")
           }))}
           onChange={handleClothingTypeChange}
+          deviceType={deviceType}
         />
       ) : null}
 
       {requiredMeasurements.length > 0 && (
-        <View style={styles.measurementsSection}>
-          <Text style={styles.sectionTitle}>Required Measurements</Text>
+        <View className={styles.measurementsSection}>
+          <Text 
+            className={styles.sectionTitle}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Required Measurements
+          </Text>
           {requiredMeasurements.map((measurement) => (
-            <View key={measurement} style={styles.inputGroup}>
-              <Text style={styles.label}>
+            <View key={measurement} className={styles.inputGroup}>
+              <Text 
+                className={styles.label}
+                style={{ fontFamily: FONTS.SATOSHI }}
+              >
                 {measurement.charAt(0).toUpperCase() + measurement.slice(1).replace("_", " ")}{" "}
-                <Text style={styles.unitText}>
+                <Text className={styles.unitText}>
                   ({CLOTHING_DATA.country_measurements["USA"]["measurements"][measurement]})
                 </Text>
               </Text>
               <TextInput
                 placeholderTextColor="#666"
-                style={styles.input}
+                className={styles.input}
                 keyboardType="numeric"
                 placeholder={`Enter ${measurement.replace("_", " ")}`}
                 value={formData.measurements[measurement]?.toString() || ""}
                 onChangeText={(text) => handleMeasurementChange(measurement, text)}
+                style={{ fontFamily: FONTS.SATOSHI }}
               />
             </View>
           ))}
@@ -521,23 +682,32 @@ export default function SizingScreen({ navigation }) {
       )}
 
       {optionalMeasurements.length > 0 && (
-        <View style={styles.measurementsSection}>
-          <Text style={styles.sectionTitle}>Optional Measurements</Text>
+        <View className={styles.measurementsSection}>
+          <Text 
+            className={styles.sectionTitle}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Optional Measurements
+          </Text>
           {optionalMeasurements.map((measurement) => (
-            <View key={measurement} style={styles.inputGroup}>
-              <Text style={styles.label}>
+            <View key={measurement} className={styles.inputGroup}>
+              <Text 
+                className={styles.label}
+                style={{ fontFamily: FONTS.SATOSHI }}
+              >
                 {measurement.charAt(0).toUpperCase() + measurement.slice(1).replace("_", " ")}{" "}
-                <Text style={styles.unitText}>
+                <Text className={styles.unitText}>
                   ({CLOTHING_DATA.country_measurements["USA"]["measurements"][measurement]})
                 </Text>
               </Text>
               <TextInput
-                style={styles.input}
+                className={styles.input}
                 keyboardType="numeric"
                 placeholderTextColor="#666"
                 placeholder={`Enter ${measurement.replace("_", " ")} (optional)`}
                 value={formData.measurements[measurement]?.toString() || ""}
                 onChangeText={(text) => handleMeasurementChange(measurement, text)}
+                style={{ fontFamily: FONTS.SATOSHI }}
               />
             </View>
           ))}
@@ -545,269 +715,72 @@ export default function SizingScreen({ navigation }) {
       )}
 
       <TouchableOpacity 
-        style={styles.button} 
+        className={styles.button} 
         onPress={handleSubmit}
         disabled={submitting}
       >
         {submitting ? (
           <ActivityIndicator size="small" color="#FFFFFF" />
         ) : (
-          <Text style={styles.buttonText}>Find My Size</Text>
+          <Text 
+            className={styles.buttonText}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Find My Size
+          </Text>
         )}
       </TouchableOpacity>
     </View>
   );
 
   const renderSizingResult = () => (
-    <View style={styles.resultContainer}>
-      <View style={styles.resultHeader}>
+    <View className={styles.resultContainer}>
+      <View className={styles.resultHeader}>
         <TouchableOpacity onPress={handleResetForm}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.resultTitle}>Your Size</Text>
-        <View style={{ width: 24 }} /> {/* For alignment */}
+        <Text 
+          className={styles.resultTitle}
+          style={{ fontFamily: FONTS.SWITZER }}
+        >
+          Your Size
+        </Text>
+        <View style={{ width: 24 }} /> 
       </View>
-      <View style={styles.resultContent}>
-        <Text style={styles.sizeText}>{sizing}</Text>
+      <View className={styles.resultContent}>
+        <Text 
+          className={styles.sizeText}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          {sizing}
+        </Text>
       </View>
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className={styles.container}>
       <HeaderNav navigation={navigation} />
       <ScrollView
-        style={styles.content}
-        contentContainerStyle={styles.contentContainer}
+        className={styles.content}
+        contentContainerStyle={{ paddingHorizontal: deviceType === "small" ? 15 : 15 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.card}>
+        <View 
+          className={styles.card}
+          style={{
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 3,
+          }}
+        >
           {sizing ? renderSizingResult() : renderForm()}
         </View>
-        <View style={styles.bottomPadding} />
+        <View className={styles.bottomPadding} />
       </ScrollView>
       <BottomNav navigation={navigation} activeTab="Sizing" />
     </SafeAreaView>
   );
 }
-
-const { width, height } = Dimensions.get("window");
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F5F5F5",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: "#4052FF",
-    fontFamily: FONTS.SATOSHI
-  },
-  content: {
-    flex: 1,
-    paddingTop: Platform.OS === "ios" ? 70 : 80,
-  },
-  contentContainer: {
-    paddingHorizontal: 15,
-  },
-  card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 16,
-    marginVertical: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  formContainer: {
-    width: "100%",
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: "400",
-    marginBottom: 20,
-    fontFamily: FONTS.SWITZER
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 8,
-    color: "#333",
-    fontFamily: FONTS.SATOSHI
-  },
-  unitText: {
-    fontSize: 14,
-    color: "#666",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#DDDDDD",
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: "#FFFFFF",
-    color: "#333",  
-  },
-  dropdownButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#DDDDDD",
-    borderRadius: 8,
-    padding: 12,
-    backgroundColor: "#FFFFFF",
-  },
-  dropdownText: {
-    fontSize: 16,
-    color: "#333",
-    fontFamily: FONTS.SATOSHI
-  },
-  dropdownPlaceholder: {
-    fontSize: 16,
-    color: "#333",
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  modalContent: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingBottom: 20,
-    maxHeight: height * 0.6,
-    marginHorizontal: 20,
-  },
-  modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EEEEEE",
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#333",
-    fontFamily: FONTS.SATOSHI
-  },
-  optionsContainer: {
-    maxHeight: height * 0.5,
-  },
-  optionItem: {
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EEEEEE",
-  },
-  selectedOption: {
-    backgroundColor: "#F0F4FF",
-  },
-  optionText: {
-    fontSize: 16,
-    color: "#333",
-    fontFamily: FONTS.SATOSHI
-
-  },
-  selectedOptionText: {
-    color: "#4052FF",
-    fontWeight: "500",
-    fontFamily: FONTS.SATOSHI
-
-  },
-  measurementsSection: {
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "400",
-    marginBottom: 12,
-    color: "#333",
-    fontFamily: FONTS.SATOSHI
-  },
-  button: {
-    backgroundColor: "#6666FF",
-    borderRadius: 8,
-    padding: 14,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "400",
-    fontFamily: FONTS.SATOSHI
-  },
-  resultContainer: {
-    padding: 16,
-  },
-  resultHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  resultTitle: {
-    fontSize: 24,
-    fontWeight: "400",
-    color: "#333",
-    fontFamily: FONTS.SWITZER
-  },
-  resultContent: {
-    alignItems: "center",
-  },
-  sizeText: {
-    fontSize: 22,
-    fontWeight: "400",
-    color: "#333",
-    fontFamily: FONTS.SATOSHI
-  },
-  bottomPadding: {
-    height: 80, 
-  },
-  paywallContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  paywallTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#333",
-  },
-  paywallMessage: {
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 30,
-    color: "#555",
-    lineHeight: 24,
-  },
-  paywallButton: {
-    backgroundColor: "#6666FF",
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 30,
-    alignItems: "center",
-  },
-  paywallButtonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});

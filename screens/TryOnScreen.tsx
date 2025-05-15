@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Alert , SafeAreaView, ScrollView, StatusBar, Platform, ActivityIndicator } from "react-native";
+import { View, Text, Alert, SafeAreaView, ScrollView, StatusBar, Platform, ActivityIndicator, Dimensions } from "react-native";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
@@ -8,6 +8,7 @@ import ClothesImages from "../components/ClothesImages";
 import TryOnButton from "../components/TryOnButton";
 import TryOnImages from "../components/TryOnImages";
 import TokensBox from "../components/TokensBox";
+import { FONTS } from "../constants/fonts";
 
 export default function TryOnScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,38 @@ export default function TryOnScreen({ navigation }) {
   const [plan, setPlan] = useState(null);
   const [tokensTotal, setTokensTotal] = useState(0);
   const [renewalDate, setRenewalDate] = useState(null);
+  
+  const { width } = Dimensions.get("window");
+  const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
+
+  const deviceStyles = {
+    small: {
+      container: "flex-1 bg-white",
+      loadingContainer: "flex-1 justify-center items-center bg-white",
+      loadingText: "mt-2.5 text-sm text-[#4052FF]",
+      content: "flex-1 pt-12",
+      contentContainer: "px-1",
+      bottomPadding: "h-24"
+    },
+    regular: {
+      container: "flex-1 bg-white",
+      loadingContainer: "flex-1 justify-center items-center bg-white",
+      loadingText: "mt-2.5 text-base text-[#4052FF]",
+      content: "flex-1 pt-14",
+      contentContainer: "px-1.5",
+      bottomPadding: "h-20"
+    },
+    proMax: {
+      container: "flex-1 bg-white",
+      loadingContainer: "flex-1 justify-center items-center bg-white",
+      loadingText: "mt-2.5 text-base text-[#4052FF]",
+      content: "flex-1 pt-14",
+      contentContainer: "px-1.5",
+      bottomPadding: "h-20"
+    }
+  };
+
+  const styles = deviceStyles[deviceType];
 
   useEffect(() => {
     const checkSession = async () => {
@@ -101,135 +134,49 @@ export default function TryOnScreen({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4052FF" />
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text 
+          className={styles.loadingText}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Loading...
+        </Text>
       </View>
     );
   }
 
+  const contentPaddingTop = Platform.OS === "ios" ? "pt-12" : "pt-20";
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className={styles.container}>
       <HeaderNav navigation={navigation} />
-      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+      <ScrollView 
+        className={`${styles.content} ${contentPaddingTop}`} 
+        contentContainerStyle={{ paddingHorizontal: deviceType === "small" ? 5 : 5 }}
+      >
         <TryOnImages profile={profile} navigation={navigation} />
         <ModelImages setInputModelImage={setInputModelImage} profile={profile} navigation={navigation} />
-        <ClothesImages setInputClothImage={setInputClothImage}  profile={profile}  navigation={navigation}/>
-        <TryOnButton disabled={false} inputClothImage={inputClothImage}  inputModelImage={inputModelImage} tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} profile={profile} plan={plan} navigation={navigation} />
-        <TokensBox tokensUsed={profile.tokens_used} tokensTotal={tokensTotal} renewalDate={renewalDate} plan={plan} />
-        <View style={styles.bottomPadding} />
+        <ClothesImages setInputClothImage={setInputClothImage} profile={profile} navigation={navigation}/>
+        <TryOnButton 
+          disabled={false} 
+          inputClothImage={inputClothImage} 
+          inputModelImage={inputModelImage} 
+          tokensUsed={profile.tokens_used} 
+          tokensTotal={tokensTotal} 
+          profile={profile} 
+          plan={plan} 
+          navigation={navigation} 
+        />
+        <TokensBox 
+          tokensUsed={profile.tokens_used} 
+          tokensTotal={tokensTotal} 
+          renewalDate={renewalDate} 
+          plan={plan} 
+        />
+        <View className={styles.bottomPadding} />
       </ScrollView>
       <BottomNav navigation={navigation} activeTab="TryOn" />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: "#4052FF",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
-    backgroundColor: "#fff",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-    ...Platform.select({
-      ios: {
-        paddingTop: 50, 
-      },
-      android: {
-        paddingTop: StatusBar.currentHeight,
-      },
-    }),
-  },
-  logoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  logoImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
-  },
-  logoText: {
-    fontSize: 22,
-    fontWeight: "500",
-    color: "#4052FF",
-    marginLeft: 12,
-  },
-  profileIcon: {
-    padding: 8,
-  },
-  content: {
-    flex: 1,
-    paddingTop: Platform.OS === "ios" ? 50 : 80, 
-  },
-  contentContainer: {
-    paddingHorizontal: 5,
-  },
-  card: {
-    backgroundColor: "#f7f7f7",
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 200,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  cardText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  userEmail: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 10,
-  },
-  bottomPadding: {
-    height: 80, 
-  },
-  navbar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 60,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
-    paddingBottom: Platform.OS === "ios" ? 20 : 0, 
-  },
-  navItem: {
-    padding: 12,
-  },
-});

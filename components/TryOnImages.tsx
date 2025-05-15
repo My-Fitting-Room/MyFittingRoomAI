@@ -52,9 +52,9 @@ export default function TryOnImages({ profile = null, navigation }) {
       const succImages = tryonImagesData.filter(img => img.status === "success");
       const pendImages = tryonImagesData.filter(img => img.status === "pending");
   
-      if (succImages.length > currentTryonImages.length && currentTryonImages.length !== 0) {
-        Alert.alert("Success", "Your virtual try on is ready!");
-      }
+      // if (succImages.length > currentTryonImages.length && currentTryonImages.length !== 0) {
+      //   Alert.alert("Success", "Your virtual try on is ready!");
+      // }
   
       if (failImages.length > currentFailedImages.length) {
         Alert.alert("Error", "Your virtual try on failed!");
@@ -155,127 +155,131 @@ export default function TryOnImages({ profile = null, navigation }) {
     );
   }
 
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        {pendingImages.length > 0 && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionHeading}>Pending Try On Images</Text>
-            <Text style={styles.sectionSubheading}>Images May Take A Few Minutes To Generate</Text>
+  if(failedImages.length > 0 || pendingImages.length > 0 || tryonImages.length > 0) {
 
-            {pendingImages.map((image, index) => (
-              <View key={index} style={styles.pendingItem}>
-                <View style={styles.loadingBar}></View>
-                <Text style={styles.pendingText}>Generating Image ID: {image.kling_task_id}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {failedImages.length > 0 && (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionHeading}>Failed Try On Images</Text>
-            {failedImages.map((image, index) => (
-              <View key={index} style={styles.failedItem}>
-                <Text style={styles.failedText}>Failed to generate image ID: {image.kling_task_id}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {tryonImages.length > 0 && (
-          <View style={styles.carouselContainer}>
-            <View style={styles.imageContainer}>
-              {(tryonImages[currentImageIndex].clothes_images !== null && tryonImages[currentImageIndex].model_images !== null) ? (
-                <View style={styles.splitImageContainer}>
-                  <View style={styles.leftColumn}>
-                    <FastImage
-                      source={{ 
-                        uri: tryonImages[currentImageIndex].model_images.url,
-                        priority: FastImage.priority.normal
-                      }}
-                      style={styles.modelImage}
-                      resizeMode={FastImage.resizeMode.cover}
-                    />
-                    <FastImage
-                      source={{ 
-                        uri: tryonImages[currentImageIndex].clothes_images.url,
-                        priority: FastImage.priority.normal
-                      }}
-                      style={styles.clothingImage}
-                      resizeMode={FastImage.resizeMode.cover}
-                    />
+    return (
+      <ScrollView>
+        <View style={styles.container}>
+          {pendingImages.length > 0 && (
+            <View style={styles.sectionContainer}>
+              
+              {pendingImages.map((image, index) => (
+                <View key={index} style={styles.pendingItem}>
+                  <View style={styles.loadingBar}></View>
+                  <Text style={styles.pendingText}>Generating Image....</Text>
+                </View>
+              ))}
+            </View>
+          )}
+  
+          {failedImages.length > 0 && (
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionHeading}>Failed Try On Images</Text>
+              {failedImages.map((image, index) => (
+                <View key={index} style={styles.failedItem}>
+                  <Text style={styles.failedText}>Failed to generate image ID: {image.kling_task_id}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+  
+          {tryonImages.length > 0 && (
+            <View style={styles.carouselContainer}>
+              <View style={styles.imageContainer}>
+                {(tryonImages[currentImageIndex].clothes_images !== null && tryonImages[currentImageIndex].model_images !== null) ? (
+                  <View style={styles.splitImageContainer}>
+                    <View style={styles.leftColumn}>
+                      <FastImage
+                        source={{ 
+                          uri: tryonImages[currentImageIndex].model_images.url,
+                          priority: FastImage.priority.normal
+                        }}
+                        style={styles.modelImage}
+                        resizeMode={FastImage.resizeMode.cover}
+                      />
+                      <FastImage
+                        source={{ 
+                          uri: tryonImages[currentImageIndex].clothes_images.url,
+                          priority: FastImage.priority.normal
+                        }}
+                        style={styles.clothingImage}
+                        resizeMode={FastImage.resizeMode.cover}
+                      />
+                    </View>
+                    <View style={styles.rightColumn}>
+                      <FastImage
+                        source={{ 
+                          uri: tryonImages[currentImageIndex].url,
+                          priority: FastImage.priority.high
+                        }}
+                        style={styles.resultImage}
+                        resizeMode={FastImage.resizeMode.cover}
+                      />
+                    </View>
                   </View>
-                  <View style={styles.rightColumn}>
+                ) : (
+                  <View style={styles.fullImageContainer}>
                     <FastImage
                       source={{ 
                         uri: tryonImages[currentImageIndex].url,
                         priority: FastImage.priority.high
                       }}
-                      style={styles.resultImage}
+                      style={styles.fullImage}
                       resizeMode={FastImage.resizeMode.cover}
                     />
                   </View>
-                </View>
-              ) : (
-                <View style={styles.fullImageContainer}>
-                  <FastImage
-                    source={{ 
-                      uri: tryonImages[currentImageIndex].url,
-                      priority: FastImage.priority.high
-                    }}
-                    style={styles.fullImage}
-                    resizeMode={FastImage.resizeMode.cover}
-                  />
-                </View>
-              )}
-
-              {tryonImages.length > 1 && (
-                <>
-                  <TouchableOpacity 
-                    style={[styles.navArrow, styles.leftArrow]} 
-                    onPress={goToPrevious}
-                  >
-                    <View style={styles.arrowCircle}>
-                      <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-                    </View>
-                  </TouchableOpacity>
-                  
-                  <TouchableOpacity 
-                    style={[styles.navArrow, styles.rightArrow]} 
-                    onPress={goToNext}
-                  >
-                    <View style={styles.arrowCircle}>
-                      <Ionicons name="chevron-forward" size={24} color="#FFFFFF" />
-                    </View>
-                  </TouchableOpacity>
-                </>
-              )}
-            </View>
-
-            <View style={styles.imageCounter}>
-              <Text style={styles.counterText}>
-                {currentImageIndex + 1} / {tryonImages.length}
-              </Text>
-            </View>
-
-            <View style={styles.actionButtons}>
-              <TouchableOpacity onPress={() => viewImage(tryonImages[currentImageIndex].slug)}>
-                <Feathericons name="eye" size={24} color="#000" style={styles.viewIcon} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleDeleteImage()} disabled={deleting}>
-                {deleting ? (
-                  <ActivityIndicator size="small" color="#FF0000" />
-                ) : (
-                  <Feathericons name="trash" size={24} color="#000" style={styles.deleteIcon} />
                 )}
-              </TouchableOpacity>
+  
+                {tryonImages.length > 1 && (
+                  <>
+                    <TouchableOpacity 
+                      style={[styles.navArrow, styles.leftArrow]} 
+                      onPress={goToPrevious}
+                    >
+                      <View style={styles.arrowCircle}>
+                        <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
+                      </View>
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity 
+                      style={[styles.navArrow, styles.rightArrow]} 
+                      onPress={goToNext}
+                    >
+                      <View style={styles.arrowCircle}>
+                        <Ionicons name="chevron-forward" size={24} color="#FFFFFF" />
+                      </View>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+  
+              <View style={styles.imageCounter}>
+                <Text style={styles.counterText}>
+                  {currentImageIndex + 1} / {tryonImages.length}
+                </Text>
+              </View>
+  
+              <View style={styles.actionButtons}>
+                <TouchableOpacity onPress={() => viewImage(tryonImages[currentImageIndex].slug)}>
+                  <Feathericons name="eye" size={24} color="#000" style={styles.viewIcon} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDeleteImage()} disabled={deleting}>
+                  {deleting ? (
+                    <ActivityIndicator size="small" color="#FF0000" />
+                  ) : (
+                    <Feathericons name="trash" size={24} color="#000" style={styles.deleteIcon} />
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
-  );
+          )}
+        </View>
+      </ScrollView>
+    );
+  } else {
+    return <>gg</>;
+  }
+
 }
 
 const styles = StyleSheet.create({
