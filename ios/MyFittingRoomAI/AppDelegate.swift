@@ -15,6 +15,46 @@ class AppDelegate: RCTAppDelegate {
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
+  
+  // Handle Universal Links
+  override func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
+      print("UNIVERSAL LINK OPENED: \(url.absoluteString)")
+      
+      // Store link data in UserDefaults for React Native to access
+      if let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+         let queryItems = components.queryItems {
+        if let referrerId = queryItems.first(where: { $0.name == "referrer" })?.value {
+          print("REFERRER ID: \(referrerId)")
+          UserDefaults.standard.set(referrerId, forKey: "app_referrer")
+          UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "referral_timestamp")
+        }
+      }
+      
+      // Post notification that React Native can listen for
+      NotificationCenter.default.post(
+        name: NSNotification.Name("RCTOpenURLNotification"), 
+        object: nil, 
+        userInfo: ["url": url.absoluteString]
+      )
+    }
+    
+    return super.application(application, continue: userActivity, restorationHandler: restorationHandler)
+  }
+  
+  // Handle URL scheme links (like myapp://)
+  override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    print("APP OPENED VIA URL SCHEME: \(url.absoluteString)")
+    
+    // Post notification that React Native can listen for
+    NotificationCenter.default.post(
+      name: NSNotification.Name("RCTOpenURLNotification"), 
+      object: nil, 
+      userInfo: ["url": url.absoluteString]
+    )
+    
+    return super.application(app, open: url, options: options)
+  }
 
   override func sourceURL(for bridge: RCTBridge) -> URL? {
     self.bundleURL()
