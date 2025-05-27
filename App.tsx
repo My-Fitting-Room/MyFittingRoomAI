@@ -16,6 +16,7 @@ import { Platform } from "react-native";
 import FirstScreen from "./screens/FirstScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import "./global.css"
+import TestScreen from "./screens/TestScreen";
 
 const supabaseUrl = Config.SUPABASE_URL;
 const supabaseKey = Config.SUPABASE_KEY;
@@ -67,6 +68,11 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      {/* <Stack.Screen 
+          name="Test" 
+          options={{ headerShown: false }} 
+          component={TestScreen} 
+        /> */}
         <Stack.Screen 
           name="TryOn" 
           options={{ headerShown: false }} 

@@ -1,0 +1,209 @@
+import { getDeviceGroup } from "../utils/device";
+
+export const getStyles = (width,height) => {
+  const deviceGroup = getDeviceGroup(width,height);
+
+  console.log(deviceGroup)
+  const deviceGroupStyles = {
+    group1: {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-10 pt-48 items-center justify-center pb-0.5",
+      contentWrapper: "w-full ",
+      headerText: "text-3xl text-center mb-4 font-bold text-black",
+      videoHeight: height * 0.45, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 pt-16  justify-start ",
+      signInContainer: " flex-row justify-center font-bold items-center",
+      videoView : " "
+    },
+    group2: {
+      subscribeBanner: "absolute w-full bg-black pt-14  pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-10 pt-40 items-center justify-center pb-0.5",
+      contentWrapper: "w-full ",
+      headerText: "text-3xl text-center px-10 mb-4 mt-12 font-bold text-black",
+      videoHeight: height * 0.45, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 pt-32  justify-start ",
+      signInContainer: "flex-row justify-center font-bold items-center ",
+      videoView : " "
+    },
+    group3: {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center ",
+      contentWrapper: "w-full",
+      headerText: "text-3xl text-center px-10 mb-6 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95,
+      bottomWrapper: "flex-1 px-16 justify-start pt-44 mb-4",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView: ""
+    },
+    group4: {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center ",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center px-6 mb-6 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95,
+      bottomWrapper: "flex-1 px-16 justify-start pt-44 mb-4",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView: ""
+    },
+    group5: {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 px-6 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 justify-start pt-32 ",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView:""
+    },
+    group6: {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 px-6 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 justify-start pt-36 ",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView:""
+    },
+    group7: {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 px-6 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 justify-start pt-36 ",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView:""
+    },
+    group8: {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 px-10 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 justify-start pt-32 ",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView:""
+    },
+    group9 : {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 px-10 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 justify-start pt-44 ",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView:""
+    },
+    group10 : {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 px-10 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 justify-start pt-40 ",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView:""
+    },
+    unknown : {
+      subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+      subscribeBannerText: "text-white text-sm",
+      signinButtonText : "text-lg text-[#4051FF]",
+      webPurchaseButtonText : "text-lg text-black",
+      continueButtonText : "text-white text-lg font-medium",
+      continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
+
+      screen: "flex-1 bg-white",
+      mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
+      contentWrapper: "w-full",
+      headerText: "text-4xl text-center mb-6 font-bold text-black",
+      videoHeight: height * 0.5, 
+      videoWidth: width * 0.95, 
+      bottomWrapper: "flex-1 px-16 justify-start pt-40 ",
+      signInContainer: "mt-2 flex-row justify-center font-bold items-center",
+      videoView:""
+    }
+  }
+
+
+
+  return deviceGroupStyles[deviceGroup];
+} 

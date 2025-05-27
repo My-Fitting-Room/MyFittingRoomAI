@@ -4,9 +4,9 @@ import { FONTS } from "../constants/fonts";
 import { supabase } from "../App";
 import InAppReview from "react-native-in-app-review";
 import Slider from "@react-native-community/slider";
+import { getStyles } from "../stylesheets/onboardingScreen";
 
 export default function OnboardingScreen({ navigation }) {
-  const { width } = Dimensions.get("window");
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [step, setStep] = useState(0);
@@ -16,73 +16,103 @@ export default function OnboardingScreen({ navigation }) {
   const [returnHesitation, setReturnHesitation] = useState(null);
   const [sliderValue, setSliderValue] = useState(50);
 
-  const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
-  
-  const deviceStyles = {
-    small: {
-      container: "pt-24 px-8",
-      mainHeader: "text-2xl text-center mb-3 mt-5 font-semibold text-black",
-      step0MainHeader : "text-2xl text-center mb-3 mt-5 font-semibold text-black",
-      subHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      buttonText: "text-base font-medium",
-      selectbuttonText: "text-base font-medium",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-6 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-xl text-black font-medium mb-8",
-      stepContainer: "mt-12",
-      smallerText: "text-sm",
-      backButton: "absolute top-28 left-5 w-8 h-8 items-center justify-center z-10",
-      step0ButtonsGroup: "flex-2 px-8 pb-12",
-      step1ButtonsGroup: "flex-2 px-8 pb-36 pt-6",
-      step3ButtonsGroup: "flex-2 px-8 pb-40 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-40 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButtonText:"text-white text-base font-medium "
-    },
-    regular: {
-      container: "pt-28 px-12",
-      mainHeader: "text-[28px] text-center mb-3 mt-4 font-semibold text-black",
-      step0MainHeader: "text-[28px] text-center mb-3 mt-4 font-semibold text-black",
-      subHeader: "text-base text-center mb-5 mt-2 text-gray-600 leading-[22px] px-2",
-      buttonText: "text-base font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-20",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
-      stepContainer: "mt-14",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      step0ButtonsGroup: "flex-2 px-8 pb-44",
-      step1ButtonsGroup: "flex-2 px-8 pb-56 pt-6",
-      step3ButtonsGroup: "flex-2 px-8 pb-72 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-60 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-48",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-    },
-    proMax: {
-      container: "pt-32 px-16",
-      mainHeader: "text-[28px] text-center mb-3  font-semibold text-black",
-      step0MainHeader: "text-[28px] text-center mb-3  font-semibold text-black",
-      subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      buttonText: "text-lg font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
-      stepContainer: "mt-16",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      step0ButtonsGroup: "flex-2 px-8 pb-48",
-      step1ButtonsGroup: "flex-2 px-8 pb-64 pt-6",
-      step3ButtonsGroup: "flex-2 px-8 pb-80 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-60 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-52",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-    }
-  };
+  const { width, height } = Dimensions.get("window");
 
-  const styles = deviceStyles[deviceType];
+  const styles = getStyles(width, height);
+
+  console.log(styles)
+
+  //const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
+ 
+
+
+
+  // console.log(deviceType)
+  // const deviceStyles = {
+  //   small: {
+  //     container: "pt-16 px-8",
+  //     step0MainHeader : "text-2xl text-center mb-3 mt-2 font-normal text-black",
+  //     step1MainHeader : "text-2xl text-center mb-3 mt-8 font-normal text-black",
+  //     step2MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
+  //     step3MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
+  //     step4MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
+  //     subHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
+  //     buttonText: "text-base font-medium",
+  //     selectbuttonText: "text-base font-medium",
+  //     selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-6 bg-black active:bg-neutral-800 active:scale-[0.98]",
+  //     sliderContainer: "w-full items-center mb-24",
+  //     sliderValueText: "text-xl text-black font-medium mb-8",
+  //     stepContainer: "mt-12",
+  //     smallerText: "text-sm",
+  //     backButton: "absolute top-20 left-5 w-8 h-8 items-center justify-center z-10",
+  //     step0ButtonsGroup: "flex-2 px-8 pb-16",
+  //     step1ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
+  //     step3ButtonsGroup: "flex-2 px-8 pb-28 pt-10",
+  //     step4ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
+  //     sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
+  //     continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
+  //     continueButtonText:"text-white text-base font-medium ",
+  //     reviewImage:"w-64 h-48 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center ",
+  //     topBannerText: "text-black text-sm mb-2 font-normal",
+  //     topBanner: "absolute w-full bg-white text-black pt-10  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]"
+  //   },
+  //   regular: {
+  //     container: "pt-28 px-12",
+  //     step0MainHeader: "text-[28px] text-center mb-3 mt-4 font-normal text-black",
+  //     step1MainHeader: "text-[28px] text-center mb-3 mt-4 font-normal text-black",
+  //     step2MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
+  //     step3MainHeader: "text-[28px] text-center mb-3 mt-4 font-normal text-black",
+  //     step4MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
+  //     subHeader: "text-base text-center mb-5 mt-2 text-gray-600 leading-[22px] px-2",
+  //     buttonText: "text-base font-medium ",
+  //     selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
+  //     sliderContainer: "w-full items-center mb-20",
+  //     sliderValueText: "text-2xl text-black font-medium mb-10",
+  //     stepContainer: "mt-14",
+  //     smallerText: "text-base",
+  //     backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
+  //     step0ButtonsGroup: "flex-2 px-8 pb-44",
+  //     step1ButtonsGroup: "flex-2 px-8 pb-56 pt-6",
+  //     step3ButtonsGroup: "flex-2 px-8 pb-72 pt-6",
+  //     step4ButtonsGroup: "flex-2 px-8 pb-60 pt-6",
+  //     sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-48",
+  //     continueButtonText:"text-white text-base font-medium",
+  //     continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
+  //     reviewImage:"w-32 h-32 self-center mb-8",
+  //     topBannerText: "text-black text-sm mt-2 font-normal",
+  //     topBanner: "absolute w-full bg-white text-black pt-14 pb-3 items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]"
+
+  //   },
+  //   proMax: {
+  //     container: "pt-32 px-16",
+  //     step0MainHeader: "text-[28px] text-center mb-3  font-normal text-black",
+  //     step1MainHeader: "text-[28px] text-center mb-3  font-normal text-black",
+  //     step2MainHeader: "text-[28px] text-center mb-3 mt-8 font-normal text-black",
+  //     step3MainHeader: "text-[28px] text-center mb-3  font-normal text-black",
+  //     step4MainHeader: "text-[28px] text-center mb-3 mt-8 font-normal text-black",
+  //     subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+  //     buttonText: "text-lg font-medium ",
+  //     selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
+  //     sliderContainer: "w-full items-center mb-32",
+  //     sliderValueText: "text-2xl text-black font-medium mb-10",
+  //     stepContainer: "mt-16",
+  //     smallerText: "text-base",
+  //     backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
+  //     step0ButtonsGroup: "flex-2 px-8 pb-48",
+  //     step1ButtonsGroup: "flex-2 px-8 pb-64 pt-6",
+  //     step3ButtonsGroup: "flex-2 px-8 pb-48 pt-10",
+  //     step4ButtonsGroup: "flex-2 px-8 pb-72 pt-6",
+  //     sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-52",
+  //     continueButtonText:"text-white text-base font-medium",
+  //     continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
+  //     reviewImage:" w-96 h-72 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center   ",
+  //     topBannerText: "text-black text-sm mt-2 font-normal",
+  //     topBanner: "absolute w-full bg-white text-black pt-14 pb-3 items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]"
+
+  //   }
+  // };
+
+  //const styles = deviceStyles[deviceType];
 
   const handleSkipToFittingRoom = async () => {
     if (profile?.id) {
@@ -218,9 +248,9 @@ export default function OnboardingScreen({ navigation }) {
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
-        <ActivityIndicator size="large" color="#4052FF" />
+        <ActivityIndicator size={"large"} color="black" />
         <Text 
-          className="mt-3 text-base text-[#4052FF]"
+          className="mt-3 text-2xl text-black"
           style={{ fontFamily: FONTS.SATOSHI }}
         >
           Loading...
@@ -237,7 +267,7 @@ export default function OnboardingScreen({ navigation }) {
       className={styles.backButton}
         onPress={() => handleBackNavigation(currentStep - 1)}
       >
-        <Text className="text-2xl font-light text-black">←</Text>
+        <Text className={styles.backButtonText}>←</Text>
       </TouchableOpacity>
     );
   };
@@ -246,13 +276,13 @@ export default function OnboardingScreen({ navigation }) {
     <View className="flex-1 bg-white">
       {/* Skip to Fitting Room Banner */}
       <TouchableOpacity 
-        className="absolute w-full bg-black pt-14 pb-3 items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]"
+        className={styles.topBanner}
         onPress={handleSkipToFittingRoom}
         activeOpacity={0.9}
         style={{ elevation: 5 }}
       >
         <Text 
-          className="text-white text-sm font-normal"
+          className={styles.topBannerText}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
           Skip To Your Fitting Room
@@ -261,7 +291,7 @@ export default function OnboardingScreen({ navigation }) {
 
       {(step === 0) && (
         <View className="flex-1">
-          <View className={`flex-1 items-center ${styles.container}`}>
+          <View className={styles.container}>
             {renderBackButton(step)}
             <View className={styles.stepContainer}>
               <Text 
@@ -275,10 +305,10 @@ export default function OnboardingScreen({ navigation }) {
 
           <View className={styles.step0ButtonsGroup}>
             <Pressable 
-              className="flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]"
+              className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "instagram", 1, setReferralSource)}
             >
-              <Image source={require("../assets/InstagramLogo.png")} className="w-9 h-9 ml-5 mr-3" />
+              <Image source={require("../assets/InstagramLogo.png")} className={styles.socialLogo} />
               <Text 
                 className={`flex-1 text-center text-white text-lg font-medium mr-12 ${referralSource === "instagram" ? "text-[#7A8BFF] font-bold" : ""}`}
                 style={{ fontFamily: FONTS.SATOSHI }}
@@ -288,10 +318,10 @@ export default function OnboardingScreen({ navigation }) {
             </Pressable>
 
             <Pressable 
-              className="flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]"
+              className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "facebook", 1, setReferralSource)}
             >
-              <Image source={require("../assets/FacebookLogo.png")} className="w-9 h-9 ml-5 mr-3" />
+              <Image source={require("../assets/FacebookLogo.png")} className={styles.socialLogo} />
               <Text 
                 className={`flex-1 text-center text-white text-lg font-medium mr-12 ${referralSource === "facebook" ? "text-[#7A8BFF] font-bold" : ""}`}
                 style={{ fontFamily: FONTS.SATOSHI }}
@@ -301,10 +331,10 @@ export default function OnboardingScreen({ navigation }) {
             </Pressable>
 
             <Pressable 
-              className="flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]"
+              className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "tiktok", 1, setReferralSource)}
             >
-              <Image source={require("../assets/TikTokLogo.png")} className="w-9 h-9 ml-5 mr-3" />
+              <Image source={require("../assets/TikTokLogo.png")} className={styles.socialLogo} />
               <Text 
                 className={`flex-1 text-center text-white text-lg font-medium mr-12 ${referralSource === "tiktok" ? "text-[#7A8BFF] font-bold" : ""}`}
                 style={{ fontFamily: FONTS.SATOSHI }}
@@ -314,10 +344,10 @@ export default function OnboardingScreen({ navigation }) {
             </Pressable>
 
             <Pressable 
-              className="flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]"
+              className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "youtube", 1, setReferralSource)}
             >
-              <Image source={require("../assets/YoutubeLogo.png")} className="w-9 h-9 ml-5 mr-3" />
+              <Image source={require("../assets/YoutubeLogo.png")} className={styles.socialLogo} />
               <Text 
                 className={`flex-1 text-center text-white text-lg font-medium mr-12 ${referralSource === "youtube" ? "text-[#7A8BFF] font-bold" : ""}`}
                 style={{ fontFamily: FONTS.SATOSHI }}
@@ -327,10 +357,10 @@ export default function OnboardingScreen({ navigation }) {
             </Pressable>
 
             <Pressable 
-              className="flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]"
+              className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "friends_or_family", 1, setReferralSource)}
             >
-              <Image source={require("../assets/PersonIcon.png")} className="w-9 h-9 ml-5 mr-3" />
+              <Image source={require("../assets/PersonIcon.png")} className={styles.socialLogo} />
               <Text 
                 className={`flex-1 text-center text-white text-lg font-medium mr-12 ${referralSource === "friends_or_family" ? "text-[#7A8BFF] font-bold" : ""}`}
                 style={{ fontFamily: FONTS.SATOSHI }}
@@ -344,11 +374,11 @@ export default function OnboardingScreen({ navigation }) {
 
       {(step === 1) && (
         <View className="flex-1">
-          <View className={`flex-1 items-center ${styles.container}`}>
+          <View className={styles.container}>
             {renderBackButton(step)}
             <View className={styles.stepContainer}>
               <Text 
-                className={styles.mainHeader}
+                className={styles.step1MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
                 How confident are you when shopping for clothes online?
@@ -404,11 +434,11 @@ export default function OnboardingScreen({ navigation }) {
 
       {(step === 2) && (
         <View className="flex-1">
-          <View className={`flex-1 items-center ${styles.container}`}>
+          <View className={styles.container}>
             {renderBackButton(step)}
             <View className={styles.stepContainer}>
               <Text 
-                className={styles.mainHeader}
+                className={styles.step2MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
                 How Often Do You Regret Clothing Purchases Online?
@@ -482,11 +512,12 @@ export default function OnboardingScreen({ navigation }) {
 
       {(step === 3) && (
         <View className="flex-1">
-          <View className={`flex-1 items-center ${styles.container}`}>
+          <View className={styles.container}>
             {renderBackButton(step)}
             <View className={styles.stepContainer}>
+
               <Text 
-                className={styles.mainHeader}
+                className={styles.step3MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
                 Please give us a rating
@@ -497,6 +528,8 @@ export default function OnboardingScreen({ navigation }) {
               >
                 Your feedback helps us improve!
               </Text>
+              <Image source={require("../assets/review.png")} className={styles.reviewImage} />
+
             </View>
           </View>
 
@@ -542,14 +575,14 @@ export default function OnboardingScreen({ navigation }) {
 
       {(step === 4) && (
         <View className="flex-1">
-          <View className={`flex-1 items-center ${styles.container}`}>
+          <View className={styles.container}>
             {renderBackButton(step)}
             <View className={styles.stepContainer}>
               <Text 
-                className={styles.mainHeader}
+                className={styles.step4MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
-                Have you ever kept an item of clothing you didn"t like just because returning it felt like too much of a hassle?
+                Have you ever kept an item of clothing you didn't like just because returning it felt like too much of a hassle?
               </Text>
               <Text 
                 className={styles.subHeader}

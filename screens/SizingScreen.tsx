@@ -17,6 +17,8 @@ import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
 import { FONTS } from "../constants/fonts";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
+import { getDropdownStyles } from "../stylesheets/dropdownSelect";
+import { getStyles } from "../stylesheets/sizingScreen";
 
 const CLOTHING_DATA = {
   "clothing_types": {
@@ -207,61 +209,63 @@ const CLOTHING_DATA = {
   }
 };
 
-const DropdownSelect = ({ label, placeholder, value, options, onChange, deviceType }) => {
+const DropdownSelect = ({ label, placeholder, value, options, onChange , width,height }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const styles = {
-    small: {
-      inputGroup: "mb-5",
-      label: " mb-1.5 text-gray-800",
-      dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
-      dropdownText: " text-gray-800",
-      dropdownPlaceholder: " text-gray-800",
-      modalOverlay: "flex-1 justify-center bg-black/50",
-      modalContent: "bg-white rounded-xl px-4 pb-4 mx-4 max-h-[70%]",
-      modalHeader: "flex-row justify-between items-center py-3 border-b border-gray-200",
-      modalTitle: "text-base font-semibold text-gray-800",
-      optionsContainer: "max-h-80",
-      optionItem: "py-3 border-b border-gray-200",
-      selectedOption: "bg-blue-50",
-      optionText: " text-gray-800",
-      selectedOptionText: "text-[#4052FF] font-medium"
-    },
-    regular: {
-      inputGroup: "mb-5",
-      label: "text-base mb-2 text-gray-800",
-      dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
-      dropdownText: " text-gray-800",
-      dropdownPlaceholder: " text-gray-800",
-      modalOverlay: "flex-1 justify-center bg-black/50",
-      modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
-      modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
-      modalTitle: "text-lg font-semibold text-gray-800",
-      optionsContainer: "max-h-80",
-      optionItem: "py-3.5 border-b border-gray-200",
-      selectedOption: "bg-blue-50",
-      optionText: " text-gray-800",
-      selectedOptionText: "text-[#4052FF] font-medium"
-    },
-    proMax: {
-      inputGroup: "mb-5",
-      label: "text-base mb-2 text-gray-800",
-      dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
-      dropdownText: " text-gray-800",
-      dropdownPlaceholder: " text-gray-800",
-      modalOverlay: "flex-1 justify-center bg-black/50",
-      modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
-      modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
-      modalTitle: "text-lg font-semibold text-gray-800",
-      optionsContainer: "max-h-96",
-      optionItem: "py-3.5 border-b border-gray-200",
-      selectedOption: "bg-blue-50",
-      optionText: " text-gray-800",
-      selectedOptionText: "text-[#4052FF] font-medium"
-    }
-  };
+  // const styles = {
+  //   small: {
+  //     inputGroup: "mb-5",
+  //     label: " mb-1.5 text-gray-800",
+  //     dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
+  //     dropdownText: " text-gray-800",
+  //     dropdownPlaceholder: " text-gray-800",
+  //     modalOverlay: "flex-1 justify-center bg-black/50",
+  //     modalContent: "bg-white rounded-xl px-4 pb-4 mx-4 max-h-[70%]",
+  //     modalHeader: "flex-row justify-between items-center py-3 border-b border-gray-200",
+  //     modalTitle: "text-base font-semibold text-gray-800",
+  //     optionsContainer: "max-h-80",
+  //     optionItem: "py-3 border-b border-gray-200",
+  //     selectedOption: "bg-blue-50",
+  //     optionText: " text-gray-800",
+  //     selectedOptionText: "text-[#4052FF] font-medium"
+  //   },
+  //   regular: {
+  //     inputGroup: "mb-5",
+  //     label: "text-base mb-2 text-gray-800",
+  //     dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
+  //     dropdownText: " text-gray-800",
+  //     dropdownPlaceholder: " text-gray-800",
+  //     modalOverlay: "flex-1 justify-center bg-black/50",
+  //     modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
+  //     modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
+  //     modalTitle: "text-lg font-semibold text-gray-800",
+  //     optionsContainer: "max-h-80",
+  //     optionItem: "py-3.5 border-b border-gray-200",
+  //     selectedOption: "bg-blue-50",
+  //     optionText: " text-gray-800",
+  //     selectedOptionText: "text-[#4052FF] font-medium"
+  //   },
+  //   proMax: {
+  //     inputGroup: "mb-5",
+  //     label: "text-base mb-2 text-gray-800",
+  //     dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
+  //     dropdownText: " text-gray-800",
+  //     dropdownPlaceholder: " text-gray-800",
+  //     modalOverlay: "flex-1 justify-center bg-black/50",
+  //     modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
+  //     modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
+  //     modalTitle: "text-lg font-semibold text-gray-800",
+  //     optionsContainer: "max-h-96",
+  //     optionItem: "py-3.5 border-b border-gray-200",
+  //     selectedOption: "bg-blue-50",
+  //     optionText: " text-gray-800",
+  //     selectedOptionText: "text-[#4052FF] font-medium"
+  //   }
+  // };
 
-  const style = styles[deviceType];
+  // const style = styles[deviceType];
+
+  const style = getDropdownStyles(width,height)
 
   return (
     <View className={style.inputGroup}>
@@ -338,85 +342,87 @@ export default function SizingScreen({ navigation }) {
   const [optionalMeasurements, setOptionalMeasurements] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
-  const { width } = Dimensions.get("window");
-  const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
+  const { width, height } = Dimensions.get("window");
+  // const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
 
-  const deviceStyles = {
-    small: {
-      container: "flex-1 bg-gray-100 ",
-      loadingContainer: "flex-1 justify-center items-center bg-white",
-      loadingText: "mt-2.5 text-sm text-[#4052FF]",
-      content: "flex-1 pt-20",
-      contentContainer: "px-3",
-      card: "bg-white rounded-xl p-4 my-2 shadow",
-      formContainer: "w-full ",
-      heading: "text-[20px] font-medium mb-6",
-      inputGroup: "mb-5",
-      label: " mb-1.5 text-gray-800",
-      unitText: "text-xs text-gray-500",
-      input: "border border-gray-300 rounded-lg p-3  bg-white text-gray-800",
-      measurementsSection: "mt-2 mb-2",
-      sectionTitle: "text-base font-normal mb-3 text-gray-800",
-      button: "bg-[#6666FF] rounded-[10px] px-3 py-4 items-center mt-4",
-      buttonText: "text-white  font-normal",
-      resultContainer: "p-4",
-      resultHeader: "flex-row justify-between items-center mb-5",
-      resultTitle: "text-xl font-normal text-gray-800",
-      resultContent: "items-center",
-      sizeText: "text-lg font-normal text-gray-800",
-      bottomPadding: "h-28"
-    },
-    regular: {
-      container: "flex-1 bg-gray-100",
-      loadingContainer: "flex-1 justify-center items-center bg-white",
-      loadingText: "mt-2.5 text-base text-[#4052FF]",
-      content: "flex-1 pt-20",
-      contentContainer: "px-4",
-      card: "bg-white rounded-xl p-4 my-2.5 shadow",
-      formContainer: "w-full ",
-      heading: "text-[20px] font-medium mb-4",
-      inputGroup: "mb-5",
-      label: "text-base mb-2 text-gray-800",
-      unitText: "text-sm text-gray-500",
-      input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
-      measurementsSection: "mt-2 mb-2",
-      sectionTitle: "text-lg font-normal mb-3 text-gray-800",
-      button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
-      buttonText: "text-white  font-normal",
-      resultContainer: "p-4",
-      resultHeader: "flex-row justify-between items-center mb-6",
-      resultTitle: "text-2xl font-normal text-gray-800",
-      resultContent: "items-center",
-      sizeText: "text-xl font-normal text-gray-800",
-      bottomPadding: "h-28"
-    },
-    proMax: {
-      container: "flex-1 bg-gray-100",
-      loadingContainer: "flex-1 justify-center items-center bg-white",
-      loadingText: "mt-2.5 text-base text-[#4052FF]",
-      content: "flex-1 pt-20",
-      contentContainer: "px-4",
-      card: "bg-white rounded-xl p-4 my-2.5 shadow",
-      formContainer: "w-full",
-      heading: "text-[20px] font-medium mb-4",
-      inputGroup: "mb-5",
-      label: "text-base mb-2 text-gray-800",
-      unitText: "text-sm text-gray-500",
-      input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
-      measurementsSection: "mt-2 mb-2",
-      sectionTitle: "text-lg font-normal mb-3 text-gray-800",
-      button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
-      buttonText: "text-white  font-normal",
-      resultContainer: "p-4",
-      resultHeader: "flex-row justify-between items-center mb-6",
-      resultTitle: "text-2xl font-normal text-gray-800",
-      resultContent: "items-center",
-      sizeText: "text-xl font-normal text-gray-800",
-      bottomPadding: "h-28"
-    }
-  };
+  // const deviceStyles = {
+  //   small: {
+  //     container: "flex-1 bg-gray-100 ",
+  //     loadingContainer: "flex-1 justify-center items-center bg-white",
+  //     loadingText: "mt-2.5 text-sm text-black",
+  //     content: "flex-1 pt-20",
+  //     contentContainer: "px-3",
+  //     card: "bg-white rounded-xl p-4 my-2 shadow",
+  //     formContainer: "w-full ",
+  //     heading: "text-[20px] font-medium mb-6",
+  //     inputGroup: "mb-5",
+  //     label: " mb-1.5 text-gray-800",
+  //     unitText: "text-xs text-gray-500",
+  //     input: "border border-gray-300 rounded-lg p-3  bg-white text-gray-800",
+  //     measurementsSection: "mt-2 mb-2",
+  //     sectionTitle: "text-base font-normal mb-3 text-gray-800",
+  //     button: "bg-[#6666FF] rounded-[10px] px-3 py-4 items-center mt-4",
+  //     buttonText: "text-white  font-normal",
+  //     resultContainer: "p-4",
+  //     resultHeader: "flex-row justify-between items-center mb-5",
+  //     resultTitle: "text-xl font-normal text-gray-800",
+  //     resultContent: "items-center",
+  //     sizeText: "text-lg font-normal text-gray-800",
+  //     bottomPadding: "h-28"
+  //   },
+  //   regular: {
+  //     container: "flex-1 bg-gray-100",
+  //     loadingContainer: "flex-1 justify-center items-center bg-white",
+  //     loadingText: "mt-2.5 text-2xl text-black",
+  //     content: "flex-1 pt-20",
+  //     contentContainer: "px-4",
+  //     card: "bg-white rounded-xl p-4 my-2.5 shadow",
+  //     formContainer: "w-full mt-3 ",
+  //     heading: "text-[20px] font-medium mb-4",
+  //     inputGroup: "mb-5",
+  //     label: "text-base mb-2 text-gray-800",
+  //     unitText: "text-sm text-gray-500",
+  //     input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
+  //     measurementsSection: "mt-2 mb-2",
+  //     sectionTitle: "text-lg font-normal mb-3 text-gray-800",
+  //     button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
+  //     buttonText: "text-white  font-normal",
+  //     resultContainer: "p-4",
+  //     resultHeader: "flex-row justify-between items-center mb-6",
+  //     resultTitle: "text-2xl font-normal text-gray-800",
+  //     resultContent: "items-center",
+  //     sizeText: "text-xl font-normal text-gray-800",
+  //     bottomPadding: "h-28"
+  //   },
+  //   proMax: {
+  //     container: "flex-1 bg-gray-100",
+  //     loadingContainer: "flex-1 justify-center items-center bg-white",
+  //     loadingText: "mt-2.5 text-2xl text-black",
+  //     content: "flex-1 pt-20",
+  //     contentContainer: "px-4",
+  //     card: "bg-white rounded-xl p-4 my-2.5 shadow",
+  //     formContainer: "w-full",
+  //     heading: "text-[20px] font-medium mb-4",
+  //     inputGroup: "mb-5",
+  //     label: "text-base mb-2 text-gray-800",
+  //     unitText: "text-sm text-gray-500",
+  //     input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
+  //     measurementsSection: "mt-2 mb-2",
+  //     sectionTitle: "text-lg font-normal mb-3 text-gray-800",
+  //     button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
+  //     buttonText: "text-white  font-normal",
+  //     resultContainer: "p-4",
+  //     resultHeader: "flex-row justify-between items-center mb-6",
+  //     resultTitle: "text-2xl font-normal text-gray-800",
+  //     resultContent: "items-center",
+  //     sizeText: "text-xl font-normal text-gray-800",
+  //     bottomPadding: "h-28"
+  //   }
+  // };
 
-  const styles = deviceStyles[deviceType];
+  // const styles = deviceStyles[deviceType];
+
+  const styles = getStyles(width,height)
 
   const [formData, setFormData] = useState({
     brand: "",
@@ -585,7 +591,7 @@ export default function SizingScreen({ navigation }) {
   if (loading) {
     return (
       <View className={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4052FF" />
+         <ActivityIndicator size={"large"} color="black" />
         <Text 
           className={styles.loadingText}
           style={{ fontFamily: FONTS.SATOSHI }}
@@ -631,7 +637,9 @@ export default function SizingScreen({ navigation }) {
           label: category.charAt(0).toUpperCase() + category.slice(1)
         }))}
         onChange={handleCategoryChange}
-        deviceType={deviceType}
+        width={width}
+        height={height}
+
       />
 
       {selectedCategory ? (
@@ -644,7 +652,8 @@ export default function SizingScreen({ navigation }) {
             label: type.charAt(0).toUpperCase() + type.slice(1).replace("_", " ")
           }))}
           onChange={handleClothingTypeChange}
-          deviceType={deviceType}
+          width={width}
+          height={height}
         />
       ) : null}
 
@@ -720,7 +729,7 @@ export default function SizingScreen({ navigation }) {
         disabled={submitting}
       >
         {submitting ? (
-          <ActivityIndicator size="small" color="#FFFFFF" />
+          <ActivityIndicator size="small" color="black" />
         ) : (
           <Text 
             className={styles.buttonText}
@@ -763,7 +772,7 @@ export default function SizingScreen({ navigation }) {
       <HeaderNav navigation={navigation} />
       <ScrollView
         className={styles.content}
-        contentContainerStyle={{ paddingHorizontal: deviceType === "small" ? 15 : 15 }}
+        contentContainerStyle={{ paddingHorizontal:  15 }}
         showsVerticalScrollIndicator={false}
       >
         <View 
