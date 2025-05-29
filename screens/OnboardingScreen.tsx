@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, Alert, Image, Pressable, Linking, ActivityIndicator, Dimensions } from "react-native";
+import { View, TouchableOpacity, Text, Alert, Image, Pressable, ActivityIndicator, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import { FONTS } from "../constants/fonts";
 import { supabase } from "../App";
@@ -19,100 +19,6 @@ export default function OnboardingScreen({ navigation }) {
   const { width, height } = Dimensions.get("window");
 
   const styles = getStyles(width, height);
-
-  console.log(styles)
-
-  //const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
- 
-
-
-
-  // console.log(deviceType)
-  // const deviceStyles = {
-  //   small: {
-  //     container: "pt-16 px-8",
-  //     step0MainHeader : "text-2xl text-center mb-3 mt-2 font-normal text-black",
-  //     step1MainHeader : "text-2xl text-center mb-3 mt-8 font-normal text-black",
-  //     step2MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-  //     step3MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
-  //     step4MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-  //     subHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-  //     buttonText: "text-base font-medium",
-  //     selectbuttonText: "text-base font-medium",
-  //     selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-6 bg-black active:bg-neutral-800 active:scale-[0.98]",
-  //     sliderContainer: "w-full items-center mb-24",
-  //     sliderValueText: "text-xl text-black font-medium mb-8",
-  //     stepContainer: "mt-12",
-  //     smallerText: "text-sm",
-  //     backButton: "absolute top-20 left-5 w-8 h-8 items-center justify-center z-10",
-  //     step0ButtonsGroup: "flex-2 px-8 pb-16",
-  //     step1ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-  //     step3ButtonsGroup: "flex-2 px-8 pb-28 pt-10",
-  //     step4ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-  //     sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-  //     continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-  //     continueButtonText:"text-white text-base font-medium ",
-  //     reviewImage:"w-64 h-48 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center ",
-  //     topBannerText: "text-black text-sm mb-2 font-normal",
-  //     topBanner: "absolute w-full bg-white text-black pt-10  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]"
-  //   },
-  //   regular: {
-  //     container: "pt-28 px-12",
-  //     step0MainHeader: "text-[28px] text-center mb-3 mt-4 font-normal text-black",
-  //     step1MainHeader: "text-[28px] text-center mb-3 mt-4 font-normal text-black",
-  //     step2MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
-  //     step3MainHeader: "text-[28px] text-center mb-3 mt-4 font-normal text-black",
-  //     step4MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
-  //     subHeader: "text-base text-center mb-5 mt-2 text-gray-600 leading-[22px] px-2",
-  //     buttonText: "text-base font-medium ",
-  //     selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-  //     sliderContainer: "w-full items-center mb-20",
-  //     sliderValueText: "text-2xl text-black font-medium mb-10",
-  //     stepContainer: "mt-14",
-  //     smallerText: "text-base",
-  //     backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-  //     step0ButtonsGroup: "flex-2 px-8 pb-44",
-  //     step1ButtonsGroup: "flex-2 px-8 pb-56 pt-6",
-  //     step3ButtonsGroup: "flex-2 px-8 pb-72 pt-6",
-  //     step4ButtonsGroup: "flex-2 px-8 pb-60 pt-6",
-  //     sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-48",
-  //     continueButtonText:"text-white text-base font-medium",
-  //     continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-  //     reviewImage:"w-32 h-32 self-center mb-8",
-  //     topBannerText: "text-black text-sm mt-2 font-normal",
-  //     topBanner: "absolute w-full bg-white text-black pt-14 pb-3 items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]"
-
-  //   },
-  //   proMax: {
-  //     container: "pt-32 px-16",
-  //     step0MainHeader: "text-[28px] text-center mb-3  font-normal text-black",
-  //     step1MainHeader: "text-[28px] text-center mb-3  font-normal text-black",
-  //     step2MainHeader: "text-[28px] text-center mb-3 mt-8 font-normal text-black",
-  //     step3MainHeader: "text-[28px] text-center mb-3  font-normal text-black",
-  //     step4MainHeader: "text-[28px] text-center mb-3 mt-8 font-normal text-black",
-  //     subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-  //     buttonText: "text-lg font-medium ",
-  //     selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-  //     sliderContainer: "w-full items-center mb-32",
-  //     sliderValueText: "text-2xl text-black font-medium mb-10",
-  //     stepContainer: "mt-16",
-  //     smallerText: "text-base",
-  //     backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-  //     step0ButtonsGroup: "flex-2 px-8 pb-48",
-  //     step1ButtonsGroup: "flex-2 px-8 pb-64 pt-6",
-  //     step3ButtonsGroup: "flex-2 px-8 pb-48 pt-10",
-  //     step4ButtonsGroup: "flex-2 px-8 pb-72 pt-6",
-  //     sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-52",
-  //     continueButtonText:"text-white text-base font-medium",
-  //     continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-  //     reviewImage:" w-96 h-72 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center   ",
-  //     topBannerText: "text-black text-sm mt-2 font-normal",
-  //     topBanner: "absolute w-full bg-white text-black pt-14 pb-3 items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]"
-
-  //   }
-  // };
-
-  //const styles = deviceStyles[deviceType];
 
   const handleSkipToFittingRoom = async () => {
     if (profile?.id) {
@@ -274,7 +180,6 @@ export default function OnboardingScreen({ navigation }) {
   
   return (
     <View className="flex-1 bg-white">
-      {/* Skip to Fitting Room Banner */}
       <TouchableOpacity 
         className={styles.topBanner}
         onPress={handleSkipToFittingRoom}
@@ -302,7 +207,6 @@ export default function OnboardingScreen({ navigation }) {
               </Text>
             </View>
           </View>
-
           <View className={styles.step0ButtonsGroup}>
             <Pressable 
               className={styles.socialButton}
@@ -316,7 +220,6 @@ export default function OnboardingScreen({ navigation }) {
                 Instagram
               </Text>
             </Pressable>
-
             <Pressable 
               className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "facebook", 1, setReferralSource)}
@@ -329,7 +232,6 @@ export default function OnboardingScreen({ navigation }) {
                 Facebook
               </Text>
             </Pressable>
-
             <Pressable 
               className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "tiktok", 1, setReferralSource)}
@@ -342,7 +244,6 @@ export default function OnboardingScreen({ navigation }) {
                 TikTok
               </Text>
             </Pressable>
-
             <Pressable 
               className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "youtube", 1, setReferralSource)}
@@ -355,7 +256,6 @@ export default function OnboardingScreen({ navigation }) {
                 Youtube
               </Text>
             </Pressable>
-
             <Pressable 
               className={styles.socialButton}
               onPress={() => handleSelection("referral_source", "friends_or_family", 1, setReferralSource)}
@@ -391,7 +291,6 @@ export default function OnboardingScreen({ navigation }) {
               </Text>
             </View>
           </View>
-
           <View className={styles.step1ButtonsGroup}>
             <Pressable 
               className={styles.selectButton}
@@ -416,7 +315,6 @@ export default function OnboardingScreen({ navigation }) {
                 Somewhat confident - I guess and hope
               </Text>
             </Pressable>
-
             <Pressable 
               className={styles.selectButton}
               onPress={() => handleSelection("size_picking_confidence", "not", 2, setSizePickingConfidence)}
@@ -451,7 +349,6 @@ export default function OnboardingScreen({ navigation }) {
               </Text>
             </View>
           </View>
-
           <View className="flex-2 px-8 pb-12 items-center">
             <View className={styles.sliderContainer}>
               <Text 
@@ -464,7 +361,6 @@ export default function OnboardingScreen({ navigation }) {
                   sliderValue <= 50 ? "Sometimes" : 
                   sliderValue <= 75 ? "Often" : "Very Often"}
               </Text>
-              
               <View className="w-full h-30 p-4 bg-black rounded-[10px] justify-center mb-2">
                 <Slider
                   style={{ width: "100%", height: 40 }}
@@ -478,7 +374,6 @@ export default function OnboardingScreen({ navigation }) {
                   thumbTintColor="#FFFFFF"
                 />
               </View>
-              
               <View className="w-full flex-row justify-between px-1">
                 <Text 
                   className="text-gray-600 text-sm"
@@ -494,10 +389,9 @@ export default function OnboardingScreen({ navigation }) {
                 </Text>
               </View>
             </View>
-            
             <TouchableOpacity 
-                className={styles.sliderContinueButton}
-                onPress={() => handleSelection("clothing_purchase_regrets", sliderValue, 3, setClothingPurchaseRegrets)}
+              className={styles.sliderContinueButton}
+              onPress={() => handleSelection("clothing_purchase_regrets", sliderValue, 3, setClothingPurchaseRegrets)}
             >
               <Text 
                 className={styles.continueButtonText}
@@ -515,7 +409,6 @@ export default function OnboardingScreen({ navigation }) {
           <View className={styles.container}>
             {renderBackButton(step)}
             <View className={styles.stepContainer}>
-
               <Text 
                 className={styles.step3MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
@@ -529,10 +422,8 @@ export default function OnboardingScreen({ navigation }) {
                 Your feedback helps us improve!
               </Text>
               <Image source={require("../assets/review.png")} className={styles.reviewImage} />
-
             </View>
           </View>
-
           <View className={styles.step3ButtonsGroup}>
             <Pressable 
               className={styles.selectButton}
@@ -557,7 +448,6 @@ export default function OnboardingScreen({ navigation }) {
                 Rate & Continue
               </Text>
             </Pressable>
-            
             <Pressable 
               className={styles.selectButton}
               onPress={() => handleSelection(null, null, 4)}
@@ -592,7 +482,6 @@ export default function OnboardingScreen({ navigation }) {
               </Text>
             </View>
           </View>
-
           <View className={styles.step4ButtonsGroup}>
             <Pressable 
               className={styles.selectButton}
@@ -605,7 +494,6 @@ export default function OnboardingScreen({ navigation }) {
                 Yes
               </Text>
             </Pressable>
-            
             <Pressable 
               className={styles.selectButton}
               onPress={() => handleSelection("return_hesitation", "no", 5, setReturnHesitation)}
@@ -620,8 +508,6 @@ export default function OnboardingScreen({ navigation }) {
           </View>
         </View>
       )}
-
-      
     </View>
   );
 }

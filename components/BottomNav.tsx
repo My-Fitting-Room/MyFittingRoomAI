@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Platform } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import Feathericons from "react-native-vector-icons/Feather";
 import LinearGradient from "react-native-linear-gradient"; 
 import { styles } from "../stylesheets/bottomNav";
@@ -25,7 +25,6 @@ export default function BottomNav({ navigation, activeTab }) {
         style={styles.gradient}
         pointerEvents="none"
       />
-      
       <View style={styles.container}>
         <View style={styles.navbar}>
           <TouchableOpacity onPress={handleTryOnPress} style={styles.navItem}>
@@ -35,7 +34,6 @@ export default function BottomNav({ navigation, activeTab }) {
               color={activeTab === "TryOn" ? "#4052FF" : "#000"} 
             />
           </TouchableOpacity>
-          
           <TouchableOpacity onPress={handleSizingPress} style={styles.navItem}>
             <Feathericons 
               name="sliders" 
@@ -43,7 +41,6 @@ export default function BottomNav({ navigation, activeTab }) {
               color={activeTab === "Sizing" ? "#4052FF" : "#000"} 
             />
           </TouchableOpacity>
-          
           <TouchableOpacity onPress={handleSettingsPress} style={styles.navItem}>
             <Feathericons 
               name="settings" 
@@ -56,45 +53,3 @@ export default function BottomNav({ navigation, activeTab }) {
     </>
   );
 }
-
-// const styles = StyleSheet.create({
-//   gradient: {
-//     position: "absolute",
-//     bottom: 0,
-//     left: 0,
-//     right: 0,
-//     height: 130,
-//     zIndex: 1, 
-//   },
-//   container: {
-//     position: "absolute",
-//     bottom: 40,
-//     left: 0,
-//     right: 0,
-//     alignItems: "center",
-//     zIndex: 2, 
-//   },
-//   navbar: {
-//     flexDirection: "row",
-//     justifyContent: "space-between", 
-//     alignItems: "center",
-//     backgroundColor: "white",
-//     borderRadius: 30,
-//     paddingHorizontal: 25, 
-//     width: "50%", 
-//     height: 60,
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 3.84,
-//     elevation: 5,
-//   },
-//   navItem: {
-//     padding: 8, 
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });

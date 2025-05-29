@@ -211,61 +211,7 @@ const CLOTHING_DATA = {
 
 const DropdownSelect = ({ label, placeholder, value, options, onChange , width,height }) => {
   const [modalVisible, setModalVisible] = useState(false);
-
-  // const styles = {
-  //   small: {
-  //     inputGroup: "mb-5",
-  //     label: " mb-1.5 text-gray-800",
-  //     dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
-  //     dropdownText: " text-gray-800",
-  //     dropdownPlaceholder: " text-gray-800",
-  //     modalOverlay: "flex-1 justify-center bg-black/50",
-  //     modalContent: "bg-white rounded-xl px-4 pb-4 mx-4 max-h-[70%]",
-  //     modalHeader: "flex-row justify-between items-center py-3 border-b border-gray-200",
-  //     modalTitle: "text-base font-semibold text-gray-800",
-  //     optionsContainer: "max-h-80",
-  //     optionItem: "py-3 border-b border-gray-200",
-  //     selectedOption: "bg-blue-50",
-  //     optionText: " text-gray-800",
-  //     selectedOptionText: "text-[#4052FF] font-medium"
-  //   },
-  //   regular: {
-  //     inputGroup: "mb-5",
-  //     label: "text-base mb-2 text-gray-800",
-  //     dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
-  //     dropdownText: " text-gray-800",
-  //     dropdownPlaceholder: " text-gray-800",
-  //     modalOverlay: "flex-1 justify-center bg-black/50",
-  //     modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
-  //     modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
-  //     modalTitle: "text-lg font-semibold text-gray-800",
-  //     optionsContainer: "max-h-80",
-  //     optionItem: "py-3.5 border-b border-gray-200",
-  //     selectedOption: "bg-blue-50",
-  //     optionText: " text-gray-800",
-  //     selectedOptionText: "text-[#4052FF] font-medium"
-  //   },
-  //   proMax: {
-  //     inputGroup: "mb-5",
-  //     label: "text-base mb-2 text-gray-800",
-  //     dropdownButton: "flex-row justify-between items-center border border-gray-300 rounded-lg p-3 bg-white",
-  //     dropdownText: " text-gray-800",
-  //     dropdownPlaceholder: " text-gray-800",
-  //     modalOverlay: "flex-1 justify-center bg-black/50",
-  //     modalContent: "bg-white rounded-xl px-4 pb-5 mx-5 max-h-[60%]",
-  //     modalHeader: "flex-row justify-between items-center py-4 border-b border-gray-200",
-  //     modalTitle: "text-lg font-semibold text-gray-800",
-  //     optionsContainer: "max-h-96",
-  //     optionItem: "py-3.5 border-b border-gray-200",
-  //     selectedOption: "bg-blue-50",
-  //     optionText: " text-gray-800",
-  //     selectedOptionText: "text-[#4052FF] font-medium"
-  //   }
-  // };
-
-  // const style = styles[deviceType];
-
-  const style = getDropdownStyles(width,height)
+  const style = getDropdownStyles(width,height);
 
   return (
     <View className={style.inputGroup}>
@@ -282,7 +228,6 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange , width,h
         </Text>
         <Ionicons name="chevron-down" size={20} color="#777" />
       </TouchableOpacity>
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -343,86 +288,7 @@ export default function SizingScreen({ navigation }) {
   const [submitting, setSubmitting] = useState(false);
 
   const { width, height } = Dimensions.get("window");
-  // const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
-
-  // const deviceStyles = {
-  //   small: {
-  //     container: "flex-1 bg-gray-100 ",
-  //     loadingContainer: "flex-1 justify-center items-center bg-white",
-  //     loadingText: "mt-2.5 text-sm text-black",
-  //     content: "flex-1 pt-20",
-  //     contentContainer: "px-3",
-  //     card: "bg-white rounded-xl p-4 my-2 shadow",
-  //     formContainer: "w-full ",
-  //     heading: "text-[20px] font-medium mb-6",
-  //     inputGroup: "mb-5",
-  //     label: " mb-1.5 text-gray-800",
-  //     unitText: "text-xs text-gray-500",
-  //     input: "border border-gray-300 rounded-lg p-3  bg-white text-gray-800",
-  //     measurementsSection: "mt-2 mb-2",
-  //     sectionTitle: "text-base font-normal mb-3 text-gray-800",
-  //     button: "bg-[#6666FF] rounded-[10px] px-3 py-4 items-center mt-4",
-  //     buttonText: "text-white  font-normal",
-  //     resultContainer: "p-4",
-  //     resultHeader: "flex-row justify-between items-center mb-5",
-  //     resultTitle: "text-xl font-normal text-gray-800",
-  //     resultContent: "items-center",
-  //     sizeText: "text-lg font-normal text-gray-800",
-  //     bottomPadding: "h-28"
-  //   },
-  //   regular: {
-  //     container: "flex-1 bg-gray-100",
-  //     loadingContainer: "flex-1 justify-center items-center bg-white",
-  //     loadingText: "mt-2.5 text-2xl text-black",
-  //     content: "flex-1 pt-20",
-  //     contentContainer: "px-4",
-  //     card: "bg-white rounded-xl p-4 my-2.5 shadow",
-  //     formContainer: "w-full mt-3 ",
-  //     heading: "text-[20px] font-medium mb-4",
-  //     inputGroup: "mb-5",
-  //     label: "text-base mb-2 text-gray-800",
-  //     unitText: "text-sm text-gray-500",
-  //     input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
-  //     measurementsSection: "mt-2 mb-2",
-  //     sectionTitle: "text-lg font-normal mb-3 text-gray-800",
-  //     button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
-  //     buttonText: "text-white  font-normal",
-  //     resultContainer: "p-4",
-  //     resultHeader: "flex-row justify-between items-center mb-6",
-  //     resultTitle: "text-2xl font-normal text-gray-800",
-  //     resultContent: "items-center",
-  //     sizeText: "text-xl font-normal text-gray-800",
-  //     bottomPadding: "h-28"
-  //   },
-  //   proMax: {
-  //     container: "flex-1 bg-gray-100",
-  //     loadingContainer: "flex-1 justify-center items-center bg-white",
-  //     loadingText: "mt-2.5 text-2xl text-black",
-  //     content: "flex-1 pt-20",
-  //     contentContainer: "px-4",
-  //     card: "bg-white rounded-xl p-4 my-2.5 shadow",
-  //     formContainer: "w-full",
-  //     heading: "text-[20px] font-medium mb-4",
-  //     inputGroup: "mb-5",
-  //     label: "text-base mb-2 text-gray-800",
-  //     unitText: "text-sm text-gray-500",
-  //     input: "border border-gray-300 rounded-lg p-4  bg-white text-gray-800",
-  //     measurementsSection: "mt-2 mb-2",
-  //     sectionTitle: "text-lg font-normal mb-3 text-gray-800",
-  //     button: "bg-[#6666FF] rounded-[10px] p-4 items-center mt-5",
-  //     buttonText: "text-white  font-normal",
-  //     resultContainer: "p-4",
-  //     resultHeader: "flex-row justify-between items-center mb-6",
-  //     resultTitle: "text-2xl font-normal text-gray-800",
-  //     resultContent: "items-center",
-  //     sizeText: "text-xl font-normal text-gray-800",
-  //     bottomPadding: "h-28"
-  //   }
-  // };
-
-  // const styles = deviceStyles[deviceType];
-
-  const styles = getStyles(width,height)
+  const styles = getStyles(width,height);
 
   const [formData, setFormData] = useState({
     brand: "",
@@ -610,7 +476,6 @@ export default function SizingScreen({ navigation }) {
       >
         Find My Size
       </Text>
-
       <View className={styles.inputGroup}>
         <Text 
           className={styles.label}
@@ -627,7 +492,6 @@ export default function SizingScreen({ navigation }) {
           style={{ fontFamily: FONTS.SATOSHI }}
         />
       </View>
-
       <DropdownSelect
         label="Category"
         placeholder="Select a category"
@@ -639,9 +503,7 @@ export default function SizingScreen({ navigation }) {
         onChange={handleCategoryChange}
         width={width}
         height={height}
-
       />
-
       {selectedCategory ? (
         <DropdownSelect
           label="Clothing Type"

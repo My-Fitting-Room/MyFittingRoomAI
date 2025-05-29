@@ -2,13 +2,11 @@ import { View, TouchableOpacity, Text, Pressable, Linking, Dimensions } from "re
 import React from "react";
 import { FONTS } from "../constants/fonts";
 import Video from "react-native-video";
-import { getDeviceGroup } from "../utils/device";
 import { getStyles } from "../stylesheets/firstScreen";
 
 export default function FirstScreen({ navigation }) {
   const { width, height } = Dimensions.get("window");
-  console.log(width, height)
-  const styles = getStyles(width,height)
+  const styles = getStyles(width,height);
 
   const handleSubscribe = () => {
     Linking.openURL("http://eepurl.com/i5TN6-/");
@@ -23,7 +21,7 @@ export default function FirstScreen({ navigation }) {
   };
 
   return (
-    <View className="flex-1 bg-white" >
+    <View className="flex-1 bg-white">
       <TouchableOpacity 
         className={styles.subscribeBanner}        
         style={{ elevation: 5, zIndex: 10 }}
@@ -47,7 +45,6 @@ export default function FirstScreen({ navigation }) {
             Try-On Clothes From Your Phone.
           </Text>
          
-          
           <View className={`items-center justify-center ${styles.videoView}`}>
             <Video
               source={require("../assets/firstscreen.mp4")}

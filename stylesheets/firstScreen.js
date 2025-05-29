@@ -3,7 +3,6 @@ import { getDeviceGroup } from "../utils/device";
 export const getStyles = (width,height) => {
   const deviceGroup = getDeviceGroup(width,height);
 
-  console.log(deviceGroup)
   const deviceGroupStyles = {
     group1: {
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
@@ -46,7 +45,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center ",
       contentWrapper: "w-full",
@@ -64,7 +62,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center ",
       contentWrapper: "w-full",
@@ -82,7 +79,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
       contentWrapper: "w-full",
@@ -100,7 +96,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
       contentWrapper: "w-full",
@@ -118,7 +113,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
       contentWrapper: "w-full",
@@ -136,7 +130,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
       contentWrapper: "w-full",
@@ -154,7 +147,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
       contentWrapper: "w-full",
@@ -172,7 +164,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
       contentWrapper: "w-full",
@@ -190,7 +181,6 @@ export const getStyles = (width,height) => {
       webPurchaseButtonText : "text-lg text-black",
       continueButtonText : "text-white text-lg font-medium",
       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-
       screen: "flex-1 bg-white",
       mainWrapper: "flex-[2] px-12 pt-60 items-center justify-center",
       contentWrapper: "w-full",
@@ -203,7 +193,5 @@ export const getStyles = (width,height) => {
     }
   }
 
-
-
   return deviceGroupStyles[deviceGroup];
-} 
+}

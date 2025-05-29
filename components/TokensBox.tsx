@@ -1,7 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { FONTS } from "../constants/fonts";
-
+import { View, Text } from "react-native";
 import { styles } from "../stylesheets/tokensBox";
 
 const TokensBox = ({ tokensUsed, tokensTotal,plan }) => {
@@ -29,34 +27,6 @@ const TokensBox = ({ tokensUsed, tokensTotal,plan }) => {
   } else {
     return <></>
   }
- 
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     width: "100%",
-//     alignItems: "center",
-//     marginVertical: 10,
-//   },
-//   contentContainer: {
-//     paddingHorizontal: 10,
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   tokenText: {
-//     fontSize: 16,
-//     fontWeight: "500",
-//     color: "#666666",
-//     textAlign: "center",
-//     fontFamily: FONTS.SATOSHI,
-//     marginBottom:6
-//   },
-//   divider: {
-//     height: 1,
-//     backgroundColor: "#e0e0e0",
-//     marginTop: 16,
-//     width: "100%",
-//   },
-// });
 
 export default TokensBox;

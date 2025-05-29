@@ -1,222 +1,13 @@
-// import { getDeviceGroup } from "../utils/device";
-
-// export const getStyles = (width,height) => {
-//   const deviceGroup = getDeviceGroup(width,height);
-
-//   console.log(deviceGroup)
-//   const deviceGroupStyles = {
-//     group1: {
-//       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-//       subscribeBannerText: "text-white text-sm",
-//       signinButtonText : "text-lg text-[#4051FF]",
-//       webPurchaseButtonText : "text-lg text-black",
-//       continueButtonText : "text-white text-lg font-medium",
-//       continueButton : "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
-//       screen: "flex-1 bg-white",
-//       mainWrapper: "flex-[2] px-10 pt-48 items-center justify-center pb-0.5",
-//       contentWrapper: "w-full ",
-//       headerText: "text-3xl text-center mb-4 font-bold text-black",
-//       videoHeight: height * 0.45, 
-//       videoWidth: width * 0.95, 
-//       bottomWrapper: "flex-1 px-16 pt-16  justify-start ",
-//       signInContainer: " flex-row justify-center font-bold items-center",
-//       videoView : " "
-//     },
-//     group2: {
-//         container: "pt-28 px-10 justify-center",
-//         header: "text-3xl text-center mb-8 font-medium text-black",
-//         authButton: "py-3 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
-//         authButtonText: "text-base font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-base bg-gray-100",
-//         signInButton: "rounded-[10px] py-3 px-4 items-center mb-5",
-//         signInText: "text-base font-medium",
-//         signUpContainer: "mt-3",
-//         signUpText: "text-lg mr-1 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-5",
-//         forgotPasswordText: "text-sm",
-//         dividerText: "text-sm px-3",
-//         dividerMargin: "my-5",
-//     },
-//     group3: {
-//         container: "pt-28 px-10 justify-center",
-//         header: "text-3xl text-center mb-8 font-medium text-black",
-//         authButton: "py-3 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
-//         authButtonText: "text-base font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-base bg-gray-100",
-//         signInButton: "rounded-[10px] py-3 px-4 items-center mb-5",
-//         signInText: "text-base font-medium",
-//         signUpContainer: "mt-3",
-//         signUpText: "text-lg mr-1 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-5",
-//         forgotPasswordText: "text-sm",
-//         dividerText: "text-sm px-3",
-//         dividerMargin: "my-5",
-//     },
-//     group4: {
-//         container: "pt-44 px-14 justify-center",
-//         header: "text-4xl text-center mb-10 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-5",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-3",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-6",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-6",
-//     },
-//     group5: {
-//         container: "pt-44 px-16 justify-center",
-//         header: "text-4xl text-center mb-12 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-6",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-4",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-7",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-7",
-//     },
-//     group6: {
-//         container: "pt-44 px-16 justify-center",
-//         header: "text-4xl text-center mb-12 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-6",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-4",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-7",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-7",
-//     },
-//     group7: {
-//         container: "pt-44 px-16 justify-center",
-//         header: "text-4xl text-center mb-12 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-6",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-4",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-7",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-7",
-//     },
-//     group8: {
-//         container: "pt-44 px-16 justify-center",
-//         header: "text-4xl text-center mb-12 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-6",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-4",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-7",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-7",
-//     },
-//     group9 : {
-//         container: "pt-44 px-16 justify-center",
-//         header: "text-4xl text-center mb-12 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-6",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-4",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-7",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-7",
-//     },
-//     group10 : {
-//         container: "pt-44 px-16 justify-center",
-//         header: "text-4xl text-center mb-12 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-6",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-4",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-7",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-7",
-//     },
-//     unknown : {
-//         container: "pt-44 px-16 justify-center",
-//         header: "text-4xl text-center mb-12 font-medium text-black",
-//         authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
-//         authButtonText: "text-lg font-medium",
-//         icon: "w-5 h-5 mr-3",
-//         input: "rounded-xl p-4 mb-4 text-lg bg-gray-100",
-//         signInButton: "rounded-[10px] py-4 px-4 items-center mb-6",
-//         signInText: "text-lg font-medium",
-//         signUpContainer: "mt-4",
-//         signUpText: "text-lg mr-1.5 font-semibold",
-//         signUpLink: "text-lg font-semibold",
-//         forgotPassword: "mb-7",
-//         forgotPasswordText: "text-base",
-//         dividerText: "text-base px-3",
-//         dividerMargin: "my-7",
-//     }
-//   }
-
-
-
-//   return deviceGroupStyles[deviceGroup];
-// } 
-
-
-
-
 import { getDeviceGroup } from "../utils/device";
 
 export const getStyles = (width, height) => {
   const deviceGroup = getDeviceGroup(width, height);
 
-  console.log(deviceGroup);
-  
   const deviceGroupStyles = {
     group1: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main layout (keeping original signup-style properties for group1)
       mainWrapper: "flex-[2] px-10 pt-48 items-center justify-center pb-0.5",
       contentWrapper: "w-full",
       headerText: "text-3xl text-center mb-4 font-bold text-black",
@@ -225,8 +16,6 @@ export const getStyles = (width, height) => {
       bottomWrapper: "flex-1 px-16 pt-16 justify-start",
       signInContainer: "flex-row justify-center font-bold items-center",
       videoView: "",
-      
-      // Auth and input styles (signin-style for compatibility)
       container: "pt-28 px-10 justify-center",
       header: "text-3xl text-center mb-8 font-medium text-black",
       authButton: "py-3 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
@@ -255,20 +44,15 @@ export const getStyles = (width, height) => {
       signUpTextColor: "text-black",
       signUpLinkColor: "text-[#4051FF]",
       signUpLinkContainer: "flex-row justify-center",
-      
-      // Button text colors
       signinButtonText: "text-lg text-[#4051FF]",
       webPurchaseButtonText: "text-lg text-black",
       continueButtonText: "text-white text-lg font-medium",
       continueButton: "bg-black rounded-[10px] p-3 mb-5 flex-row items-center justify-center active:bg-neutral-800 active:scale-[0.98]"
     },
     group2: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-36 px-10 justify-center",
       header: "text-3xl text-center mb-8 font-medium text-black",
       authButton: "py-3 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
@@ -299,12 +83,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group3: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-44 px-10 justify-center",
       header: "text-3xl text-center mb-8 font-medium text-black",
       authButton: "py-3 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
@@ -335,12 +116,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group4: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-44 px-14 justify-center",
       header: "text-4xl text-center mb-10 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-5",
@@ -371,12 +149,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group5: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-44 px-16 justify-center",
       header: "text-4xl text-center mb-12 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
@@ -407,12 +182,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group6: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-52 px-16 justify-center",
       header: "text-4xl text-center mb-12 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
@@ -443,12 +215,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group7: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-44 px-16 justify-center",
       header: "text-4xl text-center mb-12 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
@@ -479,12 +248,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group8: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-52 px-16 justify-center",
       header: "text-4xl text-center mb-12 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
@@ -515,12 +281,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group9: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-52 px-16 justify-center",
       header: "text-4xl text-center mb-12 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
@@ -551,12 +314,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     group10: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-52 px-16 justify-center",
       header: "text-4xl text-center mb-12 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",
@@ -587,12 +347,9 @@ export const getStyles = (width, height) => {
       signUpLinkContainer: "flex-row justify-center"
     },
     unknown: {
-      // Screen and layout
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm",
-      
-      // Main auth layout
       container: "pt-44 px-16 justify-center",
       header: "text-4xl text-center mb-12 font-medium text-black",
       authButton: "py-4 px-4 flex-row items-center justify-center rounded-[10px] mb-6",

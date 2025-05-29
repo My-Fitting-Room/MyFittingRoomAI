@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Alert } from "react-native";
 import { supabase } from "../App";
-import { FONTS } from "../constants/fonts";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
-
 import { styles } from "../stylesheets/tryonButton";
-
 
 export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,profile,plan, navigation }) {
   const [loading, setLoading] = useState(false);
@@ -23,9 +20,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
           navigation.replace("TryOn");
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
-
       }
-
     }
   }
 
@@ -103,39 +98,3 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
     </View>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     width: "100%",
-//     alignItems: "center",
-//     marginVertical: 15,
-//   },
-//   buttonContainer: {
-//     width: width * 0.8,
-//     backgroundColor: "black",
-//     borderRadius: 10,
-//     paddingVertical: 12,
-//     marginBottom: 10,
-//     alignItems: "center",
-//     justifyContent: "center",
-//     borderWidth: 1,
-//     borderColor: "#000",
-//     shadowColor: "#000",
-//     shadowOffset: { width: 0, height: 2 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 4,
-//     elevation: 2,
-//   },
-//   buttonText: {
-//     fontSize: 18,
-//     color: "white",
-//     fontWeight: "300",
-//     fontFamily: FONTS.SATOSHI,
-//   },
-//   disabledButton: {
-//     opacity: 0.5,
-//   },
-//   loadingButton: {
-//     backgroundColor: "#333",
-//   }
-// });

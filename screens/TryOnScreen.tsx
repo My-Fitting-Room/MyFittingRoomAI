@@ -18,41 +18,8 @@ export default function TryOnScreen({ navigation }) {
   const [inputModelImage, setInputModelImage] = useState(null);
   const [plan, setPlan] = useState(null);
   const [tokensTotal, setTokensTotal] = useState(0);
-  
-//   const { width } = Dimensions.get("window");
-//   const deviceType = width <= 375 ? "small" : width <= 390 ? "regular" : "proMax";
-// console.log(deviceType);
-//   const deviceStyles = {
-//     small: {
-//       container: "flex-1 bg-white",
-//       loadingContainer: "flex-1 justify-center items-center bg-white",
-//       loadingText: "mt-2.5 text-sm text-black",
-//       content: "flex-1 pt-12",
-//       contentContainer: "px-1",
-//       bottomPadding: "h-32"
-//     },
-//     regular: {
-//       container: "flex-1 bg-white",
-//       loadingContainer: "flex-1 justify-center items-center bg-white",
-//       loadingText: "mt-2.5 text-2xl text-black",
-//       content: "flex-1 pt-14",
-//       contentContainer: "px-1.5",
-//       bottomPadding: "h-20"
-//     },
-//     proMax: {
-//       container: "flex-1 bg-white",
-//       loadingContainer: "flex-1 justify-center items-center bg-white",
-//       loadingText: "mt-2.5 text-2xl text-black",
-//       content: "flex-1 pt-14",
-//       contentContainer: "px-1.5",
-//       bottomPadding: "h-20"
-//     }
-//   };
-
-  //const styles = deviceStyles[deviceType];
 
   const { width, height } = Dimensions.get("window");
-
   const styles = getStyles(width, height);
 
   useEffect(() => {
@@ -126,7 +93,6 @@ export default function TryOnScreen({ navigation }) {
       </View>
     );
   }
-
 
   return (
     <SafeAreaView className={styles.container}>
