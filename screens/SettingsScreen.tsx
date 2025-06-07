@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, SafeAreaView, StatusBar, Platform, Alert, Dimensions } from "react-native";
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  SafeAreaView, 
+  StatusBar, 
+  Platform, 
+  Alert, 
+  Dimensions,
+  Linking 
+} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
 import { supabase } from "../App";
@@ -54,13 +64,72 @@ export default function SettingsScreen({ navigation }) {
     }
   };
 
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              setLoading(true);
+              
+              const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+              
+              if (sessionError || !sessionData.session) {
+                Alert.alert("Error", "Failed to delete account. Please try again.");
+                setLoading(false);
+                return;
+              }
+  
+              const response = await fetch('https://my-fitting-room-server.onrender.com/api/user/delete', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${sessionData.session.access_token}`
+                }
+              });
+  
+              const result = await response.json();
+  
+              if (result.success) {
+                navigation.navigate("SignIn");
+              } else {
+                Alert.alert("Error", "Failed to delete account");
+                setLoading(false);
+              }
+            } catch (error) {
+              console.log("Delete account error:", error);
+              Alert.alert("Error", "Failed to delete account");
+              setLoading(false);
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  const openTermsOfService = () => {
+    Linking.openURL("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/");
+  };
+
+  const openPrivacyPolicy = () => {
+    Linking.openURL("https://myfittingroom.ai/other-pages/privacy-policy");
+  };
+
   const handleBackPress = () => {
     navigation.goBack();
   };
 
   return (
     <SafeAreaView className={styles.container} style={{ 
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0 
+      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
     }}>
       <View className={styles.header}>
         <TouchableOpacity onPress={handleBackPress} className={styles.backButton}>
@@ -89,6 +158,37 @@ export default function SettingsScreen({ navigation }) {
         )}
       </View>
       <View className={styles.settingsContainer}>
+        <Text 
+          className={styles.supportEmailText}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Email for support: info@myfittingroom.ai
+        </Text>
+
+        <TouchableOpacity 
+          className={styles.linkButton}
+          onPress={openTermsOfService}
+        >
+          <Text 
+            className={styles.linkButtonText}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Terms of Service
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          className={styles.linkButton}
+          onPress={openPrivacyPolicy}
+        >
+          <Text 
+            className={styles.linkButtonText}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Privacy Policy
+          </Text>
+        </TouchableOpacity>
+
         <TouchableOpacity 
           className={`${styles.logoutButton} ${loading ? "opacity-60" : ""}`}
           onPress={handleLogOut}
@@ -99,6 +199,18 @@ export default function SettingsScreen({ navigation }) {
             style={{ fontFamily: FONTS.SATOSHI }}
           >
             Log Out
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          className={styles.deleteButton}
+          onPress={handleDeleteAccount}
+        >
+          <Text 
+            className={styles.deleteButtonText}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Delete Account
           </Text>
         </TouchableOpacity>
       </View>

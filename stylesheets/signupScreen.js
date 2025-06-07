@@ -5,6 +5,9 @@ export const getStyles = (width, height) => {
 
   const deviceGroupStyles = {
     group1: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-4 px-4",
+      termsText: "text-xs text-gray-600 text-center",
+      termsLink: "text-xs text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
@@ -26,10 +29,13 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group2: {
+      termsContainer: "flex-row flex-wrap justify-center items-center   px-2 ",
+      termsText: "text-xs text-gray-600 text-center",
+      termsLink: "text-xs text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-10 mt-40 items-center justify-center pb-0.5",
+      mainWrapper: "flex-[2] px-10 mt-32 items-center justify-center pb-0.5",
       contentWrapper: "w-full",
       bottomWrapper: "flex-1 px-16 pt-10 justify-start",
       headerText: "text-3xl text-center px-10 mb-4 font-bold text-black",
@@ -47,10 +53,13 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group3: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-2 ",
+      termsText: "text-sm text-gray-600 text-center",
+      termsLink: "text-sm text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-10 mt-28 items-center justify-center pb-0.5",
+      mainWrapper: "flex-[2] px-10 mt-24 items-center justify-center pb-0.5",
       contentWrapper: "w-full",
       bottomWrapper: "flex-1 px-16 pt-10 justify-start",
       headerText: "text-3xl text-center mb-4 px-10 font-bold text-black",
@@ -68,12 +77,15 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group4: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-2 px-4",
+      termsText: "text-base text-gray-600 text-center",
+      termsLink: "text-base text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      mainWrapper: "flex-[2] px-12 pt-36 items-center justify-center",
       contentWrapper: "w-full",
-      bottomWrapper: "flex-1 px-16 justify-start pt-8 mb-4",
+      bottomWrapper: "flex-1 px-16 justify-start pt-4 mb-4",
       headerText: "text-4xl text-center mb-6 px-6 font-bold text-black",
       subHeader: "px-2 text-lg mb-6",
       subHeaderText: "text-gray-800 text-center",
@@ -89,12 +101,15 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group5: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-2 px-4",
+      termsText: "text-base text-gray-600 text-center",
+      termsLink: "text-base text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      mainWrapper: "flex-[2] px-12 pt-36 items-center justify-center",
       contentWrapper: "w-full",
-      bottomWrapper: "flex-1 px-16 justify-start pt-5 mb-7",
+      bottomWrapper: "flex-1 px-16 justify-start pt-2 mb-7",
       headerText: "text-4xl text-center px-6 mb-6 font-bold text-black",
       subHeader: "px-2 text-lg mb-6",
       subHeaderText: "text-gray-800 text-center",
@@ -110,10 +125,13 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group6: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-2 px-4",
+      termsText: "text-base text-gray-600 text-center",
+      termsLink: "text-base text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      mainWrapper: "flex-[2] px-12 pt-40 items-center justify-center",
       contentWrapper: "w-full",
       bottomWrapper: "flex-1 px-16 justify-start pt-5 mb-7",
       headerText: "text-4xl text-center px-6 mb-6 font-bold text-black",
@@ -131,12 +149,15 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group7: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-3 px-4",
+      termsText: "text-base text-gray-600 text-center",
+      termsLink: "text-base text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      mainWrapper: "flex-[2] px-12 pt-40 items-center justify-center",
       contentWrapper: "w-full",
-      bottomWrapper: "flex-1 px-16 justify-start pt-5 mb-7",
+      bottomWrapper: "flex-1 px-16 justify-start pt-7 mb-7",
       headerText: "text-4xl text-center px-6 mb-6 font-bold text-black",
       subHeader: "px-2 text-lg mb-6",
       subHeaderText: "text-gray-800 text-center",
@@ -152,12 +173,15 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group8: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-2 px-4",
+      termsText: "text-base text-gray-600 text-center",
+      termsLink: "text-base text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      mainWrapper: "flex-[2] px-12 pt-36 items-center justify-center",
       contentWrapper: "w-full",
-      bottomWrapper: "flex-1 px-16 justify-start pt-5 mb-7",
+      bottomWrapper: "flex-1 px-16 justify-start pt-4 mb-7",
       headerText: "text-4xl text-center mb-6 px-10 font-bold text-black",
       subHeader: "px-6 text-lg mb-6",
       subHeaderText: "text-gray-800 text-center",
@@ -173,12 +197,15 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group9: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-4 px-4",
+      termsText: "text-base text-gray-600 text-center",
+      termsLink: "text-base text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      mainWrapper: "flex-[2] px-12 pt-36 items-center justify-center",
       contentWrapper: "w-full",
-      bottomWrapper: "flex-1 px-16 justify-start pt-5 mb-7",
+      bottomWrapper: "flex-1 px-16 justify-start pt-3 mb-7",
       headerText: "text-4xl text-center px-10 mb-6 font-bold text-black",
       subHeader: "px-6 text-lg mb-6",
       subHeaderText: "text-gray-800 text-center",
@@ -194,12 +221,15 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     group10: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-4 px-4",
+      termsText: "text-base text-gray-600 text-center",
+      termsLink: "text-base text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",
-      mainWrapper: "flex-[2] px-12 pt-44 items-center justify-center",
+      mainWrapper: "flex-[2] px-12 pt-32 items-center justify-center",
       contentWrapper: "w-full",
-      bottomWrapper: "flex-1 px-16 justify-start pt-5 mb-7",
+      bottomWrapper: "flex-1 px-16 justify-start pt-2 mb-7",
       headerText: "text-4xl text-center mb-6 px-12 font-bold text-black",
       subHeader: "px-6 text-lg mb-6",
       subHeaderText: "text-gray-800 text-center",
@@ -215,6 +245,9 @@ export const getStyles = (width, height) => {
       iconMaterial: "mr-3"
     },
     unknown: {
+      termsContainer: "flex-row flex-wrap justify-center items-center mt-4 px-4",
+      termsText: "text-xs text-gray-600 text-center",
+      termsLink: "text-xs text-[#4051FF] text-center",
       screen: "flex-1 bg-white",
       subscribeBanner: "absolute w-full bg-black pt-14 sm:pt-16 pb-3 items-center justify-center active:bg-neutral-800 active:scale-[0.98]",
       subscribeBannerText: "text-white text-sm sm:text-base",

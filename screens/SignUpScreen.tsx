@@ -15,9 +15,16 @@ export default function SignUpScreen({ navigation }) {
   const styles = getStyles(width, height);
 
   GoogleSignin.configure({
-    scopes: ["https://www.googleapis.com/auth/drive.readonly"],
     iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
   });
+
+  const handleTermsPress = () => {
+    Linking.openURL("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/");
+  };
+
+  const handlePrivacyPress = () => {
+    Linking.openURL("https://myfittingroom.ai/other-pages/privacy-policy");
+  };
 
   const handleGoogleSignUp = async () => {
     try {
@@ -186,6 +193,36 @@ export default function SignUpScreen({ navigation }) {
             Continue with Google
           </Text>
         </Pressable>
+        <View className={styles.termsContainer}>
+          <Text 
+            className={styles.termsText}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            By continuing, you agree to our{" "}
+          </Text>
+          <TouchableOpacity onPress={handleTermsPress}>
+            <Text 
+              className={styles.termsLink}
+              style={{ fontFamily: FONTS.SATOSHI }}
+            >
+              Terms And Services
+            </Text>
+          </TouchableOpacity>
+          <Text 
+            className={styles.termsText}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            {""}and{" "}
+          </Text>
+          <TouchableOpacity onPress={handlePrivacyPress}>
+            <Text 
+              className={styles.termsLink}
+              style={{ fontFamily: FONTS.SATOSHI }}
+            >
+              Privacy Policy
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
