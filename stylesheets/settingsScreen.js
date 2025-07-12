@@ -19,9 +19,9 @@ export const getStyles = (width, height) => {
       deleteButtonText: "text-white text-base font-semibold",
       linkButton: "bg-gray-100 rounded-lg py-3 items-center my-2",
       linkButtonText: "text-gray-800 text-base",
-      supportButton: "bg-blue-500 rounded-lg py-3 items-center my-2",
-      supportButtonText: "text-white text-base font-semibold",
       supportEmailText: "text-gray-600 text-sm text-center mb-4",
+      referralInfoText: "text-gray-600 text-sm text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 24,
       userIconSize: 42
     },
@@ -41,6 +41,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-lg py-3 items-center my-2",
       linkButtonText: "text-gray-800 text-base",
       supportEmailText: "text-gray-600 text-sm text-center mb-4",
+      referralInfoText: "text-gray-600 text-sm text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 24,
       userIconSize: 42
     },
@@ -60,6 +62,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-lg py-3 items-center my-2",
       linkButtonText: "text-gray-800 text-base",
       supportEmailText: "text-gray-600 text-sm text-center mb-4",
+      referralInfoText: "text-gray-600 text-sm text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 24,
       userIconSize: 42
     },
@@ -81,6 +85,8 @@ export const getStyles = (width, height) => {
       supportButton: "bg-blue-500 rounded-lg py-4 items-center my-2",
       supportButtonText: "text-white text-lg font-semibold",
       supportEmailText: "text-gray-600 text-base text-center mb-5",
+      referralInfoText: "text-gray-600 text-base text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 28,
       userIconSize: 50
     },
@@ -102,6 +108,8 @@ export const getStyles = (width, height) => {
       supportButton: "bg-blue-500 rounded-xl py-4 items-center my-2",
       supportButtonText: "text-white text-xl font-semibold",
       supportEmailText: "text-gray-600 text-lg text-center mb-6",
+      referralInfoText: "text-gray-600 text-lg text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 32,
       userIconSize: 56
     },
@@ -121,6 +129,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-xl py-4 items-center my-2",
       linkButtonText: "text-gray-800 text-xl",
       supportEmailText: "text-gray-600 text-lg text-center mb-6",
+      referralInfoText: "text-gray-600 text-lg text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 32,
       userIconSize: 56
     },
@@ -140,6 +150,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-xl py-4 items-center my-2",
       linkButtonText: "text-gray-800 text-xl",
       supportEmailText: "text-gray-600 text-lg text-center mb-6",
+      referralInfoText: "text-gray-600 text-lg text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 32,
       userIconSize: 56
     },
@@ -159,6 +171,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-xl py-4 items-center my-2",
       linkButtonText: "text-gray-800 text-xl",
       supportEmailText: "text-gray-600 text-lg text-center mb-6",
+      referralInfoText: "text-gray-600 text-lg text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 32,
       userIconSize: 56
     },
@@ -178,6 +192,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-xl py-4 items-center my-2",
       linkButtonText: "text-gray-800 text-xl",
       supportEmailText: "text-gray-600 text-lg text-center mb-6",
+      referralInfoText: "text-gray-600 text-lg text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 32,
       userIconSize: 56
     },
@@ -197,6 +213,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-xl py-4 items-center my-2",
       linkButtonText: "text-gray-800 text-xl",
       supportEmailText: "text-gray-600 text-lg text-center mb-6",
+      referralInfoText: "text-gray-600 text-lg text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 32,
       userIconSize: 56
     },
@@ -216,6 +234,8 @@ export const getStyles = (width, height) => {
       linkButton: "bg-gray-100 rounded-xl py-4 items-center my-2",
       linkButtonText: "text-gray-800 text-xl",
       supportEmailText: "text-gray-600 text-lg text-center mb-6",
+      referralInfoText: "text-gray-600 text-lg text-center mb-4",
+      referralCodeText: "text-gray-600 text-xl font-semibold text-center mb-4",
       iconSize: 32,
       userIconSize: 56
     }

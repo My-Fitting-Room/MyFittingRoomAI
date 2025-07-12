@@ -4,11 +4,11 @@ import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { styles } from "../stylesheets/tryonButton";
 
-export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,profile,plan, navigation }) {
+export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,profile,plan, navigation, extraTokensTotal }) {
   const [loading, setLoading] = useState(false);
 
   const presentPaywallIfNeeded = async () => {
-    if (profile.price_id === null && !profile.all_access && plan === null) {
+    if (profile.price_id === null && !profile.all_access && plan === null && extraTokensTotal < 1) {
       const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywallIfNeeded({
         requiredEntitlementIdentifier: "Unlimited"
       });  
@@ -29,7 +29,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
       Alert.alert("Error", "Please select both model and clothing images");
       return;
     }
-
+    
     await presentPaywallIfNeeded();
 
     setLoading(true);
@@ -43,7 +43,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         return;
       }
 
-      if (plan?.unlimited_tokens === false && !profile.all_access) {
+      if (plan?.unlimited_tokens === false && !profile.all_access && extraTokensTotal < 1) {
         if (tokensUsed +1 > tokensTotal) {
           Alert.alert("Error", "Monthly Token Limit Reached");
           setLoading(false);

@@ -18,6 +18,7 @@ export default function TryOnScreen({ navigation }) {
   const [inputModelImage, setInputModelImage] = useState(null);
   const [plan, setPlan] = useState(null);
   const [tokensTotal, setTokensTotal] = useState(0);
+  const [extraTokensTotal, setExtraTokensTotal] = useState(0);
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
@@ -66,7 +67,7 @@ export default function TryOnScreen({ navigation }) {
           );
           return;
         }
-        
+        setExtraTokensTotal(profileData.referral_tokens ?? 0);
         setTokensTotal(planData?.token_allowance ?? 0);
         setPlan(planData);
         setProfile(profileData);
@@ -113,15 +114,19 @@ export default function TryOnScreen({ navigation }) {
           profile={profile} 
           plan={plan} 
           navigation={navigation} 
+          extraTokensTotal={extraTokensTotal}
         />
         <TokensBox 
           tokensUsed={profile.tokens_used} 
           tokensTotal={tokensTotal} 
           plan={plan} 
+          extraTokensTotal={extraTokensTotal}
+          referralCode={profile.referral_code}
         />
         <View className={styles.bottomPadding} />
       </ScrollView>
       <BottomNav navigation={navigation} activeTab="TryOn" />
+
     </SafeAreaView>
   );
 }

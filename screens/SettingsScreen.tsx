@@ -8,7 +8,8 @@ import {
   Platform, 
   Alert, 
   Dimensions,
-  Linking 
+  Linking, 
+  ActivityIndicator
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
@@ -18,6 +19,7 @@ import { getStyles } from "../stylesheets/settingsScreen";
 
 export default function SettingsScreen({ navigation }) {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
@@ -35,12 +37,29 @@ export default function SettingsScreen({ navigation }) {
       }
       
       if (data.session) {
+
+        const { data: profileData, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", data.session?.user?.id)
+          .single();
+          
+        if (error) {
+          Alert.alert(
+            "Error",
+            "Please Try Again Later!",
+            [{ text: "OK" }]
+          );
+          return;
+        }
+
         setUser(data.session.user);
+        setProfile(profileData);
+        setLoading(false);
       } else {
         navigation.navigate("First");
       }
       
-      setLoading(false);
     } catch (error) {
       setLoading(false);
     }
@@ -105,7 +124,6 @@ export default function SettingsScreen({ navigation }) {
                 setLoading(false);
               }
             } catch (error) {
-              console.log("Delete account error:", error);
               Alert.alert("Error", "Failed to delete account");
               setLoading(false);
             }
@@ -126,6 +144,20 @@ export default function SettingsScreen({ navigation }) {
   const handleBackPress = () => {
     navigation.goBack();
   };
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size={"large"} color="black" />
+        <Text 
+          className="mt-3 text-2xl text-black"
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Loading...
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView className={styles.container} style={{ 
@@ -164,7 +196,18 @@ export default function SettingsScreen({ navigation }) {
         >
           Email for support: info@myfittingroom.ai
         </Text>
-
+        <Text 
+          className={styles.referralInfoText}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Your referral code to share with others:
+        </Text>
+        <Text 
+          className={styles.referralCodeText}
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          {profile?.referral_code}
+        </Text>
         <TouchableOpacity 
           className={styles.linkButton}
           onPress={openTermsOfService}
