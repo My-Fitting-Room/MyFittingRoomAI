@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Alert } from "rea
 import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { styles } from "../stylesheets/tryonButton";
+import mixpanel from "../utils/mixpanel";
 
 export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,profile,plan, navigation, extraTokensTotal }) {
   const [loading, setLoading] = useState(false);
@@ -13,13 +14,17 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         requiredEntitlementIdentifier: "Unlimited"
       });  
 
+      mixpanel.track("Paywall Displayed On Try On Screen");
       switch (paywallResult) {
         case PAYWALL_RESULT.NOT_PRESENTED:
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
           navigation.replace("TryOn");
+          break; 
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
+          mixpanel.track("Paywall CTA Clicked On Try On Screen");
+          break;
       }
     }
   }

@@ -16,6 +16,7 @@ import { Platform } from "react-native";
 import FirstScreen from "./screens/FirstScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import "./global.css"
+import  { initMixpanel } from "./utils/mixpanel";
 
 const supabaseUrl = Config.SUPABASE_URL;
 const supabaseKey = Config.SUPABASE_KEY;
@@ -44,6 +45,7 @@ function App(): React.JSX.Element {
 
     OneSignal.initialize(Config.ONE_SIGNAL_APP_ID);
     OneSignal.Notifications.requestPermission(true);
+    initMixpanel();
     
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (_event, session) => {

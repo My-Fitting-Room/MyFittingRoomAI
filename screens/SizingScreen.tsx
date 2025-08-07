@@ -19,6 +19,7 @@ import { FONTS } from "../constants/fonts";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { getDropdownStyles } from "../stylesheets/dropdownSelect";
 import { getStyles } from "../stylesheets/sizingScreen";
+import mixpanel from "../utils/mixpanel";
 
 const CLOTHING_DATA = {
   "clothing_types": {
@@ -302,15 +303,17 @@ export default function SizingScreen({ navigation }) {
       const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
         requiredEntitlementIdentifier: "Unlimited"
       });    
-
+      
+      mixpanel.track("Paywall Displayed On Sizing Screen");
       switch (paywallResult) {
         case PAYWALL_RESULT.NOT_PRESENTED:
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
-          navigation.replace("TryOn");
+          navigation.replace("Sizing");
           break;
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
+          mixpanel.track("Paywall CTA Clicked On Sizing Screen");
           break;
       }
     }
