@@ -56,7 +56,9 @@ export default function FirstScreen({ navigation }) {
               resizeMode="contain" 
               repeat={true}
               muted={true}
-              playInBackground={false}
+              playInBackground={true}   
+              playWhenInactive={true}   
+              ignoreSilentSwitch="ignore"  
             />
           </View>
         </View>

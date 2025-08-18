@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Alert, SafeAreaView, ScrollView, StatusBar, Platform, ActivityIndicator, Dimensions } from "react-native";
 import { supabase } from "../App";
+import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
 import ModelImages from "../components/ModelImages";
@@ -10,6 +11,7 @@ import TryOnImages from "../components/TryOnImages";
 import TokensBox from "../components/TokensBox";
 import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/tryonScreen";
+import mixpanel from "../utils/mixpanel";
 
 export default function TryOnScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -19,9 +21,47 @@ export default function TryOnScreen({ navigation }) {
   const [plan, setPlan] = useState(null);
   const [tokensTotal, setTokensTotal] = useState(0);
   const [extraTokensTotal, setExtraTokensTotal] = useState(0);
+  const [paywallDismissed, setPaywallDismissed] = useState(false);
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
+
+  // Helper function to check if user needs to see paywall
+  const shouldShowPaywall = (profileData, planData, extraTokens) => {
+    return profileData.price_id === null && 
+           !profileData.all_access && 
+           planData === null && 
+           extraTokens < 1;
+  };
+
+  // Function to present initial paywall
+  const presentInitialPaywall = async () => {
+    try {
+      const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
+        requiredEntitlementIdentifier: "Unlimited"
+      });
+
+      mixpanel.track("Paywall Displayed On Try On Screen Entry");
+      
+      switch (paywallResult) {
+        case PAYWALL_RESULT.NOT_PRESENTED:
+        case PAYWALL_RESULT.ERROR:
+        case PAYWALL_RESULT.CANCELLED:
+          // User dismissed paywall - allow them to continue
+          setPaywallDismissed(true);
+          break;
+        case PAYWALL_RESULT.PURCHASED:
+        case PAYWALL_RESULT.RESTORED:
+          mixpanel.track("Paywall CTA Clicked On Try On Screen Entry");
+          // Refresh the screen to update user data
+          navigation.replace("TryOn");
+          break;
+      }
+    } catch (error) {
+      // console.error("Error presenting paywall:", error);
+      setPaywallDismissed(true); // Allow user to continue on error
+    }
+  };
 
   useEffect(() => {
     const checkSession = async () => {
@@ -33,7 +73,7 @@ export default function TryOnScreen({ navigation }) {
           return;
         }
 
-        const { data: profileData, error:error } = await supabase
+        const { data: profileData, error } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", session?.user?.id)
@@ -48,15 +88,15 @@ export default function TryOnScreen({ navigation }) {
           return;
         }
 
-        if (profileData.onboarding_complete === false) {
-          navigation.navigate("Onboarding");
-          return;
-        }
+        // if (profileData.onboarding_complete === false) {
+        //   navigation.navigate("Onboarding");
+        //   return;
+        // }
 
         const { data: planData, error: planError } = await supabase
           .from("plans")
           .select("*")
-          .eq("price_id",profileData.price_id)
+          .eq("price_id", profileData.price_id)
           .maybeSingle();
         
         if (planError) {
@@ -67,11 +107,22 @@ export default function TryOnScreen({ navigation }) {
           );
           return;
         }
-        setExtraTokensTotal(profileData.referral_tokens ?? 0);
+
+        const extraTokens = profileData.referral_tokens ?? 0;
+        
+        setExtraTokensTotal(extraTokens);
         setTokensTotal(planData?.token_allowance ?? 0);
         setPlan(planData);
         setProfile(profileData);
         setLoading(false);
+
+        // Show paywall for non-paying users
+        if (shouldShowPaywall(profileData, planData, extraTokens) && !paywallDismissed) {
+          // Small delay to ensure UI is ready
+          setTimeout(() => {
+            presentInitialPaywall();
+          }, 500);
+        }
 
       } catch (error) {
         navigation.navigate("SignIn");
@@ -79,7 +130,7 @@ export default function TryOnScreen({ navigation }) {
     };
 
     checkSession();
-  }, [supabase]);
+  }, [supabase, paywallDismissed]);
 
   if (loading) {
     return (
@@ -126,7 +177,6 @@ export default function TryOnScreen({ navigation }) {
         <View className={styles.bottomPadding} />
       </ScrollView>
       <BottomNav navigation={navigation} activeTab="TryOn" />
-
     </SafeAreaView>
   );
 }

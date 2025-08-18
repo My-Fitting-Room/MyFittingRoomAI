@@ -118,6 +118,13 @@ export default function SettingsScreen({ navigation }) {
               const result = await response.json();
   
               if (result.success) {
+
+                const { error: signOutError } = await supabase.auth.signOut();
+              
+                if (signOutError) {
+                  
+                }
+
                 navigation.navigate("SignIn");
               } else {
                 Alert.alert("Error", "Failed to delete account");

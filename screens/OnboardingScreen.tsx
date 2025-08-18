@@ -6,6 +6,10 @@ import InAppReview from "react-native-in-app-review";
 import Slider from "@react-native-community/slider";
 import { getStyles } from "../stylesheets/onboardingScreen";
 import mixpanel from "../utils/mixpanel";
+import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
+
+// TOGGLE: Set to true to skip onboarding and go straight to paywall
+const SKIP_ONBOARDING_TO_PAYWALL = true;
 
 export default function OnboardingScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -18,11 +22,11 @@ export default function OnboardingScreen({ navigation }) {
   const [sliderValue, setSliderValue] = useState(50);
   const [referralCode, setReferralCode] = useState("");
   const [referralCodeBoxDisabled, setReferralCodeBoxDisabled] = useState(false);
+  const [showPaywallFailed, setShowPaywallFailed] = useState(false);
   const hasCompleted = useRef(false);
-  const currentStepRef = useRef(0); // Use ref to track current step without dependency
+  const currentStepRef = useRef(0);
 
   const { width, height } = Dimensions.get("window");
-
   const styles = getStyles(width, height);
 
   // Update the ref whenever step changes
@@ -51,7 +55,86 @@ export default function OnboardingScreen({ navigation }) {
         });
       }
     };
-  }, []); // No dependencies - this effect only runs once
+  }, []);
+
+  const presentPaywall = async (profileId = null) => {
+    try {
+      const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
+        requiredEntitlementIdentifier: "Unlimited"
+      });
+
+      mixpanel.track("Paywall Displayed On Onboarding Screen");
+      
+      switch (paywallResult) {
+        case PAYWALL_RESULT.PURCHASED:
+        case PAYWALL_RESULT.RESTORED:
+          mixpanel.track("Paywall CTA Clicked On Onboarding Screen");
+          // Mark onboarding as complete and navigate to TryOn
+          await completeOnboarding(profileId);
+          break;
+          
+        case PAYWALL_RESULT.NOT_PRESENTED:
+        case PAYWALL_RESULT.ERROR:
+        case PAYWALL_RESULT.CANCELLED:
+          // Show failed state
+          setShowPaywallFailed(true);
+          break;
+      }
+    } catch (error) {
+      setShowPaywallFailed(true);
+    }
+  };
+
+  const completeOnboarding = async (profileId = null) => {
+    try {
+      // Use the passed profileId or fall back to profile state
+      const idToUse = profileId || profile?.id;
+      
+      if (!idToUse) {
+        Alert.alert("Error", "Please try again later!", [{ text: "OK" }]);
+        return;
+      }
+
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ 
+          onboarding_complete: true,
+          onboarding_wizard_step: 7
+        })
+        .eq("id", idToUse);
+
+      if (updateError) {
+        Alert.alert(
+          "Error2",
+          "Please Try Again Later!",
+          [{ text: "OK" }]
+        );
+        return;
+      }
+
+      mixpanel.track('Onboarding Completed (Paywall Mode)');
+      navigation.navigate("TryOn");
+    } catch (error) {
+      Alert.alert(
+        "Error3",
+        error.message,
+        [{ text: "OK" }]
+      );
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigation.navigate("First");
+    } catch (error) {
+      Alert.alert(
+        "Error",
+        "Please try again later",
+        [{ text: "OK" }]
+      );
+    }
+  };
 
   const getStepName = (stepNumber) => {
     const stepNames = {
@@ -76,7 +159,6 @@ export default function OnboardingScreen({ navigation }) {
       handleSelection(null, null, 7);
       return;
     } catch (error) {
-    
       Alert.alert(
         "Error",
         "Please Try Again Later!",
@@ -140,21 +222,16 @@ export default function OnboardingScreen({ navigation }) {
       navigation.navigate("TryOn");
     } else {
       setStep(nextStep);
-      
-      
     }
   };
 
   const handleReferralCodeSubmit = async () => {
-
     if (referralCodeBoxDisabled) {
       setStep(6);
       return;
     }
 
     if (!referralCode.trim()) {
-      
-
       const { error: updateError } = await supabase
         .from("profiles")
         .update({ onboarding_wizard_step: 6 })
@@ -170,7 +247,6 @@ export default function OnboardingScreen({ navigation }) {
       }
 
       setStep(6);
-      
       return;
     }
 
@@ -226,7 +302,6 @@ export default function OnboardingScreen({ navigation }) {
         [{ 
           text: "OK", 
           onPress: async () => {
-            
             const { error: updateError } = await supabase
               .from("profiles")
               .update({ 
@@ -245,13 +320,11 @@ export default function OnboardingScreen({ navigation }) {
             
             setStep(6);
             setReferralCodeBoxDisabled(true);
-            
           }
         }]
       );
 
     } catch (error) {
-
       Alert.alert(
         "Error",
         "Please try again later!",
@@ -261,7 +334,6 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const handleBackNavigation = async (prevStep) => {
-
     const { error: updateError } = await supabase
       .from("profiles")
       .update({ 
@@ -279,9 +351,7 @@ export default function OnboardingScreen({ navigation }) {
     }
 
     setStep(prevStep);
-    
   };
-  
 
   useEffect(() => {
     const checkSession = async () => {
@@ -313,6 +383,20 @@ export default function OnboardingScreen({ navigation }) {
           return;
         }
 
+        setProfile(profileData);
+
+        // Check the toggle - if true, skip onboarding and show paywall
+        if (SKIP_ONBOARDING_TO_PAYWALL) {
+          mixpanel.track('Onboarding Screen Viewed (Paywall Mode)');
+          setLoading(false);
+          // Present paywall immediately and pass the profile ID
+          setTimeout(() => {
+            presentPaywall(profileData.id);
+          }, 500);
+          return;
+        }
+
+        // Normal onboarding flow
         const { data: referralData, error : referralError } = await supabase
           .from("referrals")
           .select("*")
@@ -335,7 +419,6 @@ export default function OnboardingScreen({ navigation }) {
         setReferralCodeBoxDisabled(referralData !== null);
 
         setStep(profileData.onboarding_wizard_step);
-        setProfile(profileData);
         
         if (profileData.referral_source) setReferralSource(profileData.referral_source);
         if (profileData.size_picking_confidence) setSizePickingConfidence(profileData.size_picking_confidence);
@@ -366,6 +449,65 @@ export default function OnboardingScreen({ navigation }) {
           style={{ fontFamily: FONTS.SATOSHI }}
         >
           Loading...
+        </Text>
+      </View>
+    );
+  }
+
+  // Show paywall failed state
+  if (SKIP_ONBOARDING_TO_PAYWALL && showPaywallFailed) {
+    return (
+      <View className="flex-1 bg-white justify-center items-center px-8">
+        <Text 
+          className="text-3xl text-black text-center mb-4"
+          style={{ fontFamily: FONTS.SWITZER }}
+        >
+          Get Complete Access
+        </Text>
+        <Text 
+          className="text-lg text-gray-600 text-center mb-8"
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Something went wrong. Please try again to continue with your free trial.
+        </Text>
+        
+        <TouchableOpacity 
+          className="w-full bg-black rounded-lg p-4 mb-4"
+          onPress={() => presentPaywall(profile?.id)}
+        >
+          <Text 
+            className="text-white text-center text-lg font-medium"
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Try Again
+          </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          className="w-full bg-gray-200 rounded-lg p-4"
+          onPress={handleLogout}
+        >
+          <Text 
+            className="text-black text-center text-lg font-medium"
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Sign Out
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  // Show paywall mode loading (while paywall is being presented)
+  if (SKIP_ONBOARDING_TO_PAYWALL && !showPaywallFailed) {
+    return (
+      <View className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size={"large"} color="black" />
+        <Text 
+          className="mt-3 text-2xl text-black"
+          style={{ fontFamily: FONTS.SATOSHI }}
+        >
+          Loading Subscription...
         </Text>
       </View>
     );
@@ -624,15 +766,12 @@ export default function OnboardingScreen({ navigation }) {
                 if (InAppReview.isAvailable()) {
                   InAppReview.RequestInAppReview()
                     .then(() => {
-                     
                       handleSelection(null, null, 4);
                     })
                     .catch(() => {
-                     
                       handleSelection(null, null, 4);
                     });
                 } else {
-                  
                   handleSelection(null, null, 4);
                 }
               }}
@@ -647,7 +786,6 @@ export default function OnboardingScreen({ navigation }) {
             <Pressable 
               className={styles.selectButton}
               onPress={() => {
-               
                 handleSelection(null, null, 4);
               }}
             >
