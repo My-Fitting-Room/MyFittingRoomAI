@@ -15,6 +15,7 @@ if linkage != nil
 end
 
 
+use_frameworks! :linkage => :static
 
 target 'MyFittingRoomAI' do
   config = use_native_modules!

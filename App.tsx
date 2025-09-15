@@ -17,6 +17,8 @@ import FirstScreen from "./screens/FirstScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import "./global.css"
 import  { initMixpanel } from "./utils/mixpanel";
+import { initTikTokSDK } from "./utils/tiktok";
+import { getTrackingStatus, requestTrackingPermission } from "react-native-tracking-transparency";
 
 const supabaseUrl = Config.SUPABASE_URL;
 const supabaseKey = Config.SUPABASE_KEY;
@@ -36,23 +38,34 @@ function App(): React.JSX.Element {
   const [session, setSession] = React.useState(null);
 
   React.useEffect(() => {
+    const bootstrap = async () => {
+      Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
 
-    Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+      if (Platform.OS === "ios") {
+        Purchases.configure({ apiKey: Config.REVENUECAT_APPLE_KEY });
 
-    if (Platform.OS === "ios") {
-       Purchases.configure({apiKey: Config.REVENUECAT_APPLE_KEY});
-    } 
+        try {
+          const status = await getTrackingStatus();
+          if (status === "not-determined") {
+            await requestTrackingPermission(); 
+          }
+        } catch {}
+      }
 
-    OneSignal.initialize(Config.ONE_SIGNAL_APP_ID);
-    OneSignal.Notifications.requestPermission(true);
-    initMixpanel();
-    
+      OneSignal.initialize(Config.ONE_SIGNAL_APP_ID);
+      OneSignal.Notifications.requestPermission(true);
+
+      initMixpanel();
+      await initTikTokSDK(); 
+    };
+
+    bootstrap();
+
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
-        if(session) {
+        if (session) {
           OneSignal.login(session.user.id);
-          const { customerInfo, created } = await Purchases.logIn(session.user.id);
-
+          await Purchases.logIn(session.user.id);
           setSession(session);
         } else {
           Purchases.logOut();

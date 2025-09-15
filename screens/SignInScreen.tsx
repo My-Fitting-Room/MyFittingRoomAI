@@ -7,6 +7,9 @@ import React, { useState } from "react";
 import { FONTS } from "../constants/fonts";
 import Config from "react-native-config";
 import { getStyles } from "../stylesheets/signinScreen";
+import { trackTikTokStandardEvent } from "../utils/tiktok";
+import { TikTokEventName } from "react-native-tiktok-business-sdk";
+
 
 export default function SignInScreen({ navigation }) {
   const { width, height } = Dimensions.get("window");
@@ -51,6 +54,15 @@ export default function SignInScreen({ navigation }) {
         }
 
         if(data) {
+          if (data.user) {
+            const userCreatedTime = new Date(data.user.created_at);
+            const now = new Date();
+            const timeDiff = now.getTime() - userCreatedTime.getTime();
+            
+            if (timeDiff < 5 * 60 * 1000) {
+              await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
+            }
+          }
           navigation.navigate("TryOn");
         }
         
@@ -96,6 +108,16 @@ export default function SignInScreen({ navigation }) {
             [{ text: "OK" }]
           );
           return;
+        }
+
+        if (data.user) {
+          const userCreatedTime = new Date(data.user.created_at);
+          const now = new Date();
+          const timeDiff = now.getTime() - userCreatedTime.getTime();
+          
+          if (timeDiff < 5 * 60 * 1000) {
+            await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
+          }
         }
   
         navigation.navigate("TryOn");

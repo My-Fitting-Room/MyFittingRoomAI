@@ -12,6 +12,7 @@ import TokensBox from "../components/TokensBox";
 import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/tryonScreen";
 import mixpanel from "../utils/mixpanel";
+import { trackTikTokPurchase } from "../utils/tiktok";
 
 export default function TryOnScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -52,8 +53,8 @@ export default function TryOnScreen({ navigation }) {
           break;
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
+          await trackTikTokPurchase();
           mixpanel.track("Paywall CTA Clicked On Try On Screen Entry");
-          // Refresh the screen to update user data
           navigation.replace("TryOn");
           break;
       }
@@ -88,10 +89,10 @@ export default function TryOnScreen({ navigation }) {
           return;
         }
 
-        // if (profileData.onboarding_complete === false) {
-        //   navigation.navigate("Onboarding");
-        //   return;
-        // }
+        if (profileData.onboarding_complete === false) {
+          navigation.navigate("Onboarding");
+          return;
+        }
 
         const { data: planData, error: planError } = await supabase
           .from("plans")
@@ -180,3 +181,5 @@ export default function TryOnScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+
+
