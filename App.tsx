@@ -19,6 +19,7 @@ import "./global.css"
 import  { initMixpanel } from "./utils/mixpanel";
 import { initTikTokSDK } from "./utils/tiktok";
 import { getTrackingStatus, requestTrackingPermission } from "react-native-tracking-transparency";
+import { initSingularSDK, singularLogin, singularLogout } from "./utils/singular";
 
 const supabaseUrl = Config.SUPABASE_URL;
 const supabaseKey = Config.SUPABASE_KEY;
@@ -57,6 +58,7 @@ function App(): React.JSX.Element {
 
       initMixpanel();
       await initTikTokSDK(); 
+      await initSingularSDK();
     };
 
     bootstrap();
@@ -67,9 +69,11 @@ function App(): React.JSX.Element {
           OneSignal.login(session.user.id);
           await Purchases.logIn(session.user.id);
           setSession(session);
+          singularLogin(session.user.id);
         } else {
           Purchases.logOut();
           OneSignal.logout();
+          singularLogout();
         }
       }
     );

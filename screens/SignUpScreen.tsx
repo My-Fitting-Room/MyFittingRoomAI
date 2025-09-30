@@ -10,6 +10,7 @@ import Video from "react-native-video";
 import { getStyles } from "../stylesheets/signupScreen";
 import { trackTikTokStandardEvent } from "../utils/tiktok";
 import { TikTokEventName } from "react-native-tiktok-business-sdk";
+import { trackSingularStandardEvent } from "../utils/singular";
 
 export default function SignUpScreen({ navigation }) {
   const { width, height } = Dimensions.get("window");
@@ -56,6 +57,9 @@ export default function SignUpScreen({ navigation }) {
             
             if (timeDiff < 5 * 60 * 1000) {
               await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
+              await trackSingularStandardEvent("sng_registration");
+            } else {
+              await trackSingularStandardEvent("sng_login");
             }
           }
           navigation.navigate("TryOn");
@@ -114,6 +118,9 @@ export default function SignUpScreen({ navigation }) {
           
           if (timeDiff < 5 * 60 * 1000) {
             await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
+            await trackSingularStandardEvent("sng_registration");
+          } else {
+            await trackSingularStandardEvent("sng_login");
           }
         }
   

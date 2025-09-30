@@ -5,6 +5,7 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { styles } from "../stylesheets/tryonButton";
 import mixpanel from "../utils/mixpanel";
 import { trackTikTokPurchase } from "../utils/tiktok";
+import { trackSingularPurchase } from "../utils/singular";
 
 export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal,profile,plan, navigation, extraTokensTotal }) {
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
           await trackTikTokPurchase();
+          await trackSingularPurchase();
           mixpanel.track("Paywall CTA Clicked On Try On Screen");
           break;
       }

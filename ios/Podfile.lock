@@ -2107,6 +2107,12 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - Singular-React-Native (3.9.0):
+    - React
+    - Singular-SDK (= 12.8.1)
+  - Singular-SDK (12.8.1):
+    - Singular-SDK/Main (= 12.8.1)
+  - Singular-SDK/Main (12.8.1)
   - SocketRocket (0.7.1)
   - TikTokBusiness (1.4.1):
     - DoubleConversion
@@ -2223,6 +2229,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - Singular-React-Native (from `../node_modules/singular-react-native`)
   - TikTokBusiness (from `../node_modules/react-native-tiktok-business-sdk`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -2241,6 +2248,7 @@ SPEC REPOS:
     - RevenueCatUI
     - SDWebImage
     - SDWebImageWebPCoder
+    - Singular-SDK
     - SocketRocket
     - TikTokBusinessSDK
 
@@ -2418,6 +2426,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  Singular-React-Native:
+    :path: "../node_modules/singular-react-native"
   TikTokBusiness:
     :path: "../node_modules/react-native-tiktok-business-sdk"
   Yoga:
@@ -2523,6 +2533,8 @@ SPEC CHECKSUMS:
   RNVectorIcons: f3e9354fca73876447d183d4b18955e52cd3695c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  Singular-React-Native: c4f65335e86180e933ac2792db4b2ea0eca9cd84
+  Singular-SDK: b270f0151037279a4e65054eb67cb74be6c5892f
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   TikTokBusiness: e3a7beda0e815bd675d7998de6daa501eae65307
   TikTokBusinessSDK: de9a68a3bfc3b4bf1d8a24fc625f108af7903292

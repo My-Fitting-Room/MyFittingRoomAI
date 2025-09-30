@@ -13,6 +13,7 @@ import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/tryonScreen";
 import mixpanel from "../utils/mixpanel";
 import { trackTikTokPurchase } from "../utils/tiktok";
+import { trackSingularPurchase } from "../utils/singular";
 
 export default function TryOnScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -54,6 +55,7 @@ export default function TryOnScreen({ navigation }) {
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
           await trackTikTokPurchase();
+          await trackSingularPurchase();
           mixpanel.track("Paywall CTA Clicked On Try On Screen Entry");
           navigation.replace("TryOn");
           break;

@@ -21,6 +21,7 @@ import { getDropdownStyles } from "../stylesheets/dropdownSelect";
 import { getStyles } from "../stylesheets/sizingScreen";
 import mixpanel from "../utils/mixpanel";
 import { trackTikTokPurchase } from "../utils/tiktok";
+import { trackSingularPurchase } from "../utils/singular";
 
 const CLOTHING_DATA = {
   "clothing_types": {
@@ -315,6 +316,7 @@ export default function SizingScreen({ navigation }) {
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
           await trackTikTokPurchase();
+          await trackSingularPurchase();
           mixpanel.track("Paywall CTA Clicked On Sizing Screen");
           break;
       }

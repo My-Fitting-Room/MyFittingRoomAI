@@ -9,6 +9,7 @@ import Config from "react-native-config";
 import { getStyles } from "../stylesheets/signinScreen";
 import { trackTikTokStandardEvent } from "../utils/tiktok";
 import { TikTokEventName } from "react-native-tiktok-business-sdk";
+import { trackSingularStandardEvent } from "../utils/singular";
 
 
 export default function SignInScreen({ navigation }) {
@@ -61,6 +62,9 @@ export default function SignInScreen({ navigation }) {
             
             if (timeDiff < 5 * 60 * 1000) {
               await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
+              await trackSingularStandardEvent("sng_registration");
+            } else {
+              await trackSingularStandardEvent("sng_login");
             }
           }
           navigation.navigate("TryOn");
@@ -117,6 +121,9 @@ export default function SignInScreen({ navigation }) {
           
           if (timeDiff < 5 * 60 * 1000) {
             await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
+            await trackSingularStandardEvent("sng_registration");
+          } else {
+            await trackSingularStandardEvent("sng_login");
           }
         }
   
