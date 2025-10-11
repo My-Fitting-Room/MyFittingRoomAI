@@ -4,388 +4,371 @@ export const getStyles = (width,height) => {
   const deviceGroup = getDeviceGroup(width,height);
 
   const deviceGroupStyles = {
-    group1: {
-      container: "pt-16 px-8 flex-1 items-center",
-      step0SubHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      step0InputContainer:"flex-row items-center ",
-      step0Input:"rounded-xl p-4 mb-28 text-base bg-gray-100 ",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-2xl pt-2 text-center mb-3 mt-8 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-40",
-      step1MainHeader : "text-2xl pt-2 text-center mb-3 mt-4 font-normal text-black",
-      step2MainHeader : "text-2xl text-center mb-3 mt-8 font-normal text-black",
-      step3MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-      step4MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
-      step5MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-      subHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      buttonText: "text-base font-medium",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-6 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-xl text-black font-medium mb-8",
-      stepContainer: "mt-12",
-      smallerText: "text-sm",
-      backButton: "absolute top-20 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-16",
-      step2ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-28 pt-10",
-      step5ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButtonText:"text-white text-base font-medium ",
-      reviewImage:"w-64 h-48 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center ",
-      topBannerText: "text-black text-sm mb-2 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-10  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
-    },
+    
     group2: {
+      // Common styles
       container: "pt-16 px-8 flex-1 items-center",
-      step0SubHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      step0InputContainer:"flex-row items-center ",
-      step0Input:"rounded-xl p-4 mb-28 text-base bg-gray-100 ",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-2xl pt-2 text-center mb-3 mt-8 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-40",
-      step1MainHeader : "text-2xl pt-2 text-center mb-3 mt-4 font-normal text-black",
-      step2MainHeader : "text-2xl text-center mb-3 mt-8 font-normal text-black",
-      step3MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-      step4MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
-      step5MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-      subHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      buttonText: "text-base font-medium",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-6 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-xl text-black font-medium mb-8",
-      stepContainer: "mt-12",
-      smallerText: "text-sm",
-      backButton: "absolute top-20 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-16",
-      step2ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-28 pt-10",
-      step5ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButtonText:"text-white text-base font-medium ",
-      reviewImage:"w-64 h-48 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center ",
-      topBannerText: "text-black text-sm mb-2 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-10  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
+      step0SubHeader: "text-base text-center  mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[300px] h-[250px] ",
+      step0ImageView: "items-center mt-10",
+      step0ButtonsGroup: "flex-2 px-8 pb-24",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-12",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-2xl text-center mb-3  font-semibold text-black px-8",
+      step2SubHeader: "text-base text-center  mt-2 text-gray-600 px-20 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-16",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-6  mt-2 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-20",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-2xl text-center mb-3 px-6  font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-24",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
     },
+   
     group3: {
-      container: "pt-32 px-8 flex-1 items-center",
-      step0SubHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      step0InputContainer:"flex-row items-center ",
-      step0Input:"rounded-xl p-4 mb-28 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-2xl pt-2 text-center mb-3 mt-6 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-64",
-      step1MainHeader : "text-2xl pt-2 text-center mb-3 mt-2 font-normal text-black",
-      step2MainHeader : "text-2xl text-center mb-3 mt-4 font-normal text-black",
-      step3MainHeader: "text-2xl px-8 text-center mb-3 mt-4 font-normal text-black",
-      step4MainHeader: "text-2xl text-center mb-3 mt-4 font-normal text-black",
-      step5MainHeader: "text-2xl px-8 text-center mb-3 mt-4 font-normal text-black",
-      subHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      buttonText: "text-base font-medium",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-6 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-40",
-      sliderValueText: "text-xl text-black font-medium mb-8",
-      stepContainer: "mt-12",
-      smallerText: "text-sm",
-      backButton: "absolute top-28 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-36",
-      step2ButtonsGroup: "flex-2 px-8 pb-60 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-40 pt-10",
-      step5ButtonsGroup: "flex-2 px-8 pb-60 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-36",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButtonText:"text-white text-base font-medium ",
-      reviewImage:"w-64 h-48 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center ",
-      topBannerText: "text-black text-sm mb-2 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-16  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
+      // Common styles
+      container: "pt-32 px-12 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
+      step0SubHeader: "text-base text-center  mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[350px] h-[300px] ",
+      step0ImageView: "items-center mt-10",
+      step0ButtonsGroup: "flex-2 px-8 pb-36",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-28",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-2xl text-center mb-3  font-semibold text-black px-8",
+      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 px-20 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-28",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-28",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-2xl text-center mb-3 px-6  font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-40",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
     },
+    
     group4: {
+      // Common styles
       container: "pt-24 px-12 flex-1 items-center",
-      step0SubHeader: "text-base text-center mb-5 mt-2 text-gray-600 leading-[22px] px-10",
-      step0InputContainer:"flex-row items-center ",
-      step0Input:"rounded-xl p-4 mb-36 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-[28px] text-center mb-3 mt-10 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-56",
-      step1MainHeader: "text-[28px] text-center mb-3 mt-10 font-normal text-black",
-      step2MainHeader: "text-[28px] text-center mb-3 mt-10 font-normal text-black",
-      step3MainHeader: "text-[28px] text-center mb-3 mt-10 font-normal text-black",
-      step4MainHeader: "text-[28px] text-center mb-3 mt-10 font-normal text-black",
-      step5MainHeader: "text-[28px] text-center mb-3 mt-10 font-normal text-black",
-      subHeader: "text-base text-center mb-5 mt-2 text-gray-600 leading-[22px] px-4",
-      buttonText: "text-base font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
-      stepContainer: "mt-14",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-40",
-      step2ButtonsGroup: "flex-2 px-8 pb-56 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-48 pt-6",
-      step5ButtonsGroup: "flex-2 px-8 pb-60 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-44",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-      reviewImage:"w-64 h-48 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center ",
-      topBannerText: "text-black text-sm mt-2 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-14 pb-3 items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
+      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[350px] h-[300px]",
+      step0ImageView: "items-center mt-4",
+      step0ButtonsGroup: "flex-2 px-8 pb-40",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-32",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
+      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-32",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-32",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-[28px] text-center mb-3 mt-8 font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-40",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
     },
+    
+    
     group5: {
+      // Common styles
       container: "pt-28 px-10 flex-1 items-center",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-12",
-      step0InputContainer:"flex-row items-center",
-      step0Input:"rounded-xl p-4  mb-36 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-[30px] text-center mb-3 mt-6 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-56",
-      step1MainHeader: "text-[30px] text-center mb-3  font-normal text-black",
-      step2MainHeader: "text-[30px] text-center mb-3  mt-3  font-normal text-black",
-      step3MainHeader: "text-[30px] text-center mb-3 mt-3 font-normal text-black",
-      step4MainHeader: "text-[29px] text-center  mb-3 mt-3 font-normal text-black",
-      step5MainHeader: "text-[30px] text-center mb-3 mt-3 font-normal text-black",
-      subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      buttonText: "text-lg font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
       stepContainer: "mt-16",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-40",
-      step2ButtonsGroup: "flex-2 px-8 pb-56 ",
-      step4ButtonsGroup: "flex-2 px-8 pb-44 pt-10",
-      step5ButtonsGroup: "flex-2 px-8 pb-56 ",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-44",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-      reviewImage:" w-72 h-60 border rounded-xl mt-4  border-[#D9D9D9] p-3 object-contain self-center   ",
-      topBannerText: "text-black text-sm mt-4 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-12  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
+      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[350px] h-[300px]",
+      step0ImageView: "items-center mt-4",
+      step0ButtonsGroup: "flex-2 px-8 pb-40",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-32",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
+      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-32",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-32",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-40",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
     },
+    
     group6: {
+      // Common styles
       container: "pt-32 px-10 flex-1 items-center",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0InputContainer:"flex-row items-center",
-      step0Input:"rounded-xl p-4  mb-36 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-[32px] text-center mb-3    font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-64",
-      step1MainHeader: "text-[32px] text-center mb-3  font-normal text-black",
-      step2MainHeader: "text-[32px] text-center mb-3    font-normal text-black",
-      step3MainHeader: "text-[32px] text-center mb-3  font-normal text-black",
-      step4MainHeader: "text-[32px] text-center  mb-3  font-normal text-black",
-      step5MainHeader: "text-[32px] text-center mb-3  font-normal text-black",
-      subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      buttonText: "text-lg font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
       stepContainer: "mt-16",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-44",
-      step2ButtonsGroup: "flex-2 px-8 pb-64 ",
-      step4ButtonsGroup: "flex-2 px-8 pb-48",
-      step5ButtonsGroup: "flex-2 px-8 pb-60 ",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-52",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-      reviewImage:" w-80 h-64 border rounded-xl mt-4  border-[#D9D9D9] p-3 object-contain self-center   ",
-      topBannerText: "text-black text-sm mt-2 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-12  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[350px] h-[300px]",
+      step0ImageView: "items-center mt-12",
+      step0ButtonsGroup: "flex-2 px-8 pb-40",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-36",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-36",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-36",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-44",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
     },
+    
     group7: {
+      // Common styles
       container: "pt-28 px-10 flex-1 items-center",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-8",
-      step0InputContainer:"flex-row items-center",
-      step0Input:"rounded-xl p-4  mb-36 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-[32px] text-center mb-3 mt-6 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-64",
-      step1MainHeader: "text-[32px] text-center mb-3 mt-3 font-normal text-black",
-      step2MainHeader: "text-[32px] text-center mb-3 mt-3   font-normal text-black",
-      step3MainHeader: "text-[32px] text-center mb-3 mt-3 font-normal text-black",
-      step4MainHeader: "text-[32px] text-center  mb-3 mt-3 font-normal text-black",
-      step5MainHeader: "text-[32px] text-center mb-3 mt-3 font-normal text-black",
-      subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      buttonText: "text-lg font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-9 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
       stepContainer: "mt-16",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-40",
-      step2ButtonsGroup: "flex-2 px-8 pb-56 ",
-      step4ButtonsGroup: "flex-2 px-8 pb-40",
-      step5ButtonsGroup: "flex-2 px-8 pb-52 ",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-44",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-      reviewImage:" w-80 h-64 border rounded-xl mt-4  border-[#D9D9D9] p-3 object-contain self-center   ",
-      topBannerText: "text-black text-sm mt-6 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-12  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[350px] h-[300px]",
+      step0ImageView: "items-center mt-12",
+      step0ButtonsGroup: "flex-2 px-8 pb-40",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-36",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-36",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-36",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-44",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
     },
+   
     group8: {
+      // Common styles
       container: "pt-24 px-10 flex-1 items-center",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0InputContainer:"flex-row items-center",
-      step0Input:"rounded-xl p-4  mb-36 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-[32px] text-center mb-3 mt-8 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-64",
-      step1MainHeader: "text-[32px] text-center mb-3 mt-8 font-normal text-black",
-      step2MainHeader: "text-[32px] text-center mb-3 mt-8   font-normal text-black",
-      step3MainHeader: "text-[32px] text-center mb-3 mt-8 px-12 font-normal text-black",
-      step4MainHeader: "text-[32px] text-center  mb-3 mt-8 font-normal text-black",
-      step5MainHeader: "text-[32px] text-center mb-3 mt-8 px-6 font-normal text-black",
-      subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      buttonText: "text-lg font-medium ",
+      stepContainer: "mt-16",
       selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-32",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
-      stepContainer: "mt-16",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-44",
-      step2ButtonsGroup: "flex-2 px-8 pb-64 ",
-      step4ButtonsGroup: "flex-2 px-8 pb-48",
-      step5ButtonsGroup: "flex-2 px-8 pb-64 ",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-52",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-      reviewImage:" w-80 h-64 border rounded-xl mt-4  border-[#D9D9D9] p-3 object-contain self-center   ",
-      topBannerText: "text-black text-sm mt-2 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-12  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-9 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
-    },
-    group9 : {
-      container: "pt-24 px-10 flex-1 items-center",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
       step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0InputContainer:"flex-row items-center",
-      step0Input:"rounded-xl p-4  mb-36 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-[32px] text-center mb-3 mt-12 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-64",
-      step1MainHeader: "text-[32px] text-center mb-3 mt-8 font-normal text-black",
-      step2MainHeader: "text-[32px] text-center mb-3 mt-8   font-normal text-black",
-      step3MainHeader: "text-[32px] text-center mb-3 mt-8 px-2 font-normal text-black",
-      step4MainHeader: "text-[32px] text-center  mb-3 mt-8 font-normal text-black",
-      step5MainHeader: "text-[32px] text-center mb-3 mt-8 px-6 font-normal text-black",
-      subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      buttonText: "text-lg font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-32",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
-      stepContainer: "mt-16",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-44",
-      step2ButtonsGroup: "flex-2 px-8 pb-64 ",
-      step4ButtonsGroup: "flex-2 px-8 pb-48",
-      step5ButtonsGroup: "flex-2 px-8 pb-64 ",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-52",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-      reviewImage:" w-80 h-64 border rounded-xl mt-4  border-[#D9D9D9] p-3 object-contain self-center   ",
-      topBannerText: "text-black text-sm mt-5 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-12  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-9 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
-    },
-    group10 : {
-      container: "pt-24 px-10 flex-1 items-center",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0InputContainer:"flex-row items-center",
-      step0Input:"rounded-xl p-4  mb-36 text-base bg-gray-100",
-      step0InputText: "flex-1 text-center",
-      step0MainHeader : "text-[34px] text-center mb-3 mt-10 font-normal text-black",
-      step0ButtonsGroup: "flex-2 px-8 pb-64",
-      step1MainHeader: "text-[34px] text-center mb-3 mt-8 font-normal text-black",
-      step2MainHeader: "text-[34px] text-center mb-3 mt-8   font-normal text-black",
-      step3MainHeader: "text-[34px] text-center mb-3 mt-8 px-2 font-normal text-black",
-      step4MainHeader: "text-[34px] text-center  mb-3 mt-8 font-normal text-black",
-      step5MainHeader: "text-[34px] text-center mb-3 mt-8 px-2 font-normal text-black",
-      subHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      buttonText: "text-lg font-medium ",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-12 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-32 mt-2 ",
-      sliderValueText: "text-2xl text-black font-medium mb-10",
-      stepContainer: "mt-16",
-      smallerText: "text-base",
-      backButton: "absolute top-32 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
-      step1ButtonsGroup: "flex-2 px-8 pb-48",
-      step2ButtonsGroup: "flex-2 px-8 pb-64 ",
-      step4ButtonsGroup: "flex-2 px-8 pb-40",
-      step5ButtonsGroup: "flex-2 px-8 pb-64 mb-6 ",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-56",
-      continueButtonText:"text-white text-base font-medium",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mt-5 mb-60",
-      reviewImage:" w-96 h-80 border rounded-xl mt-4  border-[#D9D9D9] p-5 object-contain self-center   ",
-      topBannerText: "text-black text-sm mt-6 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-12  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-9 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
-    },
-    unknown : {
-      container: "pt-16 px-8 flex-1 items-center",
-      step0Input: "bg-gray-100 rounded-[10px] py-4 px-4 mb-6 text-base",
-      step0MainHeader: "text-[34px] text-center mb-3 mt-8 font-normal text-black",
-      step1MainHeader : "text-2xl text-center mb-3 mt-2 font-normal text-black",
-      step2MainHeader : "text-2xl text-center mb-3 mt-8 font-normal text-black",
-      step3MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-      step4MainHeader: "text-2xl text-center mb-3 mt-8 font-normal text-black",
-      step5MainHeader: "text-2xl px-8 text-center mb-3 mt-8 font-normal text-black",
-      subHeader: "text-sm text-center mb-5 mt-2 text-gray-600 leading-5 px-2",
-      buttonText: "text-base font-medium",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-6 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      sliderContainer: "w-full items-center mb-24",
-      sliderValueText: "text-xl text-black font-medium mb-8",
-      stepContainer: "mt-12",
-      smallerText: "text-sm",
-      backButton: "absolute top-20 left-5 w-8 h-8 items-center justify-center z-10",
-      backButtonText: "text-2xl font-light text-black",
+      step0Image: "w-[350px] h-[300px]",
+      step0ImageView: "items-center mt-12",
       step0ButtonsGroup: "flex-2 px-8 pb-48",
-      step1ButtonsGroup: "flex-2 px-8 pb-16",
-      step2ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-      step4ButtonsGroup: "flex-2 px-8 pb-28 pt-10",
-      step5ButtonsGroup: "flex-2 px-8 pb-44 pt-6",
-      sliderContinueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButton: "bg-black rounded-[10px] py-4 px-3 items-center w-full mb-24",
-      continueButtonText:"text-white text-base font-medium ",
-      reviewImage:"w-64 h-48 border rounded-xl mt-6  border-[#D9D9D9] p-3 object-contain self-center ",
-      topBannerText: "text-black text-sm mb-2 font-normal",
-      topBanner: "absolute w-full bg-white text-black pt-10  items-center justify-center z-10 active:bg-neutral-800 active:scale-[0.98]",
-      socialButton: "flex-row items-center bg-black rounded-[10px] py-4 px-5 mb-7 active:bg-neutral-800 active:scale-[0.98]",
-      socialLogo: "w-9 h-9 ml-5 mr-3"
-    }
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-44",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-44",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-44",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-48",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+
+    group9: {
+      // Common styles
+      container: "pt-24 px-10 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[350px] h-[300px]",
+      step0ImageView: "items-center mt-12",
+      step0ButtonsGroup: "flex-2 px-8 pb-48",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-44",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-44",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-44",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-[32px] text-center mb-3 mt-8 font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-48",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+
+
+
+    group10: {
+      // Common styles
+      container: "pt-24 px-10 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      continueButtonText: "text-white text-base font-medium",
+      
+      // Step 0 styles
+      step0MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
+      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step0Image: "w-[350px] h-[300px]",
+      step0ImageView: "items-center mt-12",
+      step0ButtonsGroup: "flex-2 px-8 pb-48",
+      
+      // Step 1 styles (Review)
+      step1MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
+      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
+      step1ButtonsGroup: "flex-2 px-8 pb-44",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      
+      // Step 2 styles (Upload Model)
+      step2MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
+      step2SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
+      step2ButtonsGroup: "flex-2 px-8 pb-44",
+      
+      // Step 3 styles (Upload Clothes)
+      step3MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
+      step3ButtonsGroup: "flex-2 px-8 pb-44",
+      
+      // Step 4 styles (Try-On)
+      step4MainHeader: "text-[34px] text-center mb-3 mt-8 font-semibold text-black",
+      step4ButtonsGroup: "flex-2 px-8 pb-48",
+      checkmarkContainer: "items-center justify-center mb-8 mt-20",
+      
+      // Shared upload styles (used in steps 2 and 3)
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+      
+    
   }
 
   return deviceGroupStyles[deviceGroup];
