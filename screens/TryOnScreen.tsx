@@ -61,8 +61,7 @@ export default function TryOnScreen({ navigation }) {
           break;
       }
     } catch (error) {
-      // console.error("Error presenting paywall:", error);
-      setPaywallDismissed(true); // Allow user to continue on error
+      setPaywallDismissed(true); 
     }
   };
 

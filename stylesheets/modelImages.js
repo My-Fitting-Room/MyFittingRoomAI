@@ -120,7 +120,6 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
   },
   selectedThumbnail: {
-    // No border or styling for selected thumbnail
   },
   thumbnailImage: {
     width: "100%",

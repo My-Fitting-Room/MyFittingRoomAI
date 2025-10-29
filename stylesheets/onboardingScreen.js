@@ -1,375 +1,477 @@
 import { getDeviceGroup } from "../utils/device";
 
-export const getStyles = (width,height) => {
-  const deviceGroup = getDeviceGroup(width,height);
+export const getStyles = (width, height) => {
+  const deviceGroup = getDeviceGroup(width, height);
 
   const deviceGroupStyles = {
-    
     group2: {
-      // Common styles
-      container: "pt-16 px-8 flex-1 items-center",
-      stepContainer: "mt-16",
+      container: "pt-16 px-10 flex-1 items-center",
+      stepContainer: "",
       selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
       continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
-      step0SubHeader: "text-base text-center  mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[300px] h-[250px] ",
-      step0ImageView: "items-center mt-10",
-      step0ButtonsGroup: "flex-2 px-8 pb-24",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-12",
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-1 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-20",
+      step0ButtonsGroupKeyboardShow: "px-8",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-4 font-semibold text-black",
+      step1SubHeader: "text-[10px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-4",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step2TipsContainer: "px-2 gap-y-2 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-8",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base font-medium text-center px-12 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-20",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-20",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-8 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-20",
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-2xl text-center mb-3  font-semibold text-black px-8",
-      step2SubHeader: "text-base text-center  mt-2 text-gray-600 px-20 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-16",
-      
-      // Step 3 styles (Upload Clothes)
-      step3MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-6  mt-2 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-20",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-2xl text-center mb-3 px-6  font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-24",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
     },
-   
+
     group3: {
-      // Common styles
-      container: "pt-32 px-12 flex-1 items-center",
-      stepContainer: "mt-16",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
-      step0SubHeader: "text-base text-center  mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px] ",
-      step0ImageView: "items-center mt-10",
-      step0ButtonsGroup: "flex-2 px-8 pb-36",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-28",
-      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-2xl text-center mb-3  font-semibold text-black px-8",
-      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 px-20 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-28",
-      
-      // Step 3 styles (Upload Clothes)
-      step3MainHeader: "text-2xl text-center mb-3  font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-28",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-2xl text-center mb-3 px-6  font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-40",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
-      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
-      uploadedImage: "w-44 h-56 rounded-xl",
-    },
-    
-    group4: {
-      // Common styles
-      container: "pt-24 px-12 flex-1 items-center",
-      stepContainer: "mt-16",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px]",
-      step0ImageView: "items-center mt-4",
-      step0ButtonsGroup: "flex-2 px-8 pb-40",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-32",
-      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
-      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-32",
-      
-      // Step 3 styles (Upload Clothes)
-      step3MainHeader: "text-[28px] text-center mb-3 mt-12 font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-32",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-[28px] text-center mb-3 mt-8 font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-40",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
-      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
-      uploadedImage: "w-44 h-56 rounded-xl",
-    },
-    
-    
-    group5: {
-      // Common styles
-      container: "pt-28 px-10 flex-1 items-center",
-      stepContainer: "mt-16",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px]",
-      step0ImageView: "items-center mt-4",
-      step0ButtonsGroup: "flex-2 px-8 pb-40",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-32",
-      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
-      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-32",
-      
-      // Step 3 styles (Upload Clothes)
-      step3MainHeader: "text-[30px] text-center mb-3 mt-12 font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-32",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-40",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
-      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
-      uploadedImage: "w-44 h-56 rounded-xl",
-    },
-    
-    group6: {
-      // Common styles
-      container: "pt-32 px-10 flex-1 items-center",
-      stepContainer: "mt-16",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px]",
-      step0ImageView: "items-center mt-12",
-      step0ButtonsGroup: "flex-2 px-8 pb-40",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-36",
-      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-36",
-      
-      // Step 3 styles (Upload Clothes)
-      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-36",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-44",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
-      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
-      uploadedImage: "w-44 h-56 rounded-xl",
-    },
-    
-    group7: {
-      // Common styles
-      container: "pt-28 px-10 flex-1 items-center",
-      stepContainer: "mt-16",
-      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
-      continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px]",
-      step0ImageView: "items-center mt-12",
-      step0ButtonsGroup: "flex-2 px-8 pb-40",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-36",
-      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step2SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-36",
-      
-      // Step 3 styles (Upload Clothes)
-      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-6 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-36",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-44",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
-      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
-      uploadedImage: "w-44 h-56 rounded-xl",
-    },
-   
-    group8: {
-      // Common styles
       container: "pt-24 px-10 flex-1 items-center",
       stepContainer: "mt-16",
       selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
       continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px]",
-      step0ImageView: "items-center mt-12",
-      step0ButtonsGroup: "flex-2 px-8 pb-48",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-44",
-      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step2SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-44",
-      
-      // Step 3 styles (Upload Clothes)
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-20",
+      step0ButtonsGroupKeyboardShow: "px-8",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-4 font-semibold text-black",
+      step1SubHeader: "text-[10px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-4",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step2TipsContainer: "px-2 gap-y-2 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-8",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
       step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-44",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-[30px] text-center mb-3 mt-8 font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-48",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
+      step3SubHeader: "text-base font-medium text-center px-12 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-20",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-20",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-8 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-20",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+
+    group4: {
+      container: "pt-24 px-10 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
+      continueButtonText: "text-white text-base font-medium",
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-20",
+      step0ButtonsGroupKeyboardShow: "px-8",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-4 font-semibold text-black",
+      step1SubHeader: "text-[12px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-4",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2TipsContainer: "mt-4 px-2 gap-y-4 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-8",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base font-medium text-center px-12 mb-12 mt-5 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-20",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-20",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-20",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+
+    group5: {
+      container: "pt-24 px-10 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
+      continueButtonText: "text-white text-base font-medium",
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-20",
+      step0ButtonsGroupKeyboardShow: "px-8",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step1SubHeader: "text-[12px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-4",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2TipsContainer: "mt-4 px-2 gap-y-6 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-8",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base font-medium text-center px-12 mb-12 mt-5 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-20",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-20",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-20",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+
+    group6: {
+      container: "pt-24 px-10 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
+      continueButtonText: "text-white text-base font-medium",
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-20",
+      step0ButtonsGroupKeyboardShow: "px-8",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step1SubHeader: "text-[12px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-8",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2TipsContainer: "mt-8 px-2 gap-y-6 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-16",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base font-medium text-center px-12 mb-12 mt-5 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-20",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-20",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-20",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+
+    group7: {
+      container: "pt-24 px-10 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
+      continueButtonText: "text-white text-base font-medium",
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-20",
+      step0ButtonsGroupKeyboardShow: "px-8 pb-20",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step1SubHeader: "text-[12px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-8",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2TipsContainer: "mt-8 px-2 gap-y-6 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-16",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base font-medium text-center px-12 mb-12 mt-5 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-20",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-20",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-20",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
+      uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
+      uploadedImage: "w-44 h-56 rounded-xl",
+    },
+
+    group8: {
+      container: "pt-24 px-10 flex-1 items-center",
+      stepContainer: "mt-16",
+      selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
+      continueButtonText: "text-white text-base font-medium",
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-28",
+      step0ButtonsGroupKeyboardShow: "px-8 pb-8",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step1SubHeader: "text-[12px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-28",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2TipsContainer: "mt-8 px-2 gap-y-6 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-28",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base font-medium text-center mb-12 mt-5 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-28",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-28",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-28",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
     },
 
     group9: {
-      // Common styles
       container: "pt-24 px-10 flex-1 items-center",
       stepContainer: "mt-16",
       selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
       continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px]",
-      step0ImageView: "items-center mt-12",
-      step0ButtonsGroup: "flex-2 px-8 pb-48",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-44",
-      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-28",
+      step0ButtonsGroupKeyboardShow: "px-8 pb-2",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step1SubHeader: "text-[12px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-28",
       step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step2SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-44",
-      
-      // Step 3 styles (Upload Clothes)
+      step2TipsContainer: "mt-8 px-2 gap-y-6 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-28",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
       step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-44",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-[32px] text-center mb-3 mt-8 font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-48",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
+      step3SubHeader: "text-base font-medium text-center mb-12 mt-5 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-28",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-28",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-28",
+      reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
     },
-
-
 
     group10: {
-      // Common styles
       container: "pt-24 px-10 flex-1 items-center",
       stepContainer: "mt-16",
       selectButton: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-black active:bg-neutral-800 active:scale-[0.98]",
+      selectButtonDisabled: "rounded-[10px] py-4 px-4 items-center justify-center mb-10 bg-[#DEDEDE]",
       continueButtonText: "text-white text-base font-medium",
-      
-      // Step 0 styles
-      step0MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
-      step0SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step0Image: "w-[350px] h-[300px]",
-      step0ImageView: "items-center mt-12",
-      step0ButtonsGroup: "flex-2 px-8 pb-48",
-      
-      // Step 1 styles (Review)
-      step1MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
-      step1SubHeader: "text-base text-center mb-5 mt-3 text-gray-600 leading-[22px] px-3",
-      step1ButtonsGroup: "flex-2 px-8 pb-44",
+      progressBarContainer: "absolute top-0 left-0 right-0 pt-16 mt-8 px-10 pb-4 bg-white z-50",
+      progressBarWrapper: "flex-row items-center",
+      backButton: "mr-4 w-10 h-10 rounded-full items-center justify-center",
+      backButtonBackground: "#F9F8FD",
+      progressBarOuter: "flex-1 h-1 bg-gray-200 rounded-full overflow-hidden",
+      progressBarInner: "h-full bg-black",
+      progressText: "text-left ml-14 text-sm font-medium text-black mb-2",
+      step0MainHeader: "text-[32px] text-center mt-52 font-semibold text-black",
+      step0SubHeader: "text-base text-center font-medium mt-6 mb-10 leading-[22px] text-[#A0A0A0] px-3",
+      step0InputContainer: "self-center",
+      step0Input: "bg-gray-50 rounded-xl px-4 text-base border border-gray-200",
+      step0ButtonsGroup: "px-8 pb-28",
+      step0ButtonsGroupKeyboardShow: "px-8 pb-2",
+      step1MainHeader: "text-[32px] text-center mb-3 mt-6 font-semibold text-black",
+      step1SubHeader: "text-[12px] font-medium text-center mt-2 text-[#A0A0A0] leading-[16px]",
+      step1StylesContainer: "flex-row flex-wrap justify-center gap-2 mt-6 px-4",
+      step1StyleChip: "rounded-full px-5 py-3 border border-gray-300 m-1",
+      step1StyleChipText: "text-sm font-medium",
+      step1ButtonsGroup: "px-8 pb-28",
+      step2MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step2TipsContainer: "mt-8 px-2 gap-y-6 w-full",
+      step2TipCard: "flex-row items-center bg-white rounded-3xl p-5 w-full mx-2",
+      step2IconContainer: "w-32 h-24 rounded-3xl items-center justify-center mr-5 flex-shrink-0",
+      step2IconText: "text-3xl",
+      step2TipTextContainer: "flex-1 pr-1",
+      step2TipTitle: "text-xl font-semibold text-black mb-2",
+      step2TipDescription: "text-[12px] text-[#5b5b5b] leading-[16px] font-medium",
+      step2ButtonsGroup: "px-8 pb-28",
+      step2SubHeader: "text-base font-medium text-center mt-3 text-[#A0A0A0] leading-[22px] px-16",
+      step3MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step3SubHeader: "text-base font-medium text-center mb-12 mt-5 text-[#A0A0A0] leading-[22px]",
+      step3ButtonsGroup: "px-8 pb-28",
+      step4MainHeader: "text-[25px] text-center mb-3 mt-2 font-semibold text-black",
+      step4AllDoneText: "text-base text-center mb-10 font-normal text-black",
+      step4ButtonsGroup: "px-8 pb-28",
+      step4GradientButton: "rounded-[10px] py-6 px-4 items-center justify-center active:scale-[0.98]",
+      step4GradientButtonText: "text-black text-base text-center py-4 font-medium border-2 rounded-xl border-black",
+      checkmarkContainer: "items-center justify-center mb-2 mt-24",
+      step5MainHeader: "text-[32px] text-center mb-3 mt-12 font-semibold text-black",
+      step5SubHeader: "text-base text-center font-medium mb-5 mt-3 text-[#A0A0A0] leading-[22px] px-3",
+      step5ButtonsGroup: "px-8 pb-28",
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
-      
-      // Step 2 styles (Upload Model)
-      step2MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
-      step2SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
-      step2ButtonsGroup: "flex-2 px-8 pb-44",
-      
-      // Step 3 styles (Upload Clothes)
-      step3MainHeader: "text-[34px] text-center mb-3 mt-12 font-semibold text-black",
-      step3SubHeader: "text-base text-center mb-12 mt-5 text-gray-600 leading-[22px]",
-      step3ButtonsGroup: "flex-2 px-8 pb-44",
-      
-      // Step 4 styles (Try-On)
-      step4MainHeader: "text-[34px] text-center mb-3 mt-8 font-semibold text-black",
-      step4ButtonsGroup: "flex-2 px-8 pb-48",
-      checkmarkContainer: "items-center justify-center mb-8 mt-20",
-      
-      // Shared upload styles (used in steps 2 and 3)
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
     },
-      
-    
-  }
+  };
 
   return deviceGroupStyles[deviceGroup];
 };
