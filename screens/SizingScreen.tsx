@@ -344,10 +344,10 @@ export default function SizingScreen({ navigation }) {
           return;
         }
 
-        // if (profileData.onboarding_complete === false) {
-        //   navigation.navigate("Onboarding");
-        //   return;
-        // }
+        if (profileData.onboarding_complete === false) {
+          navigation.navigate("Onboarding");
+          return;
+        }
         
         setProfile(profileData);
         setLoading(false);

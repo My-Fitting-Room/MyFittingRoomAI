@@ -28,7 +28,6 @@ export default function TryOnScreen({ navigation }) {
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
 
-  // Helper function to check if user needs to see paywall
   const shouldShowPaywall = (profileData, planData, extraTokens) => {
     return profileData.price_id === null && 
            !profileData.all_access && 
@@ -36,7 +35,6 @@ export default function TryOnScreen({ navigation }) {
            extraTokens < 1;
   };
 
-  // Function to present initial paywall
   const presentInitialPaywall = async () => {
     try {
       const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
@@ -49,7 +47,6 @@ export default function TryOnScreen({ navigation }) {
         case PAYWALL_RESULT.NOT_PRESENTED:
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
-          // User dismissed paywall - allow them to continue
           setPaywallDismissed(true);
           break;
         case PAYWALL_RESULT.PURCHASED:
@@ -118,9 +115,7 @@ export default function TryOnScreen({ navigation }) {
         setProfile(profileData);
         setLoading(false);
 
-        // Show paywall for non-paying users
         if (shouldShowPaywall(profileData, planData, extraTokens) && !paywallDismissed) {
-          // Small delay to ensure UI is ready
           setTimeout(() => {
             presentInitialPaywall();
           }, 500);

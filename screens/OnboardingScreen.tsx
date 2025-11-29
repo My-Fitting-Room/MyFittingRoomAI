@@ -1,4 +1,3 @@
-
 import { View, TouchableOpacity, Text, Alert, Image, Pressable, ActivityIndicator, Dimensions, TextInput, ScrollView, Vibration, Keyboard, Platform, Animated } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,6 +8,7 @@ import { getStyles } from "../stylesheets/onboardingScreen";
 import mixpanel from "../utils/mixpanel";
 import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
+import Purchases from "react-native-purchases";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { trackTikTokPurchase } from "../utils/tiktok";
 import { trackSingularPurchase } from "../utils/singular";
@@ -132,12 +132,52 @@ export default function OnboardingScreen({ navigation }) {
           break;
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
-          await completeOnboarding();
-          navigation.navigate("TryOn");
+          mixpanel.track("Primary Paywall Dismissed On Onboarding");
+          await handleDiscountedPaywall();
           break;
       }
     } catch (error) {
       console.error("Error presenting paywall:", error);
+      await completeOnboarding();
+      navigation.navigate("TryOn");
+    }
+  };
+
+  const handleDiscountedPaywall = async () => {
+    try {
+      const offerings = await Purchases.getOfferings();
+      
+      if (offerings.all["Discounted Offering"]) {
+        const paywallResult = await RevenueCatUI.presentPaywall({
+          offering: offerings.all["Discounted Offering"]
+        });
+
+        mixpanel.track("Discounted Paywall Displayed On Onboarding");
+        
+        switch (paywallResult) {
+          case PAYWALL_RESULT.PURCHASED:
+          case PAYWALL_RESULT.RESTORED:
+            await trackTikTokPurchase();
+            await trackSingularPurchase();
+            mixpanel.track("Discounted Paywall CTA Clicked On Onboarding");
+            await completeOnboarding();
+            navigation.replace("TryOn");
+            break;
+          case PAYWALL_RESULT.NOT_PRESENTED:
+          case PAYWALL_RESULT.ERROR:
+          case PAYWALL_RESULT.CANCELLED:
+            mixpanel.track("Both Paywalls Dismissed On Onboarding");
+            await completeOnboarding();
+            navigation.navigate("TryOn");
+            break;
+        }
+      } else {
+        console.log("Discounted offering not found");
+        await completeOnboarding();
+        navigation.navigate("TryOn");
+      }
+    } catch (error) {
+      console.error("Error presenting discounted paywall:", error);
       await completeOnboarding();
       navigation.navigate("TryOn");
     }
