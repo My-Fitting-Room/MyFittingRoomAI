@@ -127,59 +127,17 @@ export default function OnboardingScreen({ navigation }) {
           navigation.replace("TryOn");
           break;
         case PAYWALL_RESULT.NOT_PRESENTED:
-          await completeOnboarding();
-          navigation.replace("TryOn");
-          break;
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
-          mixpanel.track("Primary Paywall Dismissed On Onboarding");
-          await handleDiscountedPaywall();
+          mixpanel.track("Paywall Dismissed On Onboarding");
+          await completeOnboarding();
+          navigation.replace("TryOn");
           break;
       }
     } catch (error) {
       console.error("Error presenting paywall:", error);
       await completeOnboarding();
-      navigation.navigate("TryOn");
-    }
-  };
-
-  const handleDiscountedPaywall = async () => {
-    try {
-      const offerings = await Purchases.getOfferings();
-      
-      if (offerings.all["Discounted Offering"]) {
-        const paywallResult = await RevenueCatUI.presentPaywall({
-          offering: offerings.all["Discounted Offering"]
-        });
-
-        mixpanel.track("Discounted Paywall Displayed On Onboarding");
-        
-        switch (paywallResult) {
-          case PAYWALL_RESULT.PURCHASED:
-          case PAYWALL_RESULT.RESTORED:
-            await trackTikTokPurchase();
-            await trackSingularPurchase();
-            mixpanel.track("Discounted Paywall CTA Clicked On Onboarding");
-            await completeOnboarding();
-            navigation.replace("TryOn");
-            break;
-          case PAYWALL_RESULT.NOT_PRESENTED:
-          case PAYWALL_RESULT.ERROR:
-          case PAYWALL_RESULT.CANCELLED:
-            mixpanel.track("Both Paywalls Dismissed On Onboarding");
-            await completeOnboarding();
-            navigation.navigate("TryOn");
-            break;
-        }
-      } else {
-        console.log("Discounted offering not found");
-        await completeOnboarding();
-        navigation.navigate("TryOn");
-      }
-    } catch (error) {
-      console.error("Error presenting discounted paywall:", error);
-      await completeOnboarding();
-      navigation.navigate("TryOn");
+      navigation.replace("TryOn");
     }
   };
 
