@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  StatusBar, 
-  Platform, 
-  Alert, 
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+  Platform,
+  Alert,
   Dimensions,
-  Linking, 
+  Linking,
   ActivityIndicator
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -16,6 +16,7 @@ import Feathericons from "react-native-vector-icons/Feather";
 import { supabase } from "../App";
 import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/settingsScreen";
+import { triggerHaptic } from "../utils/haptics";
 
 export default function SettingsScreen({ navigation }) {
   const [user, setUser] = useState(null);
@@ -31,11 +32,11 @@ export default function SettingsScreen({ navigation }) {
   const getUserInfo = async () => {
     try {
       const { data, error } = await supabase.auth.getSession();
-      
+
       if (error) {
         return;
       }
-      
+
       if (data.session) {
 
         const { data: profileData, error } = await supabase
@@ -43,7 +44,7 @@ export default function SettingsScreen({ navigation }) {
           .select("*")
           .eq("id", data.session?.user?.id)
           .single();
-          
+
         if (error) {
           Alert.alert(
             "Error",
@@ -59,7 +60,7 @@ export default function SettingsScreen({ navigation }) {
       } else {
         navigation.navigate("First");
       }
-      
+
     } catch (error) {
       setLoading(false);
     }
@@ -67,15 +68,16 @@ export default function SettingsScreen({ navigation }) {
 
   const handleLogOut = async () => {
     try {
+      triggerHaptic();
       setLoading(true);
       const { error } = await supabase.auth.signOut();
-      
+
       if (error) {
         Alert.alert("Error", "Failed to sign out. Please try again.");
         setLoading(false);
         return;
       }
-      
+
       navigation.navigate("SignIn");
     } catch (error) {
       Alert.alert("Error", "An unexpected error occurred. Please try again.");
@@ -84,6 +86,7 @@ export default function SettingsScreen({ navigation }) {
   };
 
   const handleDeleteAccount = () => {
+    triggerHaptic();
     Alert.alert(
       "Delete Account",
       "Are you sure you want to delete your account? This action cannot be undone.",
@@ -98,15 +101,15 @@ export default function SettingsScreen({ navigation }) {
           onPress: async () => {
             try {
               setLoading(true);
-              
+
               const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-              
+
               if (sessionError || !sessionData.session) {
                 Alert.alert("Error", "Failed to delete account. Please try again.");
                 setLoading(false);
                 return;
               }
-  
+
               const response = await fetch('https://my-fitting-room-server.onrender.com/api/user/delete', {
                 method: 'POST',
                 headers: {
@@ -114,15 +117,15 @@ export default function SettingsScreen({ navigation }) {
                   'Authorization': `Bearer ${sessionData.session.access_token}`
                 }
               });
-  
+
               const result = await response.json();
-  
+
               if (result.success) {
 
                 const { error: signOutError } = await supabase.auth.signOut();
-              
+
                 if (signOutError) {
-                  
+
                 }
 
                 navigation.navigate("SignIn");
@@ -141,14 +144,17 @@ export default function SettingsScreen({ navigation }) {
   };
 
   const openTermsOfService = () => {
+    triggerHaptic();
     Linking.openURL("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/");
   };
 
   const openPrivacyPolicy = () => {
+    triggerHaptic();
     Linking.openURL("https://myfittingroom.ai/other-pages/privacy-policy");
   };
 
   const handleBackPress = () => {
+    triggerHaptic();
     navigation.goBack();
   };
 
@@ -156,7 +162,7 @@ export default function SettingsScreen({ navigation }) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
         <ActivityIndicator size={"large"} color="black" />
-        <Text 
+        <Text
           className="mt-3 text-2xl text-black"
           style={{ fontFamily: FONTS.SATOSHI }}
         >
@@ -167,7 +173,7 @@ export default function SettingsScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView className={styles.container} style={{ 
+    <SafeAreaView className={styles.container} style={{
       paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
     }}>
       <View className={styles.header}>
@@ -181,13 +187,13 @@ export default function SettingsScreen({ navigation }) {
         </View>
         {user && (
           <>
-            <Text 
+            <Text
               className={styles.profileName}
               style={{ fontFamily: FONTS.SWITZER, fontWeight: "400" }}
             >
               {user.user_metadata?.name || "User"}
             </Text>
-            <Text 
+            <Text
               className={styles.profileEmail}
               style={{ fontFamily: FONTS.SWITZER, fontWeight: "400" }}
             >
@@ -197,29 +203,29 @@ export default function SettingsScreen({ navigation }) {
         )}
       </View>
       <View className={styles.settingsContainer}>
-        <Text 
+        <Text
           className={styles.supportEmailText}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
           Email for support: info@myfittingroom.ai
         </Text>
-        <Text 
+        <Text
           className={styles.referralInfoText}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
           Your referral code to share with others:
         </Text>
-        <Text 
+        <Text
           className={styles.referralCodeText}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
           {profile?.referral_code}
         </Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           className={styles.linkButton}
           onPress={openTermsOfService}
         >
-          <Text 
+          <Text
             className={styles.linkButtonText}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
@@ -227,11 +233,11 @@ export default function SettingsScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           className={styles.linkButton}
           onPress={openPrivacyPolicy}
         >
-          <Text 
+          <Text
             className={styles.linkButtonText}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
@@ -239,12 +245,12 @@ export default function SettingsScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           className={`${styles.logoutButton} ${loading ? "opacity-60" : ""}`}
           onPress={handleLogOut}
           disabled={loading}
         >
-          <Text 
+          <Text
             className={styles.logoutButtonText}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
@@ -252,11 +258,11 @@ export default function SettingsScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           className={styles.deleteButton}
           onPress={handleDeleteAccount}
         >
-          <Text 
+          <Text
             className={styles.deleteButtonText}
             style={{ fontFamily: FONTS.SATOSHI }}
           >

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { 
-  View, 
-  Text, 
-  Alert, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  ScrollView,  
+import {
+  View,
+  Text,
+  Alert,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
   ActivityIndicator,
   TextInput,
   Dimensions,
@@ -22,6 +22,7 @@ import { getStyles } from "../stylesheets/sizingScreen";
 import mixpanel from "../utils/mixpanel";
 import { trackTikTokPurchase } from "../utils/tiktok";
 import { trackSingularPurchase } from "../utils/singular";
+import { triggerHaptic } from "../utils/haptics";
 
 const CLOTHING_DATA = {
   "clothing_types": {
@@ -212,18 +213,21 @@ const CLOTHING_DATA = {
   }
 };
 
-const DropdownSelect = ({ label, placeholder, value, options, onChange , width,height }) => {
+const DropdownSelect = ({ label, placeholder, value, options, onChange, width, height }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const style = getDropdownStyles(width,height);
+  const style = getDropdownStyles(width, height);
 
   return (
     <View className={style.inputGroup}>
       <Text className={style.label} style={{ fontFamily: FONTS.SATOSHI }}>{label}</Text>
       <TouchableOpacity
         className={style.dropdownButton}
-        onPress={() => setModalVisible(true)}
+        onPress={() => {
+          triggerHaptic();
+          setModalVisible(true);
+        }}
       >
-        <Text 
+        <Text
           className={value ? style.dropdownText : style.dropdownPlaceholder}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
@@ -244,13 +248,16 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange , width,h
         >
           <View className={style.modalContent}>
             <View className={style.modalHeader}>
-              <Text 
+              <Text
                 className={style.modalTitle}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
                 {label}
               </Text>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <TouchableOpacity onPress={() => {
+                triggerHaptic();
+                setModalVisible(false);
+              }}>
                 <Ionicons name="close" size={24} color="#000" />
               </TouchableOpacity>
             </View>
@@ -260,11 +267,12 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange , width,h
                   key={option.value}
                   className={`${style.optionItem} ${value === option.value ? style.selectedOption : ""}`}
                   onPress={() => {
+                    triggerHaptic();
                     onChange(option.value);
                     setModalVisible(false);
                   }}
                 >
-                  <Text 
+                  <Text
                     className={`${style.optionText} ${value === option.value ? style.selectedOptionText : ""}`}
                     style={{ fontFamily: FONTS.SATOSHI }}
                   >
@@ -276,7 +284,7 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange , width,h
           </View>
         </TouchableOpacity>
       </Modal>
-    </View>
+    </View >
   );
 };
 
@@ -291,7 +299,7 @@ export default function SizingScreen({ navigation }) {
   const [submitting, setSubmitting] = useState(false);
 
   const { width, height } = Dimensions.get("window");
-  const styles = getStyles(width,height);
+  const styles = getStyles(width, height);
 
   const [formData, setFormData] = useState({
     brand: "",
@@ -304,8 +312,8 @@ export default function SizingScreen({ navigation }) {
     if (profile.price_id === null && !profile.all_access) {
       const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
         requiredEntitlementIdentifier: "Unlimited"
-      });    
-      
+      });
+
       mixpanel.track("Paywall Displayed On Sizing Screen");
       switch (paywallResult) {
         case PAYWALL_RESULT.NOT_PRESENTED:
@@ -327,7 +335,7 @@ export default function SizingScreen({ navigation }) {
     const checkSession = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (!session) {
           navigation.navigate("First");
           return;
@@ -344,11 +352,11 @@ export default function SizingScreen({ navigation }) {
           return;
         }
 
-        if (profileData.onboarding_complete === false) {
-          navigation.navigate("Onboarding");
-          return;
-        }
-        
+        // if (profileData.onboarding_complete === false) {
+        //   navigation.navigate("Onboarding");
+        //   return;
+        // }
+
         setProfile(profileData);
         setLoading(false);
       } catch (error) {
@@ -403,6 +411,7 @@ export default function SizingScreen({ navigation }) {
   };
 
   const handleSubmit = async () => {
+    triggerHaptic();
     if (!formData.brand || !formData.category || !formData.clothingType) {
       Alert.alert("Missing Information", "Please fill in all required fields");
       return;
@@ -428,7 +437,7 @@ export default function SizingScreen({ navigation }) {
 
       const response = await fetch("https://my-fitting-room-server.onrender.com/api/gemini/clothing-size", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${access_token}`
         },
@@ -451,6 +460,7 @@ export default function SizingScreen({ navigation }) {
   };
 
   const handleResetForm = () => {
+    triggerHaptic();
     setFormData({
       brand: "",
       category: "",
@@ -464,8 +474,8 @@ export default function SizingScreen({ navigation }) {
   if (loading) {
     return (
       <View className={styles.loadingContainer}>
-         <ActivityIndicator size={"large"} color="black" />
-        <Text 
+        <ActivityIndicator size={"large"} color="black" />
+        <Text
           className={styles.loadingText}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
@@ -477,14 +487,14 @@ export default function SizingScreen({ navigation }) {
 
   const renderForm = () => (
     <View className={styles.formContainer}>
-      <Text 
+      <Text
         className={styles.heading}
         style={{ fontFamily: FONTS.SWITZER }}
       >
         Find My Size
       </Text>
       <View className={styles.inputGroup}>
-        <Text 
+        <Text
           className={styles.label}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
@@ -528,7 +538,7 @@ export default function SizingScreen({ navigation }) {
 
       {requiredMeasurements.length > 0 && (
         <View className={styles.measurementsSection}>
-          <Text 
+          <Text
             className={styles.sectionTitle}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
@@ -536,7 +546,7 @@ export default function SizingScreen({ navigation }) {
           </Text>
           {requiredMeasurements.map((measurement) => (
             <View key={measurement} className={styles.inputGroup}>
-              <Text 
+              <Text
                 className={styles.label}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -561,7 +571,7 @@ export default function SizingScreen({ navigation }) {
 
       {optionalMeasurements.length > 0 && (
         <View className={styles.measurementsSection}>
-          <Text 
+          <Text
             className={styles.sectionTitle}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
@@ -569,7 +579,7 @@ export default function SizingScreen({ navigation }) {
           </Text>
           {optionalMeasurements.map((measurement) => (
             <View key={measurement} className={styles.inputGroup}>
-              <Text 
+              <Text
                 className={styles.label}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -592,15 +602,15 @@ export default function SizingScreen({ navigation }) {
         </View>
       )}
 
-      <TouchableOpacity 
-        className={styles.button} 
+      <TouchableOpacity
+        className={styles.button}
         onPress={handleSubmit}
         disabled={submitting}
       >
         {submitting ? (
           <ActivityIndicator size="small" color="black" />
         ) : (
-          <Text 
+          <Text
             className={styles.buttonText}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
@@ -617,16 +627,16 @@ export default function SizingScreen({ navigation }) {
         <TouchableOpacity onPress={handleResetForm}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-        <Text 
+        <Text
           className={styles.resultTitle}
           style={{ fontFamily: FONTS.SWITZER }}
         >
           Your Size
         </Text>
-        <View style={{ width: 24 }} /> 
+        <View style={{ width: 24 }} />
       </View>
       <View className={styles.resultContent}>
-        <Text 
+        <Text
           className={styles.sizeText}
           style={{ fontFamily: FONTS.SATOSHI }}
         >
@@ -641,10 +651,10 @@ export default function SizingScreen({ navigation }) {
       <HeaderNav navigation={navigation} />
       <ScrollView
         className={styles.content}
-        contentContainerStyle={{ paddingHorizontal:  15 }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
         showsVerticalScrollIndicator={false}
       >
-        <View 
+        <View
           className={styles.card}
           style={{
             shadowColor: "#000",

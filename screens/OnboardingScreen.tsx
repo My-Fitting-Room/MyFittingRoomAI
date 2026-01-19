@@ -13,6 +13,7 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { trackTikTokPurchase } from "../utils/tiktok";
 import { trackSingularPurchase } from "../utils/singular";
 import Video from "react-native-video";
+import { triggerHaptic } from "../utils/haptics";
 
 const STYLE_OPTIONS = [
   "Y2k", "Streetwear", "Preppy", "Boho", "Minimalist", "Vintage",
@@ -24,7 +25,7 @@ const STYLE_OPTIONS = [
 export default function OnboardingScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(6);
   const [uploadingModel, setUploadingModel] = useState(false);
   const [modelImage, setModelImage] = useState(null);
   const [userName, setUserName] = useState("");
@@ -62,7 +63,7 @@ export default function OnboardingScreen({ navigation }) {
     "Elegant": "#E8C5E5",
     "Old Money": "#C2E9FB",
     "Flashy": "#FFD93D"
-};
+  };
 
   const totalSteps = 6;
 
@@ -70,7 +71,7 @@ export default function OnboardingScreen({ navigation }) {
 
   const updateOnboardingStep = async (step) => {
     if (!profile?.id) return;
-    
+
     try {
       await supabase
         .from("profiles")
@@ -90,7 +91,7 @@ export default function OnboardingScreen({ navigation }) {
 
       const { error: updateError } = await supabase
         .from("profiles")
-        .update({ 
+        .update({
           onboarding_complete: true,
           onboarding_wizard_step: 7
         })
@@ -109,14 +110,14 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const handlePaywall = async () => {
-    
+    triggerHaptic();
     try {
       const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
         requiredEntitlementIdentifier: "Unlimited"
       });
 
       mixpanel.track("Paywall Displayed On Onboarding");
-      
+
       switch (paywallResult) {
         case PAYWALL_RESULT.PURCHASED:
         case PAYWALL_RESULT.RESTORED:
@@ -142,7 +143,7 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const handleRateAndContinue = async () => {
-    
+    triggerHaptic();
     if (InAppReview.isAvailable()) {
       InAppReview.RequestInAppReview()
         .then(() => {
@@ -177,12 +178,13 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const goToNextStep = async () => {
+    triggerHaptic();
     const nextStep = currentStep + 1;
     animateToNextStep(nextStep);
   };
 
   const goToPreviousStep = async () => {
-    
+    triggerHaptic();
     if (currentStep > 1) {
       const previousStep = currentStep - 1;
       animateToNextStep(previousStep);
@@ -190,7 +192,7 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const handleNameSubmit = async () => {
-    
+    triggerHaptic();
     if (!userName.trim()) {
       Alert.alert("Name Required", "Please enter your name to continue");
       return;
@@ -219,7 +221,7 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const toggleStyle = (style) => {
-    
+    triggerHaptic();
     if (selectedStyles.includes(style)) {
       setSelectedStyles(selectedStyles.filter(s => s !== style));
     } else {
@@ -230,7 +232,7 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const handleStylesSubmit = async () => {
-    
+    triggerHaptic();
     if (selectedStyles.length < 3) {
       Alert.alert("Select Styles", "Please select at least 3 styles to continue");
       return;
@@ -253,20 +255,20 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   const handleUploadModelImage = async () => {
-    
+    triggerHaptic();
     try {
       setUploadingModel(true);
-      
+
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      
+
       if (sessionError || !session) {
         Alert.alert("Error", "Authentication required. Please log in again.");
         setUploadingModel(false);
         return;
       }
-      
+
       const supabaseToken = session.access_token;
-      
+
       const result = await launchImageLibrary({
         mediaType: "photo",
         includeBase64: false,
@@ -274,31 +276,31 @@ export default function OnboardingScreen({ navigation }) {
         maxWidth: 2000,
         quality: 0.8,
       });
-      
+
       if (result.didCancel) {
         setUploadingModel(false);
         return;
       }
-      
+
       if (result.errorCode) {
         Alert.alert("Error", `Image picker error: ${result.errorMessage}`);
         setUploadingModel(false);
         return;
       }
-      
+
       if (result.assets && result.assets.length > 0) {
         const selectedImage = result.assets[0];
-        
+
         const formData = new FormData();
         formData.append("file", {
           uri: selectedImage.uri,
-          type: selectedImage.type || "image/jpeg", 
+          type: selectedImage.type || "image/jpeg",
           name: selectedImage.fileName || "image.jpg",
         });
-        
+
         formData.append("image_bucket", "models");
         formData.append("image_table", "model_images");
-        
+
         const response = await fetch(
           "https://my-fitting-room-server.onrender.com/api/image/upload",
           {
@@ -309,24 +311,24 @@ export default function OnboardingScreen({ navigation }) {
             body: formData,
           }
         );
-        
+
         const responseData = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(responseData.message || "Failed to upload image");
         }
-        
+
         const { data: modelImageRecord, error: fetchError } = await supabase
           .from("model_images")
           .select("*")
           .eq("profiles_id", profile.id)
           .eq("url", responseData.image_url)
           .single();
-        
+
         if (fetchError || !modelImageRecord) {
           throw new Error("Failed to fetch uploaded image record");
         }
-        
+
         setModelImage(modelImageRecord);
         mixpanel.track('Onboarding Model Image Uploaded');
       }
@@ -341,7 +343,7 @@ export default function OnboardingScreen({ navigation }) {
     const checkSession = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (!session) {
           navigation.navigate("First");
           return;
@@ -364,15 +366,15 @@ export default function OnboardingScreen({ navigation }) {
         }
 
         setProfile(profileData);
-        
+
         if (profileData.name) {
           setUserName(profileData.name);
         }
-        
+
         if (profileData.styles && Array.isArray(profileData.styles)) {
           setSelectedStyles(profileData.styles);
         }
-        
+
         const { data: latestModelImage } = await supabase
           .from("model_images")
           .select("*")
@@ -380,11 +382,11 @@ export default function OnboardingScreen({ navigation }) {
           .order("created_at", { ascending: false })
           .limit(1)
           .single();
-        
+
         if (latestModelImage) {
           setModelImage(latestModelImage);
         }
-        
+
         const step = profileData.onboarding_wizard_step || 1;
         setCurrentStep(step);
         setLoading(false);
@@ -401,7 +403,7 @@ export default function OnboardingScreen({ navigation }) {
 
   const ProgressBar = () => {
     const progressPercentage = (currentStep / totalSteps) * 100;
-    
+
     return (
       <View className={styles.progressBarContainer}>
         <Text className={styles.progressText} style={{ fontFamily: FONTS.SATOSHI }}>
@@ -409,7 +411,7 @@ export default function OnboardingScreen({ navigation }) {
         </Text>
         <View className={styles.progressBarWrapper}>
           {currentStep > 0 && (
-            <TouchableOpacity 
+            <TouchableOpacity
               className={styles.backButton}
               style={{ backgroundColor: styles.backButtonBackground }}
               onPress={goToPreviousStep}
@@ -419,7 +421,7 @@ export default function OnboardingScreen({ navigation }) {
             </TouchableOpacity>
           )}
           <View className={styles.progressBarOuter}>
-            <View 
+            <View
               className={styles.progressBarInner}
               style={{ width: `${progressPercentage}%` }}
             />
@@ -433,7 +435,7 @@ export default function OnboardingScreen({ navigation }) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
         <ActivityIndicator size={"large"} color="black" />
-        <Text 
+        <Text
           className="mt-3 text-2xl text-black"
           style={{ fontFamily: FONTS.SATOSHI }}
         >
@@ -445,30 +447,30 @@ export default function OnboardingScreen({ navigation }) {
 
   if (currentStep === 1) {
     return (
-      <View 
+      <View
         className="flex-1 bg-white"
       >
         <ProgressBar />
         <Animated.View className="flex-1" style={{ opacity: fadeAnim }}>
           <View className={styles.container}>
             <View className={styles.stepContainer}>
-              <Text 
+              <Text
                 className={styles.step0MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
                 What's your name?
               </Text>
-              <Text 
+              <Text
                 className={styles.step0SubHeader}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
                 We'd love to personalize your experience
               </Text>
-              
+
               <View className={styles.step0InputContainer}>
                 <TextInput
                   className={styles.step0Input}
-                  style={{ 
+                  style={{
                     fontFamily: FONTS.SATOSHI,
                     width: 320,
                     color: 'black',
@@ -486,16 +488,16 @@ export default function OnboardingScreen({ navigation }) {
               </View>
             </View>
           </View>
-          <View 
+          <View
             className={styles.step0ButtonsGroup}
-           
+
           >
-            <Pressable 
-              className={ (userName.length >  0) ?  styles.selectButton : styles.selectButtonDisabled}
+            <Pressable
+              className={(userName.length > 0) ? styles.selectButton : styles.selectButtonDisabled}
               onPress={handleNameSubmit}
-              disabled={userName.length === 0}            
+              disabled={userName.length === 0}
             >
-              <Text 
+              <Text
                 className={styles.continueButtonText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -516,25 +518,25 @@ export default function OnboardingScreen({ navigation }) {
           <ScrollView className="flex-1">
             <View className={styles.container}>
               <View className={styles.stepContainer}>
-                <Text 
+                <Text
                   className={styles.step1MainHeader}
                   style={{ fontFamily: FONTS.SWITZER }}
                 >
                   Choose your styles
                 </Text>
-                <Text 
+                <Text
                   className={styles.step1SubHeader}
                   style={{ fontFamily: FONTS.SATOSHI }}
                 >
                   Select at least 3 styles that resonate with you (max 6)
                 </Text>
-                
+
                 <View className={styles.step1StylesContainer}>
                   {STYLE_OPTIONS.map((style) => {
                     const isSelected = selectedStyles.includes(style);
                     const bgColor = isSelected ? STYLE_COLORS[style] : "#fff";
                     const borderColor = isSelected ? STYLE_COLORS[style] : "#D1D5DB";
-                    
+
                     return (
                       <Pressable
                         key={style}
@@ -562,13 +564,13 @@ export default function OnboardingScreen({ navigation }) {
             </View>
           </ScrollView>
           <View className={styles.step1ButtonsGroup}>
-            <Pressable 
+            <Pressable
               className={styles.selectButton}
               onPress={handleStylesSubmit}
               disabled={selectedStyles.length < 3}
               style={{ opacity: selectedStyles.length < 3 ? 0.5 : 1 }}
             >
-              <Text 
+              <Text
                 className={styles.continueButtonText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -588,23 +590,23 @@ export default function OnboardingScreen({ navigation }) {
         <Animated.View className="flex-1" style={{ opacity: fadeAnim }}>
           <View className={styles.container}>
             <View className={styles.stepContainer}>
-              <Text 
+              <Text
                 className={styles.step2MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
                 For best results
               </Text>
-              <Text 
-                  className={styles.step2SubHeader}
-                  style={{ fontFamily: FONTS.SATOSHI }}
-                >
-                  Tips to get the best outcomes
-                </Text>
-              
+              <Text
+                className={styles.step2SubHeader}
+                style={{ fontFamily: FONTS.SATOSHI }}
+              >
+                Tips to get the best outcomes
+              </Text>
+
               <View className={styles.step2TipsContainer}>
                 <View className={styles.step2TipCard}>
                   <View className={styles.step2IconContainer} style={{ backgroundColor: "#BDF4FF" }}>
-                    <Image 
+                    <Image
                       source={require("../assets/card-image-1.png")}
                       style={{ width: 48, height: 48 }}
                       resizeMode="contain"
@@ -622,7 +624,7 @@ export default function OnboardingScreen({ navigation }) {
 
                 <View className={styles.step2TipCard}>
                   <View className={styles.step2IconContainer} style={{ backgroundColor: "#FFEBEE" }}>
-                    <Image 
+                    <Image
                       source={require("../assets/card-image-2.png")}
                       style={{ width: 48, height: 48 }}
                       resizeMode="contain"
@@ -640,7 +642,7 @@ export default function OnboardingScreen({ navigation }) {
 
                 <View className={styles.step2TipCard}>
                   <View className={styles.step2IconContainer} style={{ backgroundColor: "#FFA10014" }}>
-                    <Image 
+                    <Image
                       source={require("../assets/card-image-3.png")}
                       style={{ width: 48, height: 48 }}
                       resizeMode="contain"
@@ -659,11 +661,11 @@ export default function OnboardingScreen({ navigation }) {
             </View>
           </View>
           <View className={styles.step2ButtonsGroup}>
-            <Pressable 
+            <Pressable
               className={styles.selectButton}
               onPress={goToNextStep}
             >
-              <Text 
+              <Text
                 className={styles.continueButtonText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -683,32 +685,32 @@ export default function OnboardingScreen({ navigation }) {
         <Animated.View className="flex-1" style={{ opacity: fadeAnim }}>
           <View className={styles.container}>
             <View className={styles.stepContainer}>
-              <Text 
+              <Text
                 className={styles.step3MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
                 Upload a full body pic
               </Text>
-              <Text 
+              <Text
                 className={styles.step3SubHeader}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
                 Use a photo taken by someone else in good lighting.
               </Text>
-              
+
               <View className="flex-row mt-8 px-4 gap-x-2 justify-between items-center">
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={handleUploadModelImage}
                   disabled={uploadingModel}
                 >
-                  <Image 
-                    source={modelImage ? { uri: modelImage.url } : require("../assets/step3.png")} 
+                  <Image
+                    source={modelImage ? { uri: modelImage.url } : require("../assets/step3.png")}
                     className={styles.uploadedImage}
                     resizeMode="cover"
                   />
                 </TouchableOpacity>
 
-                <TouchableOpacity 
+                <TouchableOpacity
                   className={styles.uploadPlaceholder}
                   onPress={handleUploadModelImage}
                   disabled={uploadingModel}
@@ -718,7 +720,7 @@ export default function OnboardingScreen({ navigation }) {
                   ) : (
                     <View className="items-center">
                       <Feathericons name="upload-cloud" size={48} color="black" />
-                      <Text 
+                      <Text
                         className="mt-4 text-base text-center px-4"
                         style={{ fontFamily: FONTS.SATOSHI }}
                       >
@@ -731,13 +733,13 @@ export default function OnboardingScreen({ navigation }) {
             </View>
           </View>
           <View className={styles.step3ButtonsGroup}>
-            <Pressable 
+            <Pressable
               className={styles.selectButton}
               onPress={goToNextStep}
               disabled={!modelImage}
               style={{ opacity: !modelImage ? 0.5 : 1 }}
             >
-              <Text 
+              <Text
                 className={styles.continueButtonText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -766,13 +768,13 @@ export default function OnboardingScreen({ navigation }) {
                   muted={true}
                 />
               </View>
-              <Text 
+              <Text
                 className={styles.step4AllDoneText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
                 All done!
               </Text>
-              <Text 
+              <Text
                 className={styles.step4MainHeader}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -781,11 +783,11 @@ export default function OnboardingScreen({ navigation }) {
             </View>
           </View>
           <View className={styles.step4ButtonsGroup}>
-            <Pressable 
+            <Pressable
               className={styles.selectButton}
               onPress={goToNextStep}
             >
-              <Text 
+              <Text
                 className={styles.continueButtonText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -805,13 +807,13 @@ export default function OnboardingScreen({ navigation }) {
         <Animated.View className="flex-1" style={{ opacity: fadeAnim }}>
           <View className={styles.container}>
             <View className={styles.stepContainer}>
-              <Text 
+              <Text
                 className={styles.step5MainHeader}
                 style={{ fontFamily: FONTS.SWITZER }}
               >
                 Please give us a rating
               </Text>
-              <Text 
+              <Text
                 className={styles.step5SubHeader}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
@@ -821,22 +823,22 @@ export default function OnboardingScreen({ navigation }) {
             </View>
           </View>
           <View className={styles.step5ButtonsGroup}>
-            <Pressable 
+            <Pressable
               className={styles.selectButton}
               onPress={handleRateAndContinue}
             >
-              <Text 
+              <Text
                 className={styles.continueButtonText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >
                 Rate & Continue
               </Text>
             </Pressable>
-            <Pressable 
+            <Pressable
               className={styles.selectButton}
               onPress={handlePaywall}
             >
-              <Text 
+              <Text
                 className={styles.continueButtonText}
                 style={{ fontFamily: FONTS.SATOSHI }}
               >

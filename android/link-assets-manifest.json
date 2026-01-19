@@ -2,20 +2,96 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "assets/fonts/Satoshi-Variable.ttf",
-      "sha1": "d49872a745842f389bc9d24b73d0a3090fce50b1"
+      "path": "assets/fonts/Switzer-Thin.otf",
+      "sha1": "3c86ecee3581643737400e216f7c942fecbdefad"
+    },
+    {
+      "path": "assets/fonts/Switzer-Italic.otf",
+      "sha1": "b444b1a5a42e6adb9306169f996edd5fdd296bca"
+    },
+    {
+      "path": "assets/fonts/Switzer-Bold.otf",
+      "sha1": "1ba1a677ea140e785856aae36e692d49a07015e8"
     },
     {
       "path": "assets/fonts/Satoshi-VariableItalic.ttf",
       "sha1": "62c34444221ff17e93a8e1cadfea5a8c68ea705b"
     },
     {
+      "path": "assets/fonts/Switzer-Black.otf",
+      "sha1": "cadf4c1cd8be1410524165534e85f1d292b1e5a5"
+    },
+    {
+      "path": "assets/fonts/Switzer-ExtralightItalic.otf",
+      "sha1": "4be88844ee260ffe47d039532091ebc91c014dc2"
+    },
+    {
       "path": "assets/fonts/Switzer-Variable.ttf",
       "sha1": "3226e9d8bad0aebbbbbd85768da49677045b126e"
     },
     {
+      "path": "assets/fonts/YoutubeLogo.png",
+      "sha1": "b61c46350e3c70baad3362c42cfb2b25c5775d52"
+    },
+    {
+      "path": "assets/fonts/Switzer-Light.otf",
+      "sha1": "80b7b68e463191eb0790eb018e9db48fdd282d91"
+    },
+    {
+      "path": "assets/fonts/Switzer-Regular.otf",
+      "sha1": "f0a7eb123220f32bb95d3d2325c8bdcb734aba32"
+    },
+    {
+      "path": "assets/fonts/Switzer-SemiboldItalic.otf",
+      "sha1": "810fb4b0cfbbdcc4bb245692ec07dcf89f72ddc5"
+    },
+    {
+      "path": "assets/fonts/Switzer-ExtraboldItalic.otf",
+      "sha1": "639ee659b296437d4b2b8141594edcc34d26315c"
+    },
+    {
+      "path": "assets/fonts/Switzer-LightItalic.otf",
+      "sha1": "64ab93e9865e3585c1dd00689a4d63acac5e35e1"
+    },
+    {
+      "path": "assets/fonts/Switzer-BoldItalic.otf",
+      "sha1": "16b69f7d5beeb73cf53adf4ec14c3593f4124191"
+    },
+    {
+      "path": "assets/fonts/Switzer-Extralight.otf",
+      "sha1": "db1b005fe3da718be0aad7c69aac87c5fcac19c0"
+    },
+    {
+      "path": "assets/fonts/Switzer-Semibold.otf",
+      "sha1": "cc42238161dd051e819262cad9037fb80e01904e"
+    },
+    {
       "path": "assets/fonts/Switzer-VariableItalic.ttf",
       "sha1": "e1552454db483cf2c556a12e9c39e507e882d68c"
+    },
+    {
+      "path": "assets/fonts/Switzer-Extrabold.otf",
+      "sha1": "b6a432c62795f7b246a4f7f5bad67ad83115dff3"
+    },
+    {
+      "path": "assets/fonts/Switzer-ThinItalic.otf",
+      "sha1": "c67768eeb1ae40bdb913fa1da197e40aade725e3"
+    },
+    {
+      "path": "assets/fonts/Switzer-MediumItalic.otf",
+      "sha1": "004c11fb9e6f04f47c70a025e37771abdd2041f0"
+    },
+    {
+      "path": "assets/fonts/Switzer-Medium.otf",
+      "sha1": "a2c60e07f88b8ce7dc90f57ea7671e54610d8954"
+    },
+    {
+      "path": "assets/fonts/Switzer-BlackItalic.otf",
+      "sha1": "19e7aafc5d95d7e317ace67dead22e22a600063a"
+    },
+    {
+      "path": "assets/fonts/Satoshi-Variable.ttf",
+      "sha1": "d49872a745842f389bc9d24b73d0a3090fce50b1"
     }
   ]
 }

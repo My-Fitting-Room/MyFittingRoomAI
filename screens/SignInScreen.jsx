@@ -1,36 +1,47 @@
-import { View, TouchableOpacity, Text, Alert, Image, Pressable, Linking, Dimensions } from "react-native";
+import { View, TouchableOpacity, Text, Alert, Image, TextInput, Linking, Pressable, Dimensions } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import { supabase } from "../App";
-import React from "react";
+import React, { useState } from "react";
 import { FONTS } from "../constants/fonts";
 import Config from "react-native-config";
-import Video from "react-native-video";
-import { getStyles } from "../stylesheets/signupScreen";
+import { getStyles } from "../stylesheets/signinScreen";
 import { trackTikTokStandardEvent } from "../utils/tiktok";
 import { TikTokEventName } from "react-native-tiktok-business-sdk";
 import { trackSingularStandardEvent } from "../utils/singular";
+import { triggerHaptic } from "../utils/haptics";
 
-export default function SignUpScreen({ navigation }) {
+
+export default function SignInScreen({ navigation }) {
   const { width, height } = Dimensions.get("window");
-
   const styles = getStyles(width, height);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   GoogleSignin.configure({
     iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
   });
 
+  const handleForgotPassword = () => {
+    triggerHaptic();
+    Linking.openURL("https://app.myfittingroom.ai/signin");
+  };
+
   const handleTermsPress = () => {
+    triggerHaptic();
     Linking.openURL("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/");
   };
 
   const handlePrivacyPress = () => {
+    triggerHaptic();
     Linking.openURL("https://myfittingroom.ai/other-pages/privacy-policy");
   };
 
-  const handleGoogleSignUp = async () => {
+  const handleGoogleSignIn = async () => {
     try {
+      triggerHaptic();
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       if (userInfo.data.idToken) {
@@ -39,22 +50,21 @@ export default function SignUpScreen({ navigation }) {
           token: userInfo.data.idToken,
         });
 
-        if(error) {
+        if (error) {
           Alert.alert(
-            "Sign Up Error",
+            "Sign In Error ",
             "Please Try Again Later!",
             [{ text: "OK" }]
           );
           return;
         }
 
-        if(data) {
-
+        if (data) {
           if (data.user) {
             const userCreatedTime = new Date(data.user.created_at);
             const now = new Date();
             const timeDiff = now.getTime() - userCreatedTime.getTime();
-            
+
             if (timeDiff < 5 * 60 * 1000) {
               await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
               await trackSingularStandardEvent("sng_registration");
@@ -64,48 +74,47 @@ export default function SignUpScreen({ navigation }) {
           }
           navigation.navigate("TryOn");
         }
-        
+
       } else {
         Alert.alert(
-          "Sign Up Error",
+          "Sign In Error",
           "Please Try Again Later!",
           [{ text: "OK" }]
         );
-        return;
       }
     } catch (error) {
       Alert.alert(
-        "Sign Up Error",
+        "Sign In Error",
         "Please Try Again Later!",
         [{ text: "OK" }]
       );
-      return;
     }
   };
 
-  const handleAppleSignUp = async () => {
+  const handleAppleSignIn = async () => {
     try {
+      triggerHaptic();
       const nonce = Math.random().toString(36).substring(2, 10);
-      
+
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-        nonce: nonce 
+        nonce: nonce
       });
-        
+
       const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
-        
+
       if (credentialState === appleAuth.State.AUTHORIZED) {
         const { data, error } = await supabase.auth.signInWithIdToken({
           provider: "apple",
           token: appleAuthRequestResponse.identityToken,
-          nonce: nonce 
+          nonce: nonce
         });
-        
+
         if (error) {
           Alert.alert(
-            "Sign Up Error",
-            "Authentication failed. Please try again.",
+            "Sign In Error",
+            "Authentication failed with Supabase. Please try again.",
             [{ text: "OK" }]
           );
           return;
@@ -115,7 +124,7 @@ export default function SignUpScreen({ navigation }) {
           const userCreatedTime = new Date(data.user.created_at);
           const now = new Date();
           const timeDiff = now.getTime() - userCreatedTime.getTime();
-          
+
           if (timeDiff < 5 * 60 * 1000) {
             await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
             await trackSingularStandardEvent("sng_registration");
@@ -123,22 +132,54 @@ export default function SignUpScreen({ navigation }) {
             await trackSingularStandardEvent("sng_login");
           }
         }
-  
+
         navigation.navigate("TryOn");
       } else {
         Alert.alert(
-          "Sign Up Error",
+          "Sign In Error",
           "Apple authentication not authorized. Please try again.",
           [{ text: "OK" }]
         );
       }
     } catch (error) {
       Alert.alert(
-        "Sign Up Error",
+        "Sign In Error",
         "Failed to authenticate with Apple. Please try again.",
         [{ text: "OK" }]
       );
     }
+  };
+
+  const handleEmailSignIn = async () => {
+    try {
+      triggerHaptic();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        Alert.alert(
+          "Sign In Error",
+          error.message,
+          [{ text: "OK" }]
+        );
+        return;
+      }
+
+      navigation.navigate("TryOn");
+    } catch (error) {
+      Alert.alert(
+        "Sign In Error",
+        "Please Try Again Later!",
+        [{ text: "OK" }]
+      );
+    }
+  };
+
+  const handleSignUp = () => {
+    triggerHaptic();
+    navigation.navigate("SignUp");
   };
 
   const handleSubscribe = () => {
@@ -147,9 +188,9 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <View className={styles.screen}>
-      <TouchableOpacity 
+      {/* <TouchableOpacity 
         className={styles.subscribeBanner}
-        style={{ elevation: 5, zIndex: 10 }}
+        style={{ elevation: 5 }}
         onPress={handleSubscribe}
         activeOpacity={0.9}
       >
@@ -159,94 +200,143 @@ export default function SignUpScreen({ navigation }) {
         >
           Subscribe to our email list
         </Text>
-      </TouchableOpacity>
-      <View className={styles.mainWrapper}>
-        <View className={styles.contentWrapper}>
-          <Text 
-            className={styles.headerText}
-            style={{ fontFamily: FONTS.SWITZER, fontWeight: "600" }}
-          >
-            Try-On Clothes From Your Phone.
-          </Text>
-          <Text 
-            className={`${styles.subHeaderText} ${styles.subHeader}`}
-            style={{ 
-              fontFamily: FONTS.SATOSHI,
-              lineHeight: 22 
-            }}
-          >
-            Just upload a photo of the clothing you want to try on and a photo of yourself.
-          </Text>
-          <View className={`${styles.videoViewContainer} ${styles.videoView}`}>
-            <Video
-              source={require("../assets/herovideo.mp4")}
-              style={{
-                width: styles.videoWidth,
-                height: styles.videoHeight,
-                borderRadius: 12, 
-              }}
-              resizeMode="contain"
-              repeat={true}
-              muted={true}
-              playInBackground={true}   
-              playWhenInactive={true}   
-              ignoreSilentSwitch="ignore"  
-            />
-          </View>
-        </View>
-      </View>
-      <View className={styles.bottomWrapper}>
-        <Pressable 
+      </TouchableOpacity> */}
+      <View className={styles.container}>
+        <Text
+          className={styles.header}
+          style={{ fontFamily: FONTS.SWITZER }}
+        >
+          Sign In
+        </Text>
+        <Pressable
           className={`${styles.authButtonActive} ${styles.authButton}`}
-          onPress={handleAppleSignUp}
+          onPress={handleAppleSignIn}
         >
           <MaterialIcon name="apple" size={24} color="white" className={styles.iconMaterial} />
-          <Text 
+          <Text
             className={`${styles.authButtonTextColor} ${styles.authButtonText}`}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
             Continue with Apple
           </Text>
         </Pressable>
-        <Pressable 
+        <Pressable
           className={`${styles.authButtonActive} ${styles.authButton}`}
-          onPress={handleGoogleSignUp}
+          onPress={handleGoogleSignIn}
         >
-          <Image 
-            source={require("../assets/google-logo.png")} 
+          <Image
+            source={require("../assets/google-logo.png")}
             className={styles.icon}
             style={{ tintColor: "white" }}
           />
-          <Text 
+          <Text
             className={`${styles.authButtonTextColor} ${styles.authButtonText}`}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
             Continue with Google
           </Text>
         </Pressable>
+        <View className={`${styles.dividerContainer} ${styles.dividerMargin}`}>
+          <View className={styles.dividerLine} />
+          <Text
+            className={`${styles.dividerTextColor} ${styles.dividerText}`}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Or
+          </Text>
+          <View className={styles.dividerLine} />
+        </View>
+        <View className={`${styles.inputContainer} ${styles.input}`}>
+          <TextInput
+            className={styles.inputText}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor="#666"
+            style={{ fontFamily: FONTS.SATOSHI }}
+          />
+        </View>
+        <View className={`${styles.inputContainer} ${styles.input}`}>
+          <TextInput
+            className={styles.inputText}
+            placeholder="Password"
+            placeholderTextColor="#666"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            style={{ fontFamily: FONTS.SATOSHI }}
+          />
+          <TouchableOpacity onPress={() => {
+            triggerHaptic();
+            setShowPassword(!showPassword);
+          }}>
+            <MaterialIcon name={showPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          className={`${styles.forgotPasswordContainer} ${styles.forgotPassword}`}
+          onPress={handleForgotPassword}
+        >
+          <Text
+            className={`${styles.forgotPasswordTextColor} ${styles.forgotPasswordText}`}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Forget Password?
+          </Text>
+        </TouchableOpacity>
+        <Pressable
+          className={`${styles.authButtonActive} ${styles.signInButton}`}
+          onPress={handleEmailSignIn}
+        >
+          <Text
+            className={`${styles.authButtonTextColor} ${styles.signInText}`}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Log In
+          </Text>
+        </Pressable>
+        <View className={`${styles.signUpLinkContainer} ${styles.signUpContainer}`}>
+          <Text
+            className={`${styles.signUpTextColor} ${styles.signUpText}`}
+            style={{ fontFamily: FONTS.SATOSHI }}
+          >
+            Don't have an account?
+          </Text>
+          <TouchableOpacity onPress={handleSignUp}>
+            <Text
+              className={`${styles.signUpLinkColor} ${styles.signUpLink}`}
+              style={{ fontFamily: FONTS.SATOSHI }}
+            >
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View className={styles.termsContainer}>
-          <Text 
+          <Text
             className={styles.termsText}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
-            By continuing, you agree to our{" "}
+            By signing in, you agree to our{" "}
           </Text>
           <TouchableOpacity onPress={handleTermsPress}>
-            <Text 
+            <Text
               className={styles.termsLink}
               style={{ fontFamily: FONTS.SATOSHI }}
             >
-              Terms And Services
+              Terms Of Service
             </Text>
           </TouchableOpacity>
-          <Text 
+          <Text
             className={styles.termsText}
             style={{ fontFamily: FONTS.SATOSHI }}
           >
             {""}and{" "}
           </Text>
           <TouchableOpacity onPress={handlePrivacyPress}>
-            <Text 
+            <Text
               className={styles.termsLink}
               style={{ fontFamily: FONTS.SATOSHI }}
             >

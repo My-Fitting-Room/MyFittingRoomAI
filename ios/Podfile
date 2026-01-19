@@ -1,3 +1,6 @@
+# Force Node 22 for React Native pods
+ENV['NODE_BINARY'] = '/opt/homebrew/opt/node@22/bin/node'
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -34,6 +37,18 @@ target 'MyFittingRoomAI' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    
+    # Fix for header file conflicts - disable strict include checks
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # Disable strict framework header checking
+        config.build_settings['CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER'] = 'NO'
+        config.build_settings['CLANG_WARN_DOCUMENTATION_COMMENTS'] = 'NO'
+        
+        # Fix for old deployment targets
+        config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64' if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 11.0
+      end
+    end
   end
 end
 

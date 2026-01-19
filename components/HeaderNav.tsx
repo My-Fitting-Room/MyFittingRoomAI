@@ -2,15 +2,17 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { styles } from "../stylesheets/headerNav";
+import { triggerHaptic } from "../utils/haptics";
 
-export default function HeaderNav({navigation}) {
-  const { width , height } = Dimensions.get("window");
-  
+export default function HeaderNav({ navigation }) {
+  const { width, height } = Dimensions.get("window");
+
   const handleLogoPress = () => {
+    triggerHaptic();
     navigation.navigate("TryOn");
   };
-  
-  if(width === 375 && height === 667) {
+
+  if (width === 375 && height === 667) {
     return (
       <>
         <View style={styles.smallHeader}>
