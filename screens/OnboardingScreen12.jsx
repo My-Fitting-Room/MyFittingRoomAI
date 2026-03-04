@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import LinearGradient from 'react-native-linear-gradient';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
@@ -57,8 +58,21 @@ const OnboardingScreen12 = ({ navigation }) => {
     const { onboardingData, updateOnboardingData } = useOnboarding();
     const [selectedOption, setSelectedOption] = useState(onboardingData.confidence || null);
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen12' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen12' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
     const handleContinue = () => {
         if (selectedOption) {
+            mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen12' });
             updateOnboardingData({ confidence: selectedOption });
             navigation.navigate('OnboardingScreen13');
         }

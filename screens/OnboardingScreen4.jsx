@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
@@ -31,8 +32,21 @@ const OnboardingScreen4 = ({ navigation }) => {
 
     const isAgeValid = calculateAge(date) >= 10;
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen4' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen4' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
     const handleContinue = () => {
         if (isAgeValid) {
+            mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen4' });
             // Store as ISO string date part (YYYY-MM-DD)
             const formattedDate = date.toISOString().split('T')[0];
             updateOnboardingData({ birthday: formattedDate });

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
@@ -42,8 +43,22 @@ const OnboardingScreen5 = ({ navigation }) => {
     const { onboardingData, updateOnboardingData } = useOnboarding();
     const [selectedBrands, setSelectedBrands] = useState(onboardingData.brands || []);
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen5' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen5' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
     const handleContinue = () => {
         if (selectedBrands.length >= 3) {
+            mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen5' });
+            mixpanel.track('Onboarding Styles Submitted', { styles: selectedBrands });
             updateOnboardingData({ brands: selectedBrands });
             navigation.navigate('OnboardingScreen6');
         }

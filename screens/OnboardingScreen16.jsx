@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Text, ScrollView, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'; // For chart line
@@ -25,6 +26,23 @@ const OnboardingScreen16 = ({ navigation }) => {
 
     const regretLevel = regretFrequency > 0.6 ? "High" : regretFrequency > 0.3 ? "Medium" : "Low";
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen16' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen16' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
+    const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen16' });
+        navigation.navigate('OnboardingScreen17');
+    };
+
     return (
         <Container
             enableScroll={true}
@@ -33,7 +51,7 @@ const OnboardingScreen16 = ({ navigation }) => {
                     type="fill"
                     title="Continue"
                     style={{ width: '100%' }}
-                    onPress={() => navigation.navigate('OnboardingScreen17')}
+                    onPress={handleContinue}
                 />
             }
         >

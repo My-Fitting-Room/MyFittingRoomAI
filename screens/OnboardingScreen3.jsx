@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import OnboardingHeader from '../components/OnboardingHeader';
@@ -61,8 +62,21 @@ const OnboardingScreen3 = ({ navigation }) => {
     const { onboardingData, updateOnboardingData } = useOnboarding();
     const [selectedId, setSelectedId] = useState(onboardingData.gender || null);
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen3' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen3' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
     const handleContinue = () => {
         if (selectedId) {
+            mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen3' });
             updateOnboardingData({ gender: selectedId });
             navigation.navigate('OnboardingScreen4');
         }

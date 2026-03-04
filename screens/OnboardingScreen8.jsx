@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
@@ -20,7 +21,20 @@ const OnboardingScreen8 = ({ navigation }) => {
         return 'Very Often';
     };
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen8' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen8' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
     const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen8' });
         const label = getLabel(sliderValue);
         updateOnboardingData({ regretFrequency: label });
         navigation.navigate('OnboardingScreen9');

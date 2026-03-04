@@ -7,8 +7,6 @@ import React, { useState } from "react";
 import { FONTS } from "../constants/fonts";
 import Config from "react-native-config";
 import { getStyles } from "../stylesheets/signinScreen";
-import { trackTikTokStandardEvent } from "../utils/tiktok";
-import { TikTokEventName } from "react-native-tiktok-business-sdk";
 import { trackSingularStandardEvent } from "../utils/singular";
 import { triggerHaptic } from "../utils/haptics";
 
@@ -66,7 +64,6 @@ export default function SignInScreen({ navigation }) {
             const timeDiff = now.getTime() - userCreatedTime.getTime();
 
             if (timeDiff < 5 * 60 * 1000) {
-              await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
               await trackSingularStandardEvent("sng_registration");
             } else {
               await trackSingularStandardEvent("sng_login");
@@ -126,7 +123,6 @@ export default function SignInScreen({ navigation }) {
           const timeDiff = now.getTime() - userCreatedTime.getTime();
 
           if (timeDiff < 5 * 60 * 1000) {
-            await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
             await trackSingularStandardEvent("sng_registration");
           } else {
             await trackSingularStandardEvent("sng_login");

@@ -17,7 +17,6 @@ import FirstScreen from "./screens/FirstScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import "./global.css"
 import { initMixpanel } from "./utils/mixpanel";
-import { initTikTokSDK } from "./utils/tiktok";
 import { getTrackingStatus, requestTrackingPermission } from "react-native-tracking-transparency";
 import { initSingularSDK, singularLogin, singularLogout } from "./utils/singular";
 import SplashScreen from "./screens/SplashScreen";
@@ -86,7 +85,6 @@ const App = () => {
       OneSignal.Notifications.requestPermission(true);
 
       initMixpanel();
-      await initTikTokSDK();
       await initSingularSDK();
     };
 

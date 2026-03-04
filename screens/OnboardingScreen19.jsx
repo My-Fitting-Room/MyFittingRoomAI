@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import { RulerPicker } from 'react-native-ruler-picker';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
@@ -14,7 +15,20 @@ const OnboardingScreen19 = ({ navigation }) => {
     const [waist, setWaist] = useState(onboardingData.pantsSize?.waist || 33);
     const [length, setLength] = useState(onboardingData.pantsSize?.length || 34);
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen19' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen19' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
     const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen19' });
         updateOnboardingData({ pantsSize: { waist: Math.round(waist), length: Math.round(length) } });
         navigation.navigate('OnboardingScreen20');
     };

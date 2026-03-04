@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import LottieView from 'lottie-react-native';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
@@ -11,15 +12,27 @@ import { triggerHaptic } from '../utils/haptics';
 const OnboardingScreen22 = ({ navigation }) => {
 
     const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen22' });
         navigation.navigate('OnboardingScreen23');
     };
 
     useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen22' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen22' });
+            }
+        });
+
         const timer = setTimeout(() => {
             triggerHaptic('notificationSuccess');
         }, 1700);
 
-        return () => clearTimeout(timer);
+        return () => {
+            subscription.remove();
+            clearTimeout(timer);
+        }
     }, []);
 
     return (

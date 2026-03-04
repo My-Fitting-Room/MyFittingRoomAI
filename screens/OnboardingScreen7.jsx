@@ -1,11 +1,29 @@
-import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Image, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
 import screenImage from '../assets/images/OnboardingScreen7.png';
 
 const OnboardingScreen7 = ({ navigation }) => {
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen7' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen7' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
+    const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen7' });
+        navigation.navigate('OnboardingScreen8');
+    };
+
     return (
         <Container
             footer={
@@ -13,7 +31,7 @@ const OnboardingScreen7 = ({ navigation }) => {
                     type="fill"
                     title="Continue"
                     style={{ width: '100%' }}
-                    onPress={() => navigation.navigate('OnboardingScreen8')}
+                    onPress={handleContinue}
                 />
             }
         >

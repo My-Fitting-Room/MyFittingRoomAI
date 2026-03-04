@@ -1,4 +1,7 @@
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, AppState } from 'react-native';
+import InAppReview from 'react-native-in-app-review';
+import React, { useEffect } from 'react';
+import mixpanel from '../utils/mixpanel';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
@@ -10,7 +13,43 @@ import { useOnboarding } from '../context/OnboardingContext';
 const OnboardingScreen23 = ({ navigation }) => {
     const { onboardingData } = useOnboarding();
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen23' });
+        mixpanel.track('Onboarding Review');
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen23' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
+    const handleReview = () => {
+        mixpanel.track('Onboarding step completed With Review Prompted', { screen: 'OnboardingScreen23' });
+
+        if (InAppReview.isAvailable()) {
+            InAppReview.RequestInAppReview()
+                .then(() => {
+                    navigation.navigate('OnboardingScreen23b');
+                })
+                .catch((error) => {
+                    mixpanel.track('Onboarding Error', {
+                        screen: 'OnboardingScreen23',
+                        action: 'RequestInAppReview',
+                        error: error?.message || error
+                    });
+                    navigation.navigate('OnboardingScreen23b');
+                });
+        } else {
+            mixpanel.track('Onboarding Review Not Available', { screen: 'OnboardingScreen23' });
+            navigation.navigate('OnboardingScreen23b');
+        }
+    };
+
     const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen23' });
         navigation.navigate('OnboardingScreen23b');
     };
 
@@ -70,7 +109,7 @@ const OnboardingScreen23 = ({ navigation }) => {
                 <View style={styles.reviewSection}>
                     <TouchableOpacity
                         style={styles.reviewButton}
-                        onPress={() => console.log('Leave review pressed')}
+                        onPress={handleReview}
                         activeOpacity={0.8}
                     >
                         <Text style={styles.reviewHeading}>Leave Us A Review!</Text>

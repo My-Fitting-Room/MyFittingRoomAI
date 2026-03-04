@@ -4,17 +4,20 @@ import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { styles } from "../stylesheets/tryonButton";
 import mixpanel from "../utils/mixpanel";
-import { trackTikTokPurchase } from "../utils/tiktok";
 import { trackSingularPurchase } from "../utils/singular";
 import { triggerHaptic } from "../utils/haptics";
+import Purchases from "react-native-purchases";
 
 export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal, profile, plan, navigation, extraTokensTotal }) {
   const [loading, setLoading] = useState(false);
 
   const presentPaywallIfNeeded = async () => {
     if (profile.price_id === null && !profile.all_access && plan === null && extraTokensTotal < 1) {
-      const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywallIfNeeded({
-        requiredEntitlementIdentifier: "Unlimited"
+      const offerings = await Purchases.getOfferings();
+
+      const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
+        requiredEntitlementIdentifier: "Unlimited",
+        offering: offerings.all["Plans Vibe"]
       });
 
       mixpanel.track("Paywall Displayed On Try On Screen");
@@ -25,10 +28,11 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
           navigation.replace("TryOn");
           break;
         case PAYWALL_RESULT.PURCHASED:
-        case PAYWALL_RESULT.RESTORED:
-          await trackTikTokPurchase();
           await trackSingularPurchase();
           mixpanel.track("Paywall CTA Clicked On Try On Screen");
+          break;
+        case PAYWALL_RESULT.RESTORED:
+          // Don't track restores - not a new purchase
           break;
       }
     }

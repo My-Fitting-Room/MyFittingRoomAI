@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, StyleSheet, Text, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import LottieView from 'lottie-react-native';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
@@ -9,6 +10,23 @@ import Container from '../components/Container';
 const OnboardingScreen9 = ({ navigation }) => {
     const animationRef = useRef(null);
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen9' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen9' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
+    const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen9' });
+        navigation.navigate('OnboardingScreen10');
+    };
+
     return (
         <Container
             footer={
@@ -16,7 +34,7 @@ const OnboardingScreen9 = ({ navigation }) => {
                     type="fill"
                     title="Continue"
                     style={{ width: '100%' }}
-                    onPress={() => navigation.navigate('OnboardingScreen10')}
+                    onPress={handleContinue}
                 />
             }
         >

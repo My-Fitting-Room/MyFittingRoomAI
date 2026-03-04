@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import LottieView from 'lottie-react-native';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
@@ -14,18 +15,30 @@ const OnboardingScreen23b = ({ navigation }) => {
     const loadingAnimationRef = useRef(null);
 
     useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen23b' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen23b' });
+            }
+        });
+
         // Play the loading animation first
         if (loadingAnimationRef.current && !showSuccess) {
             loadingAnimationRef.current.play();
         }
 
+        let hapticTimer;
         if (showSuccess) {
-            const timer = setTimeout(() => {
+            hapticTimer = setTimeout(() => {
                 triggerHaptic('notificationSuccess');
             }, 1100);
-
-            return () => clearTimeout(timer);
         }
+
+        return () => {
+            subscription.remove();
+            if (hapticTimer) clearTimeout(hapticTimer);
+        };
     }, [showSuccess]);
 
     const handleLoadingAnimationFinish = () => {
@@ -34,6 +47,7 @@ const OnboardingScreen23b = ({ navigation }) => {
     };
 
     const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen23b' });
         navigation.navigate('OnboardingScreen24');
     };
 

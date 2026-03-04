@@ -1,4 +1,6 @@
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, AppState } from 'react-native';
+import React, { useEffect } from 'react';
+import mixpanel from '../utils/mixpanel';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
@@ -8,7 +10,20 @@ import OnboardingScreen14Image from "../assets/images/OnboardingScreen14.png"
 
 const OnboardingScreen14 = ({ navigation }) => {
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen14' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen14' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
     const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen14' });
         navigation.navigate('OnboardingScreen15');
     };
 

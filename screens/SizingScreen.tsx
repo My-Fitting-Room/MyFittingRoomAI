@@ -20,9 +20,10 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { getDropdownStyles } from "../stylesheets/dropdownSelect";
 import { getStyles } from "../stylesheets/sizingScreen";
 import mixpanel from "../utils/mixpanel";
-import { trackTikTokPurchase } from "../utils/tiktok";
 import { trackSingularPurchase } from "../utils/singular";
 import { triggerHaptic } from "../utils/haptics";
+import Purchases from "react-native-purchases";
+
 
 const CLOTHING_DATA = {
   "clothing_types": {
@@ -288,7 +289,7 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange, width, h
   );
 };
 
-export default function SizingScreen({ navigation }) {
+export default function SizingScreen({ navigation, route }: { navigation: any, route: any }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [sizing, setSizing] = useState(null);
@@ -310,22 +311,36 @@ export default function SizingScreen({ navigation }) {
 
   const presentPaywallIfNeeded = async () => {
     if (profile.price_id === null && !profile.all_access) {
+      const offerings = await Purchases.getOfferings();
+
       const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
-        requiredEntitlementIdentifier: "Unlimited"
+        requiredEntitlementIdentifier: "Unlimited",
+        offering: offerings.all["Plans Vibe"]
       });
 
-      mixpanel.track("Paywall Displayed On Sizing Screen");
+      mixpanel.track("Paywall displayed on Sizing screen", {
+        source: 'sizing_feature',
+        user_id: profile?.id
+      });
+      mixpanel.track("Paywall viewed");
+
       switch (paywallResult) {
         case PAYWALL_RESULT.NOT_PRESENTED:
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
+          mixpanel.track("Paywall Dismissed On Sizing Screen", {
+            reason: paywallResult
+          });
           navigation.replace("Sizing");
           break;
         case PAYWALL_RESULT.PURCHASED:
-        case PAYWALL_RESULT.RESTORED:
-          await trackTikTokPurchase();
           await trackSingularPurchase();
-          mixpanel.track("Paywall CTA Clicked On Sizing Screen");
+          mixpanel.track("Paywall CTA Clicked On Sizing Screen", {
+            result: 'purchased'
+          });
+          break;
+        case PAYWALL_RESULT.RESTORED:
+          // Don't track restores - not a new purchase
           break;
       }
     }

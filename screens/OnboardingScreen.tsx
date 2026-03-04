@@ -10,7 +10,6 @@ import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
 import Purchases from "react-native-purchases";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
-import { trackTikTokPurchase } from "../utils/tiktok";
 import { trackSingularPurchase } from "../utils/singular";
 import Video from "react-native-video";
 import { triggerHaptic } from "../utils/haptics";
@@ -120,10 +119,13 @@ export default function OnboardingScreen({ navigation }) {
 
       switch (paywallResult) {
         case PAYWALL_RESULT.PURCHASED:
-        case PAYWALL_RESULT.RESTORED:
-          await trackTikTokPurchase();
           await trackSingularPurchase();
           mixpanel.track("Paywall CTA Clicked On Onboarding");
+          await completeOnboarding();
+          navigation.replace("TryOn");
+          break;
+        case PAYWALL_RESULT.RESTORED:
+          // Don't track restores - not a new purchase
           await completeOnboarding();
           navigation.replace("TryOn");
           break;

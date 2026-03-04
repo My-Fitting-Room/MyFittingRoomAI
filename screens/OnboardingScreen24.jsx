@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, AppState } from 'react-native';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
@@ -6,13 +6,26 @@ import { Fonts } from '../utils/fonts';
 import OnBoardingImage from '../assets/images/OnboardingScreen21.png';
 import { useOnboarding } from '../context/OnboardingContext';
 import { supabase } from '../App';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FastImage from 'react-native-fast-image';
+import mixpanel from '../utils/mixpanel';
+
 
 
 const OnboardingScreen24 = ({ navigation }) => {
     const { onboardingData } = useOnboarding();
     const [isSaving, setIsSaving] = useState(false);
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen24' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen24' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
 
     const handleContinue = async () => {
         setIsSaving(true);
@@ -52,11 +65,19 @@ const OnboardingScreen24 = ({ navigation }) => {
 
             if (error) throw error;
 
-            navigation.navigate('TryOn');
+            mixpanel.track('onboarding Completed');
+            mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen24' });
+            navigation.navigate('TryOn', { fromOnboarding: true });
         } catch (error) {
             console.error('Error saving onboarding data:', error);
+            mixpanel.track('Onboarding Error', {
+                screen: 'OnboardingScreen24',
+                action: 'handleContinue',
+                error: error?.message || error
+            });
             alert('Failed to save profile. Please try again.');
         } finally {
+
             setIsSaving(false);
         }
     };

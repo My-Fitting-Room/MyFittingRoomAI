@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Alert, AppState } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import OnboardingHeader from '../components/OnboardingHeader';
@@ -13,11 +13,24 @@ import OnBoardingImage from '../assets/images/OnboardingScreen21.png';
 import { useOnboarding } from '../context/OnboardingContext';
 
 import { uploadUserImage } from '../utils/upload';
+import mixpanel from '../utils/mixpanel';
+
 
 const OnboardingScreen21 = ({ navigation }) => {
     const { onboardingData, updateOnboardingData } = useOnboarding();
     const [selectedImage, setSelectedImage] = useState(onboardingData.userImage ? { uri: onboardingData.userImage } : null);
     const [isUploading, setIsUploading] = useState(false);
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen21' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen21' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
 
     const handleContinue = async () => {
         if (!selectedImage) return;
@@ -30,14 +43,22 @@ const OnboardingScreen21 = ({ navigation }) => {
             // If selectedImage has a local uri (from picker), it needs upload
             if (selectedImage.uri && !selectedImage.uri.startsWith('http')) {
                 imageUrl = await uploadUserImage(selectedImage);
+                mixpanel.track('Onboarding Model Image Uploaded', { source: 'local_upload' });
             }
 
+            mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen21' });
             updateOnboardingData({ userImage: imageUrl });
             navigation.navigate('OnboardingScreen22', { userImage: imageUrl });
         } catch (error) {
             console.error('Upload failed:', error);
+            mixpanel.track('Onboarding Error', {
+                screen: 'OnboardingScreen21',
+                action: 'handleContinue',
+                error: error?.message || error,
+            });
             Alert.alert("Upload Error", "Failed to upload your photo. Please try again.");
         } finally {
+
             setIsUploading(false);
         }
     };

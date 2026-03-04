@@ -9,8 +9,7 @@ import Config from "react-native-config";
 import Video from "react-native-video";
 import { getStyles } from "../stylesheets/signupScreen";
 import { triggerHaptic } from "../utils/haptics";
-import { trackTikTokStandardEvent } from "../utils/tiktok";
-import { TikTokEventName } from "react-native-tiktok-business-sdk";
+
 import { trackSingularStandardEvent } from "../utils/singular";
 
 export default function SignUpScreen({ navigation }) {
@@ -61,7 +60,6 @@ export default function SignUpScreen({ navigation }) {
             const timeDiff = now.getTime() - userCreatedTime.getTime();
 
             if (timeDiff < 5 * 60 * 1000) {
-              await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
               await trackSingularStandardEvent("sng_registration");
             } else {
               await trackSingularStandardEvent("sng_login");
@@ -125,7 +123,6 @@ export default function SignUpScreen({ navigation }) {
           const timeDiff = now.getTime() - userCreatedTime.getTime();
 
           if (timeDiff < 5 * 60 * 1000) {
-            await trackTikTokStandardEvent(TikTokEventName.REGISTRATION);
             await trackSingularStandardEvent("sng_registration");
           } else {
             await trackSingularStandardEvent("sng_login");

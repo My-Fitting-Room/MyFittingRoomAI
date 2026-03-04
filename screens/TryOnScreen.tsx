@@ -12,10 +12,10 @@ import TokensBox from "../components/TokensBox";
 import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/tryonScreen";
 import mixpanel from "../utils/mixpanel";
-import { trackTikTokPurchase } from "../utils/tiktok";
 import { trackSingularPurchase } from "../utils/singular";
+import Purchases from "react-native-purchases";
 
-export default function TryOnScreen({ navigation }) {
+export default function TryOnScreen({ navigation, route }: { navigation: any, route: any }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [inputClothImage, setInputClothImage] = useState(null);
@@ -37,27 +37,49 @@ export default function TryOnScreen({ navigation }) {
 
   const presentInitialPaywall = async () => {
     try {
+      const offerings = await Purchases.getOfferings();
+
       const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
-        requiredEntitlementIdentifier: "Unlimited"
+        requiredEntitlementIdentifier: "Unlimited",
+        offering: offerings.all["Plans Vibe"]
       });
 
-      mixpanel.track("Paywall Displayed On Try On Screen Entry");
+      const fromOnboarding = route.params?.fromOnboarding;
+
+      mixpanel.track(fromOnboarding ? "Paywall displayed on onboarding" : "Paywall displayed on Try-On screen", {
+        source: 'try_on_entry',
+        user_id: profile?.id
+      });
+      mixpanel.track("Paywall viewed");
 
       switch (paywallResult) {
         case PAYWALL_RESULT.NOT_PRESENTED:
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
+          mixpanel.track(fromOnboarding ? "Paywalls dismissed on onboarding" : "Paywall Dismissed On Try On Screen", {
+            reason: paywallResult
+          });
           setPaywallDismissed(true);
           break;
         case PAYWALL_RESULT.PURCHASED:
-        case PAYWALL_RESULT.RESTORED:
-          await trackTikTokPurchase();
           await trackSingularPurchase();
-          mixpanel.track("Paywall CTA Clicked On Try On Screen Entry");
+          mixpanel.track(fromOnboarding ? "Paywall CTA clicked on onboarding" : "Paywall CTA Clicked On Try On Screen", {
+            result: 'purchased'
+          });
+          navigation.replace("TryOn");
+          break;
+        case PAYWALL_RESULT.RESTORED:
+          // Don't track restores - not a new purchase
           navigation.replace("TryOn");
           break;
       }
     } catch (error) {
+
+      console.log('err', error)
+      mixpanel.track('Try On Screen Error', {
+        error_type: 'paywall_error',
+        error_message: (error as Error).message
+      });
       setPaywallDismissed(true);
     }
   };

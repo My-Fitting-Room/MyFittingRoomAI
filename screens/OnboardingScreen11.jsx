@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Text, Image, AppState } from 'react-native';
+import mixpanel from '../utils/mixpanel';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
@@ -53,6 +54,23 @@ const OnboardingScreen11 = ({ navigation, route }) => {
     const { selectedIssue } = route.params || { selectedIssue: 'size' }; // Default fallback
     const content = CONTENT_MAP[selectedIssue] || CONTENT_MAP['size'];
 
+    useEffect(() => {
+        mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen11' });
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (nextAppState === 'background') {
+                mixpanel.track('Onboarding screen drop off screen', { screen: 'OnboardingScreen11' });
+            }
+        });
+
+        return () => subscription.remove();
+    }, []);
+
+    const handleContinue = () => {
+        mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen11' });
+        navigation.navigate('OnboardingScreen12');
+    };
+
     return (
         <Container
             footer={
@@ -60,9 +78,7 @@ const OnboardingScreen11 = ({ navigation, route }) => {
                     type="fill"
                     title="Continue"
                     style={{ width: '100%' }}
-                    onPress={() => {
-                        navigation.navigate('OnboardingScreen12');
-                    }}
+                    onPress={handleContinue}
                 />
             }
         >
