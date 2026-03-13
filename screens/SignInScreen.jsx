@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import { FONTS } from "../constants/fonts";
 import Config from "react-native-config";
 import { getStyles } from "../stylesheets/signinScreen";
-import { trackSingularStandardEvent } from "../utils/singular";
+import { logAppsFlyerEvent } from "../utils/appsflyer";
 import { triggerHaptic } from "../utils/haptics";
 
 
@@ -64,9 +64,9 @@ export default function SignInScreen({ navigation }) {
             const timeDiff = now.getTime() - userCreatedTime.getTime();
 
             if (timeDiff < 5 * 60 * 1000) {
-              await trackSingularStandardEvent("sng_registration");
+              await logAppsFlyerEvent("af_complete_registration");
             } else {
-              await trackSingularStandardEvent("sng_login");
+              await logAppsFlyerEvent("af_login");
             }
           }
           navigation.navigate("TryOn");
@@ -123,9 +123,9 @@ export default function SignInScreen({ navigation }) {
           const timeDiff = now.getTime() - userCreatedTime.getTime();
 
           if (timeDiff < 5 * 60 * 1000) {
-            await trackSingularStandardEvent("sng_registration");
+            await logAppsFlyerEvent("af_complete_registration");
           } else {
-            await trackSingularStandardEvent("sng_login");
+            await logAppsFlyerEvent("af_login");
           }
         }
 

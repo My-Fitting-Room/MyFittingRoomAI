@@ -2,22 +2,48 @@ import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import LogoAnimation from '../assets/JSON/LOGO.json';
+import { supabase } from '../App';
 
 const SplashScreen = ({ navigation }) => {
     const animationRef = useRef(null);
 
     useEffect(() => {
-        // Play animation once
         if (animationRef.current) {
             animationRef.current.play();
         }
 
-        // Navigate to StartScreen after 3 seconds
-        const timer = setTimeout(() => {
-            navigation.replace('First');
+        const timer = setTimeout(async () => {
+
+            // Check if there's an existing session
+            const { data: { session } } = await supabase.auth.getSession();
+
+            console.log('session', session);
+
+            if (!session) {
+                // No session at all — go to First
+                navigation.replace('First');
+                return;
+            }
+
+            // Session exists — check if onboarding is complete
+            const { data: onboarding } = await supabase
+                .from('user_onboarding_details')
+                .select('*')
+                .eq('id', session.user.id)
+                .single();
+
+            console.log('onboarding', onboarding);
+
+            if (onboarding?.onboarding_complete === true) {
+                // Onboarding done — go straight to TryOn
+                navigation.replace('TryOn');
+            } else {
+                // No onboarding record yet — go to First
+                navigation.replace('First');
+            }
+
         }, 3000);
 
-        // Cleanup timer on unmount
         return () => clearTimeout(timer);
     }, [navigation]);
 

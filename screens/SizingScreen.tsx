@@ -20,7 +20,7 @@ import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { getDropdownStyles } from "../stylesheets/dropdownSelect";
 import { getStyles } from "../stylesheets/sizingScreen";
 import mixpanel from "../utils/mixpanel";
-import { trackSingularPurchase } from "../utils/singular";
+import { trackAppsFlyerPurchase } from "../utils/appsflyer";
 import { triggerHaptic } from "../utils/haptics";
 import Purchases from "react-native-purchases";
 
@@ -334,7 +334,7 @@ export default function SizingScreen({ navigation, route }: { navigation: any, r
           navigation.replace("Sizing");
           break;
         case PAYWALL_RESULT.PURCHASED:
-          await trackSingularPurchase();
+          await trackAppsFlyerPurchase();
           mixpanel.track("Paywall CTA Clicked On Sizing Screen", {
             result: 'purchased'
           });

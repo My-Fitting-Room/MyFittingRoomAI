@@ -4,7 +4,7 @@ import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { styles } from "../stylesheets/tryonButton";
 import mixpanel from "../utils/mixpanel";
-import { trackSingularPurchase } from "../utils/singular";
+import { trackAppsFlyerPurchase } from "../utils/appsflyer";
 import { triggerHaptic } from "../utils/haptics";
 import Purchases from "react-native-purchases";
 
@@ -28,7 +28,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
           navigation.replace("TryOn");
           break;
         case PAYWALL_RESULT.PURCHASED:
-          await trackSingularPurchase();
+          await trackAppsFlyerPurchase();
           mixpanel.track("Paywall CTA Clicked On Try On Screen");
           break;
         case PAYWALL_RESULT.RESTORED:

@@ -12,7 +12,7 @@ import TokensBox from "../components/TokensBox";
 import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/tryonScreen";
 import mixpanel from "../utils/mixpanel";
-import { trackSingularPurchase } from "../utils/singular";
+import { trackAppsFlyerPurchase } from "../utils/appsflyer";
 import Purchases from "react-native-purchases";
 
 export default function TryOnScreen({ navigation, route }: { navigation: any, route: any }) {
@@ -62,7 +62,7 @@ export default function TryOnScreen({ navigation, route }: { navigation: any, ro
           setPaywallDismissed(true);
           break;
         case PAYWALL_RESULT.PURCHASED:
-          await trackSingularPurchase();
+          await trackAppsFlyerPurchase();
           mixpanel.track(fromOnboarding ? "Paywall CTA clicked on onboarding" : "Paywall CTA Clicked On Try On Screen", {
             result: 'purchased'
           });

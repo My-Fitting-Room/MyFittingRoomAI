@@ -18,7 +18,7 @@ import OnboardingScreen from "./screens/OnboardingScreen";
 import "./global.css"
 import { initMixpanel } from "./utils/mixpanel";
 import { getTrackingStatus, requestTrackingPermission } from "react-native-tracking-transparency";
-import { initSingularSDK, singularLogin, singularLogout } from "./utils/singular";
+import { initAppsFlyerSDK, appsFlyerLogin, appsFlyerLogout } from "./utils/appsflyer";
 import SplashScreen from "./screens/SplashScreen";
 import OnboardingScreen1 from "./screens/OnboardingScreen1";
 import OnboardingScreen2 from "./screens/OnboardingScreen2";
@@ -85,7 +85,7 @@ const App = () => {
       OneSignal.Notifications.requestPermission(true);
 
       initMixpanel();
-      await initSingularSDK();
+      await initAppsFlyerSDK();
     };
 
     bootstrap();
@@ -96,11 +96,11 @@ const App = () => {
           OneSignal.login(session.user.id);
           await Purchases.logIn(session.user.id);
           setSession(session);
-          singularLogin(session.user.id);
+          appsFlyerLogin(session.user.id);
         } else {
           Purchases.logOut();
           OneSignal.logout();
-          singularLogout();
+          appsFlyerLogout();
         }
       }
     );

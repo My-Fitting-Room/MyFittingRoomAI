@@ -6258,6 +6258,11 @@ react-is@^19.0.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-19.0.0.tgz"
   integrity sha512-H91OHcwjZsbq3ClIDHMzBShc1rotbfACdWENsmEf0IFvZ3FgGPtdHMcsv45bQ1hAbgdfiA8SnxTKfDS+x/8m2g==
 
+react-native-appsflyer@^6.17.8:
+  version "6.17.8"
+  resolved "https://registry.npmjs.org/react-native-appsflyer/-/react-native-appsflyer-6.17.8.tgz"
+  integrity sha512-mm/PfkxnHYwF/QGbs/NkGWyp9snESPVyztRsjjoo9yHuZUp/dxJNX9gCl3uvImZ2rP8suRAhDIjMUxhE7RRHkA==
+
 react-native-config@^1.5.5:
   version "1.5.5"
   resolved "https://registry.npmjs.org/react-native-config/-/react-native-config-1.5.5.tgz"
@@ -6369,11 +6374,6 @@ react-native-safe-area-context@^5.3.0, "react-native-safe-area-context@>= 4.0.0"
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-tiktok-business-sdk@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/react-native-tiktok-business-sdk/-/react-native-tiktok-business-sdk-1.4.1.tgz"
-  integrity sha512-09MeOA6s0Cl3+Ods202PmqUnnwrYv9jGUHizM2qv+m7UpwORvMAR1mtXfNg/vSg2ZZRpe4/tI1PF5kOxJ6QLwQ==
-
 react-native-tracking-transparency@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/react-native-tracking-transparency/-/react-native-tracking-transparency-0.1.2.tgz"
@@ -6424,7 +6424,7 @@ react-native-worklets@^0.7.1, react-native-worklets@>=0.7.0:
     convert-source-map "2.0.0"
     semver "7.7.3"
 
-react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@^0.0.0-0 || >=0.65 <1.0", "react-native@>= 0.73.0", react-native@>=0.46, react-native@>=0.46.4, react-native@>=0.56, react-native@>=0.57, react-native@>=0.60.0, react-native@0.78.1:
+react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@^0.0.0-0 || >=0.65 <1.0", "react-native@>= 0.73.0", react-native@>=0.46, react-native@>=0.56, react-native@>=0.57, react-native@>=0.60.0, react-native@0.78.1:
   version "0.78.1"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.78.1.tgz"
   integrity sha512-3CK/xxX02GeeVFyrXbsHvREZFVaXwHW43Km/EdYITn5G32cccWTGaqY9QdPddEBLw5O3BPip3LHbR1SywE0cpA==
@@ -6940,11 +6940,6 @@ simple-swizzle@^0.2.2:
   integrity sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==
   dependencies:
     is-arrayish "^0.3.1"
-
-singular-react-native@^3.9.0:
-  version "3.9.0"
-  resolved "https://registry.npmjs.org/singular-react-native/-/singular-react-native-3.9.0.tgz"
-  integrity sha512-At/T/t9ImH+UAeTCZ7ttqbZkXbpmccNsjjCCN5TmBA6ULhV4Lq6deRYD/kpSxyMyteQ56FDZ8+FQ6BzF2/nzOg==
 
 sisteransi@^1.0.5:
   version "1.0.5"

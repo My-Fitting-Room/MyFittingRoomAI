@@ -9,12 +9,10 @@ import Config from "react-native-config";
 import Video from "react-native-video";
 import { getStyles } from "../stylesheets/signupScreen";
 import { triggerHaptic } from "../utils/haptics";
-
-import { trackSingularStandardEvent } from "../utils/singular";
+import { logAppsFlyerEvent } from "../utils/appsflyer";
 
 export default function SignUpScreen({ navigation }) {
   const { width, height } = Dimensions.get("window");
-
   const styles = getStyles(width, height);
 
   GoogleSignin.configure({
@@ -32,7 +30,6 @@ export default function SignUpScreen({ navigation }) {
   };
 
   const handleGoogleSignUp = async () => {
-    // navigation.navigate("OnboardingScreen1"); 
     try {
       triggerHaptic();
       await GoogleSignin.hasPlayServices();
@@ -44,51 +41,34 @@ export default function SignUpScreen({ navigation }) {
         });
 
         if (error) {
-          Alert.alert(
-            "Sign Up Error",
-            "Please Try Again Later!",
-            [{ text: "OK" }]
-          );
+          Alert.alert("Sign Up Error", "Please Try Again Later!", [{ text: "OK" }]);
           return;
         }
 
         if (data) {
-
           if (data.user) {
             const userCreatedTime = new Date(data.user.created_at);
             const now = new Date();
             const timeDiff = now.getTime() - userCreatedTime.getTime();
-
             if (timeDiff < 5 * 60 * 1000) {
-              await trackSingularStandardEvent("sng_registration");
+              await logAppsFlyerEvent("af_complete_registration");
             } else {
-              await trackSingularStandardEvent("sng_login");
+              await logAppsFlyerEvent("af_login");
             }
           }
           navigation.navigate("OnboardingScreen1");
         }
-
       } else {
-        Alert.alert(
-          "Sign Up Error",
-          "Please Try Again Later!",
-          [{ text: "OK" }]
-        );
+        Alert.alert("Sign Up Error", "Please Try Again Later!", [{ text: "OK" }]);
         return;
       }
     } catch (error) {
-      Alert.alert(
-        "Sign Up Error",
-        "Please Try Again Later!",
-        [{ text: "OK" }]
-      );
+      Alert.alert("Sign Up Error", "Please Try Again Later!", [{ text: "OK" }]);
       return;
     }
-
   };
 
   const handleAppleSignUp = async () => {
-    // navigation.navigate("OnboardingScreen1");
     try {
       triggerHaptic();
       const nonce = Math.random().toString(36).substring(2, 10);
@@ -109,11 +89,7 @@ export default function SignUpScreen({ navigation }) {
         });
 
         if (error) {
-          Alert.alert(
-            "Sign Up Error",
-            "Authentication failed. Please try again.",
-            [{ text: "OK" }]
-          );
+          Alert.alert("Sign Up Error", "Authentication failed. Please try again.", [{ text: "OK" }]);
           return;
         }
 
@@ -121,33 +97,40 @@ export default function SignUpScreen({ navigation }) {
           const userCreatedTime = new Date(data.user.created_at);
           const now = new Date();
           const timeDiff = now.getTime() - userCreatedTime.getTime();
-
           if (timeDiff < 5 * 60 * 1000) {
-            await trackSingularStandardEvent("sng_registration");
+            await logAppsFlyerEvent("af_complete_registration");
           } else {
-            await trackSingularStandardEvent("sng_login");
+            await logAppsFlyerEvent("af_login");
           }
         }
 
         navigation.navigate("OnboardingScreen1");
       } else {
-        Alert.alert(
-          "Sign Up Error",
-          "Apple authentication not authorized. Please try again.",
-          [{ text: "OK" }]
-        );
+        Alert.alert("Sign Up Error", "Apple authentication not authorized. Please try again.", [{ text: "OK" }]);
       }
     } catch (error) {
-      Alert.alert(
-        "Sign Up Error",
-        "Failed to authenticate with Apple. Please try again.",
-        [{ text: "OK" }]
-      );
+      Alert.alert("Sign Up Error", "Failed to authenticate with Apple. Please try again.", [{ text: "OK" }]);
     }
   };
 
-  const handleSubscribe = () => {
-    Linking.openURL("http://eepurl.com/i5TN6-/");
+  // NEW: handle guest continue — creates anonymous session and skips sign up
+  const handleContinueAsGuest = async () => {
+    try {
+      triggerHaptic();
+      const { data, error } = await supabase.auth.signInAnonymously();
+
+      if (error) {
+        console.log('err1', error);
+
+        Alert.alert("Error", "Please Try Again Later!", [{ text: "OK" }]);
+        return;
+      }
+
+      navigation.navigate("OnboardingScreen1");
+    } catch (error) {
+      console.log('err2', error);
+      Alert.alert("Error", "Please Try Again Later!", [{ text: "OK" }]);
+    }
   };
 
   return (
@@ -162,10 +145,7 @@ export default function SignUpScreen({ navigation }) {
           </Text>
           <Text
             className={`${styles.subHeaderText} ${styles.subHeader}`}
-            style={{
-              fontFamily: FONTS.SATOSHI,
-              lineHeight: 22
-            }}
+            style={{ fontFamily: FONTS.SATOSHI, lineHeight: 22 }}
           >
             Just upload a photo of the clothing you want to try on and a photo of yourself.
           </Text>
@@ -187,6 +167,7 @@ export default function SignUpScreen({ navigation }) {
           </View>
         </View>
       </View>
+
       <View className={styles.bottomWrapper}>
         <Pressable
           className={`${styles.authButtonActive} ${styles.authButton}`}
@@ -200,6 +181,7 @@ export default function SignUpScreen({ navigation }) {
             Continue with Apple
           </Text>
         </Pressable>
+
         <Pressable
           className={`${styles.authButtonActive} ${styles.authButton}`}
           onPress={handleGoogleSignUp}
@@ -216,36 +198,35 @@ export default function SignUpScreen({ navigation }) {
             Continue with Google
           </Text>
         </Pressable>
+
         <View className={styles.termsContainer}>
-          <Text
-            className={styles.termsText}
-            style={{ fontFamily: FONTS.SATOSHI }}
-          >
+          <Text className={styles.termsText} style={{ fontFamily: FONTS.SATOSHI }}>
             By continuing, you agree to our{" "}
           </Text>
           <TouchableOpacity onPress={handleTermsPress}>
-            <Text
-              className={styles.termsLink}
-              style={{ fontFamily: FONTS.SATOSHI }}
-            >
+            <Text className={styles.termsLink} style={{ fontFamily: FONTS.SATOSHI }}>
               Terms And Services
             </Text>
           </TouchableOpacity>
-          <Text
-            className={styles.termsText}
-            style={{ fontFamily: FONTS.SATOSHI }}
-          >
-            {""}and{" "}
+          <Text className={styles.termsText} style={{ fontFamily: FONTS.SATOSHI }}>
+            {""} and{" "}
           </Text>
           <TouchableOpacity onPress={handlePrivacyPress}>
-            <Text
-              className={styles.termsLink}
-              style={{ fontFamily: FONTS.SATOSHI }}
-            >
+            <Text className={styles.termsLink} style={{ fontFamily: FONTS.SATOSHI }}>
               Privacy Policy
             </Text>
           </TouchableOpacity>
         </View>
+
+        {/* NEW: Continue as Guest option */}
+        <TouchableOpacity onPress={handleContinueAsGuest} style={{ marginTop: 16, alignItems: "center" }}>
+          <Text style={{ fontFamily: FONTS.SATOSHI, fontSize: 14, color: "#666" }}>
+            Would you like to continue as{" "}
+            <Text style={{ fontWeight: "700", color: "#000", textDecorationLine: "underline" }}>
+              Guest?
+            </Text>
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

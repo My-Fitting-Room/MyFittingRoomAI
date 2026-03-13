@@ -5,6 +5,9 @@ PODS:
   - AppAuth/Core (1.7.6)
   - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
+  - AppsFlyerFramework (6.17.8):
+    - AppsFlyerFramework/Main (= 6.17.8)
+  - AppsFlyerFramework/Main (6.17.8)
   - boost (1.84.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -1346,6 +1349,9 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
+  - react-native-appsflyer (6.17.8):
+    - AppsFlyerFramework (= 6.17.8)
+    - React
   - react-native-config (1.5.5):
     - react-native-config/App (= 1.5.5)
   - react-native-config/App (1.5.5):
@@ -2241,36 +2247,7 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Singular-React-Native (3.9.0):
-    - React
-    - Singular-SDK (= 12.8.1)
-  - Singular-SDK (12.8.1):
-    - Singular-SDK/Main (= 12.8.1)
-  - Singular-SDK/Main (12.8.1)
   - SocketRocket (0.7.1)
-  - TikTokBusiness (1.4.1):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - TikTokBusinessSDK (= 1.4.1)
-    - Yoga
-  - TikTokBusinessSDK (1.4.1)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2317,6 +2294,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
+  - react-native-appsflyer (from `../node_modules/react-native-appsflyer`)
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
@@ -2369,13 +2347,12 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RNWorklets (from `../node_modules/react-native-worklets`)
-  - Singular-React-Native (from `../node_modules/singular-react-native`)
-  - TikTokBusiness (from `../node_modules/react-native-tiktok-business-sdk`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
     - AppAuth
+    - AppsFlyerFramework
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
@@ -2389,9 +2366,7 @@ SPEC REPOS:
     - RevenueCatUI
     - SDWebImage
     - SDWebImageWebPCoder
-    - Singular-SDK
     - SocketRocket
-    - TikTokBusinessSDK
 
 EXTERNAL SOURCES:
   boost:
@@ -2475,6 +2450,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
+  react-native-appsflyer:
+    :path: "../node_modules/react-native-appsflyer"
   react-native-config:
     :path: "../node_modules/react-native-config"
   react-native-image-picker:
@@ -2579,15 +2556,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-vector-icons"
   RNWorklets:
     :path: "../node_modules/react-native-worklets"
-  Singular-React-Native:
-    :path: "../node_modules/singular-react-native"
-  TikTokBusiness:
-    :path: "../node_modules/react-native-tiktok-business-sdk"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
+  AppsFlyerFramework: 63577b60d6b9fcdab60135289979e7d1c9ec79b9
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
@@ -2637,6 +2611,7 @@ SPEC CHECKSUMS:
   React-logger: 88de26ac2b4ae3ebf55108f4be299f967151d0ec
   React-Mapbuffer: 8b09f543e16b4b46f014113e90dfa7a8d75892b6
   React-microtasksnativemodule: c552278ee39f89a9fc4ffbe0bf9316d1cf3c8729
+  react-native-appsflyer: f228f08c1e6611209a4869ccae7e3b91dc716f3f
   react-native-config: 3367df9c1f25bb96197007ec531c7087ed4554c3
   react-native-image-picker: 1c620a65f900a47d6d12ec94874c6a1820ebea7d
   react-native-in-app-review: cf4a29c5a1d6bb28dd0d15f1fb1faa25e265bfb5
@@ -2693,11 +2668,7 @@ SPEC CHECKSUMS:
   RNWorklets: bac911a66871302a4a4045af8584faa764c6f732
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Singular-React-Native: c4f65335e86180e933ac2792db4b2ea0eca9cd84
-  Singular-SDK: b270f0151037279a4e65054eb67cb74be6c5892f
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  TikTokBusiness: e3a7beda0e815bd675d7998de6daa501eae65307
-  TikTokBusinessSDK: de9a68a3bfc3b4bf1d8a24fc625f108af7903292
   Yoga: 464c847c822847c88560af530ca15273b8e45261
 
 PODFILE CHECKSUM: 3a252fbc40b633ba54d1db4b24ffa65815636e01
