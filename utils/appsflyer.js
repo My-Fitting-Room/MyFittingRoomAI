@@ -1,117 +1,65 @@
-// import appsFlyer from 'react-native-appsflyer';
-// import Config from "react-native-config";
-// import Purchases from 'react-native-purchases';
-
-// export const trackAppsFlyerPurchase = async () => {
-//     try {
-//         const customerInfo = await Purchases.getCustomerInfo();
-//         const activeSubscriptions = customerInfo.activeSubscriptions;
-//         const entitlements = customerInfo.entitlements.active;
-//         const subscriptionsInfo = customerInfo.subscriptionsByProductIdentifier;
-
-//         if (activeSubscriptions.length > 0 && Object.keys(entitlements).length > 0) {
-//             const subscriptionId = activeSubscriptions[0];
-//             let price = 0;
-//             let currency = 'USD';
-
-//             if (Object.keys(subscriptionsInfo).length > 0) {
-//                 price = subscriptionsInfo[subscriptionId].price.amount;
-//                 currency = subscriptionsInfo[subscriptionId].price.currency;
-//             }
-
-//             appsFlyer.logEvent('af_subscribe', {
-//                 af_revenue: parseFloat(price),
-//                 af_currency: currency,
-//                 af_content_id: subscriptionId,
-//                 af_order_id: subscriptionId
-//             });
-
-//             return;
-//         }
-//     } catch (error) {
-//         return;
-//     }
-// };
-
-// export const logAppsFlyerEvent = async (eventName, eventData = {}) => {
-//     try {
-//         console.log('hello apps event', eventName, eventData);
-//         appsFlyer.logEvent(eventName, eventData);
-//         return;
-//     } catch (error) {
-//         console.log('hello apps event error', error);
-//         return;
-//     }
-// };
-
-// export const initAppsFlyerSDK = async () => {
-//     try {
-//         const options = {
-//             devKey: Config.APPSFLYER_DEV_KEY,
-//             appId: Config.APPSFLYER_APP_ID,
-//             isDebug: false,
-//             onInstallConversionDataListener: true,
-//             onDeepLinkListener: true,
-//             timeToWaitForATTUserAuthorization: 10
-//         };
-
-//         appsFlyer.initSdk(
-//             options,
-//             (result) => {
-//                 console.log('hello apps ', result);
-//             },
-//             (error) => {
-//                 console.log('hello apps error', error);
-//             }
-//         );
-//         return;
-//     } catch (error) {
-//         return;
-//     }
-// };
-
-// export const appsFlyerLogin = (customerId) => {
-//     appsFlyer.setCustomerUserId(customerId);
-// };
-
-// export const appsFlyerLogout = () => {
-//     appsFlyer.setCustomerUserId('');
-// };
 import appsFlyer from 'react-native-appsflyer';
 import Config from "react-native-config";
 import Purchases from 'react-native-purchases';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import mixpanel from './mixpanel';
+
+const getSubInfoWithRetry = async (subscriptionId, retries = 3, delayMs = 1500) => {
+    for (let i = 0; i < retries; i++) {
+        const customerInfo = await Purchases.getCustomerInfo();
+        const subInfo = customerInfo.subscriptionsByProductIdentifier[subscriptionId];
+
+        if (subInfo?.periodType) return subInfo;
+
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+    return null;
+};
 
 export const trackAppsFlyerPurchase = async () => {
     try {
         const customerInfo = await Purchases.getCustomerInfo();
         const activeSubscriptions = customerInfo.activeSubscriptions;
         const entitlements = customerInfo.entitlements.active;
-        const subscriptionsInfo = customerInfo.subscriptionsByProductIdentifier;
 
         if (activeSubscriptions.length > 0 && Object.keys(entitlements).length > 0) {
             const subscriptionId = activeSubscriptions[0];
-            const subInfo = subscriptionsInfo[subscriptionId];
+
+            // Wait for RevenueCat to settle before reading periodType
+            const subInfo = await getSubInfoWithRetry(subscriptionId);
 
             const isTrial = subInfo?.periodType === 'trial';
             const price = subInfo?.price?.amount ?? 0;
             const currency = subInfo?.price?.currency ?? 'USD';
 
             if (isTrial) {
-                // Log trial activation separately — not a paid conversion
+                // Dedup guard for trials — keyed separately so trial→paid conversion
+                // still fires af_subscribe when the same product ID converts later.
+                const trackedTrialId = await AsyncStorage.getItem('af_tracked_trial_id');
+                if (trackedTrialId === subscriptionId) return;
+
                 appsFlyer.logEvent('af_start_trial', {
                     af_currency: currency,
                     af_content_id: subscriptionId,
                 });
-                return;
-            }
+                mixpanel.track('Trial Started', {
+                    subscription_id: subscriptionId,
+                    currency,
+                });
+                await AsyncStorage.setItem('af_tracked_trial_id', subscriptionId);
+            } else {
+                // Dedup guard for paid subscriptions — separate from trial key.
+                const trackedPaidId = await AsyncStorage.getItem('af_tracked_paid_id');
+                if (trackedPaidId === subscriptionId) return;
 
-            // Only reaches here for real paid subscriptions
-            appsFlyer.logEvent('af_subscribe', {
-                af_revenue: parseFloat(price),
-                af_currency: currency,
-                af_content_id: subscriptionId,
-                af_order_id: subscriptionId,
-            });
+                appsFlyer.logEvent('af_subscribe', {
+                    af_revenue: parseFloat(price),
+                    af_currency: currency,
+                    af_content_id: subscriptionId,
+                    af_order_id: subscriptionId,
+                });
+                await AsyncStorage.setItem('af_tracked_paid_id', subscriptionId);
+            }
         }
     } catch (error) {
         return;
@@ -155,6 +103,8 @@ export const appsFlyerLogin = (customerId) => {
     appsFlyer.setCustomerUserId(customerId);
 };
 
-export const appsFlyerLogout = () => {
+export const appsFlyerLogout = async () => {
     appsFlyer.setCustomerUserId('');
+    // Clear dedup flags so a re-subscribing user is tracked correctly
+    await AsyncStorage.multiRemove(['af_tracked_trial_id', 'af_tracked_paid_id']);
 };

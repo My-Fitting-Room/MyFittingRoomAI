@@ -4,7 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const trackAutomaticEvents = true;
 const mixpanel = new Mixpanel(Config.MIXPANEL_PROJECT_TOKEN, trackAutomaticEvents);
 
+let mixpanelInitialized = false;
+
 export const initMixpanel = async () => {
+  // Guard: only run once per app process — prevents duplicate App Session
+  // events when navigation.replace() causes a screen remount.
+  if (mixpanelInitialized) return;
+  mixpanelInitialized = true;
+
   try {
     await mixpanel.init();
 
@@ -16,7 +23,7 @@ export const initMixpanel = async () => {
       await AsyncStorage.setItem('mixpanel_first_open_sent', 'true');
     }
 
-    // Track app session (fires every time)
+    // Track app session — fires once per cold start, not on every re-mount
     mixpanel.track("App Session", {
       timestamp: new Date().toISOString()
     });

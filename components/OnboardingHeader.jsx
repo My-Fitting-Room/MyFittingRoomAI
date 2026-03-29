@@ -15,6 +15,7 @@ const OnboardingHeader = ({
     bottomText,
     showGradientProgress = false,
     containerStyle = {},
+    topRowStyle = {},
     textColor = '#000',
     subTextColor = '#BBBBBB',
     textAlign = 'left'
@@ -22,7 +23,7 @@ const OnboardingHeader = ({
     return (
         <View style={[styles.container, containerStyle]}>
             {/* Top Row: Back Button & Progress Bar */}
-            <View style={styles.topRow}>
+            <View style={[styles.topRow, topRowStyle]}>
                 <TouchableOpacity onPress={() => { triggerHaptic(); onBackPress(); }} style={styles.backButton}>
                     <Icon name="chevron-back" size={24} color={textColor} />
                 </TouchableOpacity>

@@ -18,7 +18,7 @@ import OnboardingScreen from "./screens/OnboardingScreen";
 import "./global.css"
 import { initMixpanel } from "./utils/mixpanel";
 import { getTrackingStatus, requestTrackingPermission } from "react-native-tracking-transparency";
-import { initAppsFlyerSDK, appsFlyerLogin, appsFlyerLogout } from "./utils/appsflyer";
+import { initAppsFlyerSDK, appsFlyerLogin, appsFlyerLogout, trackAppsFlyerPurchase } from "./utils/appsflyer";
 import SplashScreen from "./screens/SplashScreen";
 import OnboardingScreen1 from "./screens/OnboardingScreen1";
 import OnboardingScreen2 from "./screens/OnboardingScreen2";
@@ -86,6 +86,17 @@ const App = () => {
 
       initMixpanel();
       await initAppsFlyerSDK();
+
+      // Listen for any subscription changes — catches silent trial conversions
+      Purchases.addCustomerInfoUpdateListener((customerInfo) => {
+        const activeSubscriptions = customerInfo.activeSubscriptions;
+        const entitlements = customerInfo.entitlements.active;
+
+        // Only call if user actually has an active subscription
+        if (activeSubscriptions.length > 0 && Object.keys(entitlements).length > 0) {
+          trackAppsFlyerPurchase();
+        }
+      });
     };
 
     bootstrap();
@@ -189,6 +200,3 @@ const App = () => {
 }
 
 export default App;
-
-
-
