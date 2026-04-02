@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, Alert, Image, Pressable, Linking, Dimensions } from "react-native";
+import { View, TouchableOpacity, Text, Alert, Image, Pressable, Linking, Dimensions, ScrollView } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
@@ -135,99 +135,86 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <View className={styles.screen}>
-      <View className={styles.mainWrapper}>
-        <View className={styles.contentWrapper}>
-          <Text
-            className={styles.headerText}
-            style={{ fontFamily: FONTS.SWITZER, fontWeight: "600" }}
+      <ScrollView 
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-start", alignItems: "center", paddingTop: 120, paddingBottom: 48, paddingHorizontal: 16 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text
+          className={styles.headerText}
+          style={{ fontFamily: FONTS.SWITZER, fontWeight: "500", color: "black", fontSize: 36, marginBottom: 40 }}
+        >
+          Sign Up
+        </Text>
+
+        <View className={styles.buttonsWrapper}>
+          <Pressable
+            className={`${styles.authButtonActive} ${styles.authButton}`}
+            onPress={handleAppleSignUp}
+            style={{ backgroundColor: "black" }}
           >
-            Try-On Clothes From Your Phone.
-          </Text>
-          <Text
-            className={`${styles.subHeaderText} ${styles.subHeader}`}
-            style={{ fontFamily: FONTS.SATOSHI, lineHeight: 22 }}
+            <MaterialIcon name="apple" size={24} color="white" className={styles.iconMaterial} />
+            <Text
+              className={`${styles.authButtonTextColor} ${styles.authButtonText}`}
+              style={{ fontFamily: FONTS.SATOSHI, color: "white" }}
+            >
+              Continue with Apple
+            </Text>
+          </Pressable>
+
+          <Pressable
+            className={`${styles.authButtonActive} ${styles.authButton}`}
+            onPress={handleGoogleSignUp}
+            style={{ backgroundColor: "black" }}
           >
-            Just upload a photo of the clothing you want to try on and a photo of yourself.
-          </Text>
-          <View className={`${styles.videoViewContainer} ${styles.videoView}`}>
-            <Video
-              source={require("../assets/herovideo.mp4")}
-              style={{
-                width: styles.videoWidth,
-                height: styles.videoHeight,
-                borderRadius: 12,
-              }}
-              resizeMode="contain"
-              repeat={true}
-              muted={true}
-              playInBackground={true}
-              playWhenInactive={true}
-              ignoreSilentSwitch="ignore"
+            <Image
+              source={require("../assets/google-logo.png")}
+              className={styles.icon}
+              style={{ tintColor: "white", width: 20, height: 20 }}
             />
-          </View>
-        </View>
-      </View>
-
-      <View className={styles.bottomWrapper}>
-        <Pressable
-          className={`${styles.authButtonActive} ${styles.authButton}`}
-          onPress={handleAppleSignUp}
-        >
-          <MaterialIcon name="apple" size={24} color="white" className={styles.iconMaterial} />
-          <Text
-            className={`${styles.authButtonTextColor} ${styles.authButtonText}`}
-            style={{ fontFamily: FONTS.SATOSHI }}
-          >
-            Continue with Apple
-          </Text>
-        </Pressable>
-
-        <Pressable
-          className={`${styles.authButtonActive} ${styles.authButton}`}
-          onPress={handleGoogleSignUp}
-        >
-          <Image
-            source={require("../assets/google-logo.png")}
-            className={styles.icon}
-            style={{ tintColor: "white" }}
-          />
-          <Text
-            className={`${styles.authButtonTextColor} ${styles.authButtonText}`}
-            style={{ fontFamily: FONTS.SATOSHI }}
-          >
-            Continue with Google
-          </Text>
-        </Pressable>
-
-        <View className={styles.termsContainer}>
-          <Text className={styles.termsText} style={{ fontFamily: FONTS.SATOSHI }}>
-            By continuing, you agree to our{" "}
-          </Text>
-          <TouchableOpacity onPress={handleTermsPress}>
-            <Text className={styles.termsLink} style={{ fontFamily: FONTS.SATOSHI }}>
-              Terms And Services
+            <Text
+              className={`${styles.authButtonTextColor} ${styles.authButtonText}`}
+              style={{ fontFamily: FONTS.SATOSHI, color: "white" }}
+            >
+              Continue with Google
             </Text>
-          </TouchableOpacity>
-          <Text className={styles.termsText} style={{ fontFamily: FONTS.SATOSHI }}>
-            {""} and{" "}
-          </Text>
-          <TouchableOpacity onPress={handlePrivacyPress}>
-            <Text className={styles.termsLink} style={{ fontFamily: FONTS.SATOSHI }}>
-              Privacy Policy
-            </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
-        {/* NEW: Continue as Guest option */}
-        <TouchableOpacity onPress={handleContinueAsGuest} style={{ marginTop: 16, alignItems: "center" }}>
-          <Text style={{ fontFamily: FONTS.SATOSHI, fontSize: 14, color: "#666" }}>
+        <TouchableOpacity onPress={handleContinueAsGuest} className={styles.guestButton}>
+          <Text style={{ fontFamily: FONTS.SATOSHI, fontSize: 16, color: "#333", marginBottom: 32 }}>
             Would you like to continue as{" "}
             <Text style={{ fontWeight: "700", color: "#000", textDecorationLine: "underline" }}>
               Guest?
             </Text>
           </Text>
         </TouchableOpacity>
-      </View>
+
+        <View className={`${styles.videoViewContainer} ${styles.videoView}`}>
+          <Video
+            source={require("../assets/herovideo.mp4")}
+            style={{
+              width: styles.videoWidth,
+              height: styles.videoHeight,
+              borderRadius: 12,
+            }}
+            resizeMode="contain"
+            repeat={true}
+            muted={true}
+            playInBackground={true}
+            playWhenInactive={true}
+            ignoreSilentSwitch="ignore"
+          />
+        </View>
+
+        <View className={styles.termsContainer} style={{ marginTop: 24, paddingBottom: 24 }}>
+          <Text className={styles.termsText} style={{ fontFamily: FONTS.SATOSHI, color: "#666", textAlign: 'center' }}>
+            By continuing, you agree to our{"\n"}
+            <Text onPress={handleTermsPress} style={{ color: "#4051FF" }}>Terms And Services</Text>
+            {" "}and{" "}
+            <Text onPress={handlePrivacyPress} style={{ color: "#4051FF" }}>Privacy Policy</Text>
+          </Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }

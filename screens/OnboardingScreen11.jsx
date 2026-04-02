@@ -6,7 +6,7 @@ import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
 import GradientText from '../components/GradientText';
 import { Fonts } from '../utils/fonts';
-import OnboardingScreen11Image from '../assets/images/OnboardingScreen11.png';
+import OnboardingScreen11Image from '../assets/top-measure-coathanger.png';
 
 const GRADIENT_COLORS = [
     '#B0F491',

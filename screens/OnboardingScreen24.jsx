@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Image, AppState } from 'react-native';
+import { View, StyleSheet, Text, Image, AppState, Animated, Dimensions } from 'react-native';
 import OnboardingHeader from '../components/OnboardingHeader';
 import OnboardingButton from '../components/OnboardingButton';
 import Container from '../components/Container';
@@ -6,15 +6,52 @@ import { Fonts } from '../utils/fonts';
 import OnBoardingImage from '../assets/images/OnboardingScreen21.png';
 import { useOnboarding } from '../context/OnboardingContext';
 import { supabase } from '../App';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import FastImage from 'react-native-fast-image';
 import mixpanel from '../utils/mixpanel';
 
+const PILL_WIDTH = 130;
 
+// Pill fades in — NO scale animation (scale on Animated.View causes RN transparency bug)
+const Pill = ({ text, delay, color, isRedIcon, style }) => {
+    const opacity = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.sequence([
+            Animated.delay(delay),
+            Animated.timing(opacity, {
+                toValue: 1,
+                duration: 400,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    }, [delay]);
+
+    return (
+        <Animated.View style={[{ opacity, position: 'absolute' }, style]}>
+            <View style={styles.pill}>
+                {isRedIcon ? (
+                    <View style={styles.redIcon}>
+                        <View style={styles.dollarCircle}>
+                            <Text style={styles.dollarSign}>$</Text>
+                            <View style={styles.arrowDown} />
+                        </View>
+                    </View>
+                ) : (
+                    <View style={[styles.dot, { backgroundColor: color || '#9CA3AF' }]} />
+                )}
+                <Text style={styles.pillText} numberOfLines={1} ellipsizeMode="tail">
+                    {text}
+                </Text>
+            </View>
+        </Animated.View>
+    );
+};
 
 const OnboardingScreen24 = ({ navigation }) => {
     const { onboardingData } = useOnboarding();
     const [isSaving, setIsSaving] = useState(false);
+
     useEffect(() => {
         mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen24' });
 
@@ -29,16 +66,9 @@ const OnboardingScreen24 = ({ navigation }) => {
 
     const handleContinue = async () => {
         setIsSaving(true);
-        console.log("=======>>>", onboardingData);
-
         try {
             const { data: { session } } = await supabase.auth.getSession();
-            console.log("=======>>>", session);
-
-            if (!session) {
-                navigation.navigate('First');
-                return;
-            }
+            if (!session) { navigation.navigate('First'); return; }
 
             const { error } = await supabase
                 .from('user_onboarding_details')
@@ -64,23 +94,36 @@ const OnboardingScreen24 = ({ navigation }) => {
                 });
 
             if (error) throw error;
-
             mixpanel.track('onboarding Completed');
             mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen24' });
             navigation.navigate('TryOn', { fromOnboarding: true });
         } catch (error) {
             console.error('Error saving onboarding data:', error);
-            mixpanel.track('Onboarding Error', {
-                screen: 'OnboardingScreen24',
-                action: 'handleContinue',
-                error: error?.message || error
-            });
+            mixpanel.track('Onboarding Error', { screen: 'OnboardingScreen24', action: 'handleContinue', error: error?.message || error });
             alert('Failed to save profile. Please try again.');
         } finally {
-
             setIsSaving(false);
         }
     };
+
+    // Format texts
+    // Format texts to match image "vibe"
+    const sizesText = onboardingData.shirtSize?.join(' & ') || 'Medium & Large';
+    const pantsText = onboardingData.pantsSize ? `${onboardingData.pantsSize.waist}x${onboardingData.pantsSize.length}` : '';
+    const fullSizeText = pantsText ? `${sizesText}, ${pantsText}` : sizesText;
+
+    const styleText = (onboardingData.styles && onboardingData.styles.length > 0)
+        ? onboardingData.styles.join(', ')
+        : 'Streetwear, Y2K, GRUNGE';
+
+    const rawConfidence = onboardingData.confidence || 'Low';
+    const confidenceText = rawConfidence.includes('Confidence')
+        ? rawConfidence.replace(/_/g, ' ')
+        : `${rawConfidence.replace(/_/g, ' ')} Shopping Confidence`;
+
+    const biggestIssueText = onboardingData.biggestIssue
+        ? `Biggest Issue: ${onboardingData.biggestIssue}`
+        : 'Biggest Issue: Styling';
 
     return (
         <Container
@@ -99,61 +142,67 @@ const OnboardingScreen24 = ({ navigation }) => {
                 progress={1.0} initialProgress={0.958} nextProgress={1.0}
                 onBackPress={() => navigation.goBack()}
                 containerStyle={{ paddingHorizontal: 0 }}
-                title={"✨ Your Custom Fit Profile is Ready!"}
+                title="Your Fit Profile is Ready"
+                textAlign="center"
             />
 
             <View style={styles.content}>
-                {/* Profile Summary Card */}
-                <View style={styles.profileCard}>
-                    <Text style={styles.profileTitle}>Your Profile</Text>
 
-                    <View style={styles.profileItem}>
-                        <Text style={styles.bullet}>•</Text>
-                        <Text style={styles.profileText}>
-                            <Text style={styles.profileLabel}>Your sizes: </Text>
-                            <Text style={styles.profileValue}>
-                                {onboardingData.shirtSize?.join(', ') || 'N/A'} (Shirt), {onboardingData.pantsSize ? `${onboardingData.pantsSize.waist}x${onboardingData.pantsSize.length}` : 'N/A'} (Pants)
-                            </Text>
-                        </Text>
-                    </View>
+                {/*
+                  3-column row: [left pills] [logo] [right pills]
+                  Pill columns are fixed PILL_WIDTH — pills never overflow or get crushed
+                */}
+                <View style={styles.heroRow}>
+                    <View style={styles.logoStackContainer}>
+                        {/* THE LOGO */}
+                        <View style={styles.logoShadowWrapper}>
+                            <Image
+                                source={require('../assets/myflogo.png')}
+                                style={styles.logo}
+                                resizeMode="contain"
+                            />
+                        </View>
 
-                    <View style={styles.profileItem}>
-                        <Text style={styles.bullet}>•</Text>
-                        <Text style={styles.profileText}>
-                            <Text style={styles.profileLabel}>Your Style: </Text>
-                            <Text style={styles.profileValue}>
-                                {onboardingData.brands?.join(', ') || 'N/A'}
-                            </Text>
-                        </Text>
-                    </View>
+                        {/* PILLS OVER LOGO */}
+                        {/* Top-Left: Sizes (Purple) */}
+                        <Pill
+                            text={fullSizeText}
+                            delay={300}
+                            color="#8338EC"
+                            style={{ top: 0, left: -60 }}
+                        />
 
-                    <View style={styles.profileItem}>
-                        <Text style={styles.bullet}>•</Text>
-                        <Text style={styles.profileText}>
-                            <Text style={styles.profileLabel}>Your shopping frustrations: </Text>
-                            <Text style={styles.profileValue}>
-                                {onboardingData.biggestIssue || 'N/A'}
-                            </Text>
-                        </Text>
-                    </View>
+                        {/* Top-Right: Styles (Green) */}
+                        <Pill
+                            text={styleText}
+                            delay={600}
+                            color="#70E000"
+                            style={{ top: 50, right: -85 }}
+                        />
 
-                    <View style={styles.profileItem}>
-                        <Text style={styles.bullet}>•</Text>
-                        <Text style={styles.profileText}>
-                            <Text style={styles.profileLabel}>Your shopping confidence level: </Text>
-                            <Text style={styles.profileValue}>
-                                {onboardingData.confidence || 'N/A'}
-                            </Text>
-                        </Text>
+                        {/* Middle-Left: Confidence (Red Icon) */}
+                        <Pill
+                            text={confidenceText}
+                            delay={900}
+                            isRedIcon={true}
+                            style={{ top: 115, left: -85 }}
+                        />
+
+                        {/* Bottom-Right: Biggest Issue (Red Icon) */}
+                        <Pill
+                            text={biggestIssueText}
+                            delay={1200}
+                            isRedIcon={true}
+                            style={{ top: 175, right: -60 }}
+                        />
                     </View>
                 </View>
 
-                {/* Ready Message */}
-                <Text style={styles.readyMessage}>
-                    🎉 Your ready for your first try-on!
-                </Text>
+                <View style={styles.messageBox}>
+                    <Text style={styles.readyTitle}>🎉 You're ready for your first try-on!</Text>
+                    <Text style={styles.readySubTitle}>MYF will help you ascend your fashion and wardrobe with ease.</Text>
+                </View>
 
-                {/* User Image */}
                 <View style={styles.imageContainer}>
                     <FastImage
                         source={onboardingData.userImage ? { uri: onboardingData.userImage.uri || onboardingData.userImage } : OnBoardingImage}
@@ -161,6 +210,7 @@ const OnboardingScreen24 = ({ navigation }) => {
                         resizeMode="cover"
                     />
                 </View>
+
             </View>
         </Container>
     );
@@ -169,70 +219,135 @@ const OnboardingScreen24 = ({ navigation }) => {
 const styles = StyleSheet.create({
     content: {
         flex: 1,
+        alignItems: 'center',
+        paddingHorizontal: 16,
     },
-    profileCard: {
-        backgroundColor: '#FFF',
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: '#E0E0E0',
-        padding: 20,
-        width: '90%',
-        marginBottom: 20,
-    },
-    profileTitle: {
-        fontFamily: Fonts.Bold,
-        fontSize: 20,
-        color: '#000',
-        marginBottom: 15,
-    },
-    profileItem: {
+    heroRow: {
         flexDirection: 'row',
-        marginBottom: 2,
-        alignItems: 'flex-start',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+        width: '100%',
     },
-    bullet: {
-        fontFamily: Fonts.Bold,
-        fontSize: 16,
-        color: '#000',
+    logoStackContainer: {
+        width: 180,
+        height: 240,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    logoShadowWrapper: {
+        width: 180,
+        height: 180,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.15,
+        shadowRadius: 15,
+        elevation: 8,
+    },
+    logo: {
+        width: 180,
+        height: 180,
+    },
+    redIcon: {
+        width: 18,
+        height: 18,
+        borderRadius: 9,
+        backgroundColor: '#FF4D4D',
+        justifyContent: 'center',
+        alignItems: 'center',
         marginRight: 8,
-        lineHeight: 20,
+        overflow: 'hidden',
     },
-    profileText: {
-        flex: 1,
-        lineHeight: 20,
+    dollarCircle: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    profileLabel: {
+    dollarSign: {
+        color: '#FFFFFF',
+        fontSize: 10,
+        fontWeight: '900',
+        lineHeight: 12,
+    },
+    arrowDown: {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderLeftWidth: 2,
+        borderRightWidth: 2,
+        borderTopWidth: 3,
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderTopColor: '#FFFFFF',
+        marginTop: -1,
+    },
+    pill: {
+        minWidth: 120,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 24,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#F3F4F6',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 5,
+    },
+    dot: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginRight: 8,
+        flexShrink: 0,
+    },
+    pillText: {
         fontFamily: Fonts.Bold,
         fontSize: 12,
-        color: '#000',
+        color: '#000000',
+        flexShrink: 1,
     },
-    profileValue: {
-        fontFamily: Fonts.Regular,
-        fontSize: 14,
-        color: '#000',
+    messageBox: {
+        alignItems: 'center',
+        marginBottom: 24,
+        paddingHorizontal: 20,
     },
-    readyMessage: {
+    readyTitle: {
+        fontFamily: Fonts.Bold,
+        fontWeight: 700,
+        fontSize: 16,
+        lineHeight: 22,
+        color: '#9CA3AF',
+        marginBottom: 4,
+        textAlign: 'center',
+    },
+    readySubTitle: {
         fontFamily: Fonts.Bold,
         fontSize: 16,
-        color: '#000',
-        marginBottom: 20,
+        lineHeight: 22,
+        fontWeight: 700,
+
+        color: '#9CA3AF',
+        textAlign: 'center',
     },
     imageContainer: {
-        width: 200,
-        height: 280,
+        width: 150,
+        height: 220,
         borderRadius: 20,
         overflow: 'hidden',
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
         shadowRadius: 8,
         elevation: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
         alignSelf: 'center',
+        marginBottom: 30,
     },
     userImage: {
         width: '100%',
