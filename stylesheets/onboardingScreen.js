@@ -54,6 +54,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[28px] text-center mt-20 font-semibold text-black px-10 leading-[38px]",
+      screenBHeader: "text-[28px] text-center mt-20 font-semibold text-black px-10 leading-[38px]",
+      screenBSubHeader: "text-[22px] text-center mt-4 font-bold text-black",
+      screenAImage: "w-56 h-[380px] self-center mt-10",
+      screenBImage: "w-64 h-64 self-center mt-10",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-10 uppercase tracking-widest",
     },
 
     group3: {
@@ -106,6 +112,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[28px] text-center mt-20 font-semibold text-black px-10 leading-[38px]",
+      screenBHeader: "text-[28px] text-center mt-20 font-semibold text-black px-10 leading-[38px]",
+      screenBSubHeader: "text-[22px] text-center mt-4 font-bold text-black",
+      screenAImage: "w-56 h-[380px] self-center mt-10",
+      screenBImage: "w-64 h-64 self-center mt-10",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-10 uppercase tracking-widest",
     },
 
     group4: {
@@ -158,6 +170,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBSubHeader: "text-[24px] text-center mt-6 font-bold text-black",
+      screenAImage: "w-64 h-[420px] self-center mt-12",
+      screenBImage: "w-72 h-72 self-center mt-12",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-12 uppercase tracking-widest",
     },
 
     group5: {
@@ -210,6 +228,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBSubHeader: "text-[24px] text-center mt-6 font-bold text-black",
+      screenAImage: "w-64 h-[420px] self-center mt-12",
+      screenBImage: "w-72 h-72 self-center mt-12",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-12 uppercase tracking-widest",
     },
 
     group6: {
@@ -262,6 +286,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBSubHeader: "text-[24px] text-center mt-6 font-bold text-black",
+      screenAImage: "w-64 h-[420px] self-center mt-12",
+      screenBImage: "w-72 h-72 self-center mt-12",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-12 uppercase tracking-widest",
     },
 
     group7: {
@@ -314,6 +344,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBSubHeader: "text-[24px] text-center mt-6 font-bold text-black",
+      screenAImage: "w-64 h-[420px] self-center mt-12",
+      screenBImage: "w-72 h-72 self-center mt-12",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-12 uppercase tracking-widest",
     },
 
     group8: {
@@ -366,6 +402,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBSubHeader: "text-[24px] text-center mt-6 font-bold text-black",
+      screenAImage: "w-64 h-[420px] self-center mt-12",
+      screenBImage: "w-72 h-72 self-center mt-12",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-12 uppercase tracking-widest",
     },
 
     group9: {
@@ -418,6 +460,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBSubHeader: "text-[24px] text-center mt-6 font-bold text-black",
+      screenAImage: "w-64 h-[420px] self-center mt-12",
+      screenBImage: "w-72 h-72 self-center mt-12",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-12 uppercase tracking-widest",
     },
 
     group10: {
@@ -470,6 +518,12 @@ export const getStyles = (width, height) => {
       reviewImage: "w-80 h-64 border rounded-xl mt-4 border-[#D9D9D9] p-3 object-contain self-center",
       uploadPlaceholder: "w-44 h-56 bg-gray-100 rounded-xl items-center justify-center",
       uploadedImage: "w-44 h-56 rounded-xl",
+      screenAHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBHeader: "text-[32px] text-center mt-24 font-semibold text-black px-12 leading-[42px]",
+      screenBSubHeader: "text-[24px] text-center mt-6 font-bold text-black",
+      screenAImage: "w-64 h-[420px] self-center mt-12",
+      screenBImage: "w-72 h-72 self-center mt-12",
+      noPaymentText: "text-[12px] text-center font-bold text-black mt-12 uppercase tracking-widest",
     },
   };
 

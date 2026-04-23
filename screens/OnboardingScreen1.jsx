@@ -46,7 +46,7 @@ const OnboardingScreen1 = ({ navigation }) => {
             }
         >
             <OnboardingHeader
-                progress={0.042} initialProgress={0} nextProgress={0.083}
+                progress={0.042} initialProgress={0.04} nextProgress={0.083}
                 topText="We’d love to personalize your experience"
                 title="What should we call you?"
                 onBackPress={() => navigation.goBack()}

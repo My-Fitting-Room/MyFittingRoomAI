@@ -56,7 +56,7 @@ export default function SignUpScreen({ navigation }) {
               await logAppsFlyerEvent("af_login");
             }
           }
-          navigation.navigate("OnboardingScreen1");
+          navigation.navigate("OnboardingScreenA");
         }
       } else {
         Alert.alert("Sign Up Error", "Please Try Again Later!", [{ text: "OK" }]);
@@ -104,7 +104,7 @@ export default function SignUpScreen({ navigation }) {
           }
         }
 
-        navigation.navigate("OnboardingScreen1");
+        navigation.navigate("OnboardingScreenA");
       } else {
         Alert.alert("Sign Up Error", "Apple authentication not authorized. Please try again.", [{ text: "OK" }]);
       }
@@ -126,7 +126,7 @@ export default function SignUpScreen({ navigation }) {
         return;
       }
 
-      navigation.navigate("OnboardingScreen1");
+      navigation.navigate("OnboardingScreenA");
     } catch (error) {
       console.log('err2', error);
       Alert.alert("Error", "Please Try Again Later!", [{ text: "OK" }]);
