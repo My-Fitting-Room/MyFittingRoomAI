@@ -149,8 +149,6 @@ const App = () => {
               options={{ headerShown: false }}
               component={SignUpScreen}
             />
-            <Stack.Screen name="OnboardingScreenA" component={OnboardingScreenA} />
-            <Stack.Screen name="OnboardingScreenB" component={OnboardingScreenB} />
             <Stack.Screen name="OnboardingScreen1" component={OnboardingScreen1} />
             <Stack.Screen name="OnboardingScreen2" component={OnboardingScreen2} />
             <Stack.Screen name="OnboardingScreen3" component={OnboardingScreen3} />
@@ -176,6 +174,8 @@ const App = () => {
             <Stack.Screen name="OnboardingScreen23" component={OnboardingScreen23} />
             <Stack.Screen name="OnboardingScreen23b" component={OnboardingScreen23b} />
             <Stack.Screen name="OnboardingScreen24" component={OnboardingScreen24} />
+            <Stack.Screen name="OnboardingScreenA" component={OnboardingScreenA} />
+            <Stack.Screen name="OnboardingScreenB" component={OnboardingScreenB} />
             <Stack.Screen
               name="TryOn"
               options={{ headerShown: false }}

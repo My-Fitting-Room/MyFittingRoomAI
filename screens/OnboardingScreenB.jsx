@@ -13,7 +13,7 @@ const OnboardingScreenB = ({ navigation }) => {
     }, []);
 
     const handleNext = () => {
-        navigation.navigate('OnboardingScreen1');
+        navigation.navigate('TryOn');
     };
 
     return (
