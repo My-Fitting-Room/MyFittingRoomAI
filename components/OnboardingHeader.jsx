@@ -43,7 +43,11 @@ const OnboardingHeader = ({
             <View style={styles.titleContainer}>
                 {topText && <Text style={[styles.smallText, { color: subTextColor }]}>{topText}</Text>}
 
-                <Text style={[styles.title, { color: textColor, textAlign: textAlign }]}>{title}</Text>
+                {typeof title === 'string' ? (
+                    <Text style={[styles.title, { color: textColor, textAlign: textAlign }]}>{title}</Text>
+                ) : (
+                    title
+                )}
 
                 {bottomText && <Text style={[styles.smallText, { color: subTextColor, textAlign: textAlign }]}>{bottomText}</Text>}
             </View>

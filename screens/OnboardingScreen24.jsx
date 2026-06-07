@@ -96,7 +96,7 @@ const OnboardingScreen24 = ({ navigation }) => {
             if (error) throw error;
             mixpanel.track('onboarding Completed');
             mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen24' });
-            navigation.navigate('TryOn', { fromOnboarding: true });
+            navigation.navigate('OnboardingScreenA');
         } catch (error) {
             console.error('Error saving onboarding data:', error);
             mixpanel.track('Onboarding Error', { screen: 'OnboardingScreen24', action: 'handleContinue', error: error?.message || error });

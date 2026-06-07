@@ -28,7 +28,7 @@ export const trackAppsFlyerPurchase = async () => {
             // Wait for RevenueCat to settle before reading periodType
             const subInfo = await getSubInfoWithRetry(subscriptionId);
 
-            const isTrial = subInfo?.periodType === 'trial';
+            const isTrial = subInfo?.periodType?.toLowerCase() === 'trial';
             const price = subInfo?.price?.amount ?? 0;
             const currency = subInfo?.price?.currency ?? 'USD';
 
@@ -41,6 +41,7 @@ export const trackAppsFlyerPurchase = async () => {
                 appsFlyer.logEvent('af_start_trial', {
                     af_currency: currency,
                     af_content_id: subscriptionId,
+                    af_revenue: 0,
                 });
                 mixpanel.track('Trial Started', {
                     subscription_id: subscriptionId,

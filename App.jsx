@@ -45,6 +45,8 @@ import OnboardingScreen22 from "./screens/OnboardingScreen22";
 import OnboardingScreen23 from "./screens/OnboardingScreen23";
 import OnboardingScreen23b from "./screens/OnboardingScreen23b";
 import OnboardingScreen24 from "./screens/OnboardingScreen24";
+import OnboardingScreenA from "./screens/OnboardingScreenA";
+import OnboardingScreenB from "./screens/OnboardingScreenB";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const supabaseUrl = Config.SUPABASE_URL;
@@ -172,6 +174,8 @@ const App = () => {
             <Stack.Screen name="OnboardingScreen23" component={OnboardingScreen23} />
             <Stack.Screen name="OnboardingScreen23b" component={OnboardingScreen23b} />
             <Stack.Screen name="OnboardingScreen24" component={OnboardingScreen24} />
+            <Stack.Screen name="OnboardingScreenA" component={OnboardingScreenA} />
+            <Stack.Screen name="OnboardingScreenB" component={OnboardingScreenB} />
             <Stack.Screen
               name="TryOn"
               options={{ headerShown: false }}

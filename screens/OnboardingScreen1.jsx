@@ -7,12 +7,46 @@ import Container from '../components/Container';
 import { useOnboarding } from '../context/OnboardingContext';
 import mixpanel from '../utils/mixpanel';
 import { AppState } from 'react-native';
+import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
+import { trackAppsFlyerPurchase } from "../utils/appsflyer";
+import Purchases from "react-native-purchases";
 
 const OnboardingScreen1 = ({ navigation }) => {
     const { onboardingData, updateOnboardingData } = useOnboarding();
     const [name, setName] = React.useState(onboardingData.name || '');
 
     React.useEffect(() => {
+        const checkPaywall = async () => {
+            try {
+                const offerings = await Purchases.getOfferings();
+
+                const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
+                    requiredEntitlementIdentifier: "Unlimited",
+                    offering: offerings.all["Plans Vibe"]
+                });
+
+                mixpanel.track("Paywall Displayed On Onboarding 1");
+
+                switch (paywallResult) {
+                    case PAYWALL_RESULT.PURCHASED:
+                        await trackAppsFlyerPurchase();
+                        mixpanel.track("Paywall CTA Clicked On Onboarding 1");
+                        break;
+                    case PAYWALL_RESULT.RESTORED:
+                        break;
+                    case PAYWALL_RESULT.NOT_PRESENTED:
+                    case PAYWALL_RESULT.ERROR:
+                    case PAYWALL_RESULT.CANCELLED:
+                        mixpanel.track("Paywall Dismissed On Onboarding 1");
+                        break;
+                }
+            } catch (error) {
+                console.error("Error presenting paywall:", error);
+            }
+        };
+
+        checkPaywall();
+
         mixpanel.track('Onboarding screen viewed', { screen: 'OnboardingScreen1' });
 
         const subscription = AppState.addEventListener('change', nextAppState => {
@@ -46,7 +80,7 @@ const OnboardingScreen1 = ({ navigation }) => {
             }
         >
             <OnboardingHeader
-                progress={0.042} initialProgress={0} nextProgress={0.083}
+                progress={0.042} initialProgress={0.04} nextProgress={0.083}
                 topText="We’d love to personalize your experience"
                 title="What should we call you?"
                 onBackPress={() => navigation.goBack()}
