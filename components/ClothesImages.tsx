@@ -5,7 +5,7 @@ import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
 import { styles } from "../stylesheets/clothesImages";
 
-export default function ClothesImages({ profile = null, setInputClothImage, navigation }) {
+export default function ClothesImages({ profile = null, setInputClothImage, navigation, returnScreen = "TryOn" }) {
   const [clothesImages, setClothesImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
@@ -89,8 +89,8 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
         if (!response.ok) {
           throw new Error(responseData.message || "Failed to upload image");
         }
-        
-        navigation.replace("TryOn");
+
+        navigation.replace(returnScreen);
       }
     } catch (error) {
       Alert.alert("Error", "Failed to upload image. Please try again.");
@@ -139,8 +139,8 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
       if (!response.ok) {
         throw new Error(data.message || "Failed to delete image");
       }
-  
-      navigation.replace("TryOn"); 
+
+      navigation.replace(returnScreen);
     } catch (error) {
       Alert.alert("Error", "Failed to delete image. Please try again.");
     } finally {

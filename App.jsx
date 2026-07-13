@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import TryOnScreen from "./screens/TryOnScreen";
+import AvatarScreen from "./screens/AvatarScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SizingScreen from "./screens/SizingScreen";
 import { OneSignal } from "react-native-onesignal";
@@ -180,6 +181,11 @@ const App = () => {
               name="TryOn"
               options={{ headerShown: false }}
               component={TryOnScreen}
+            />
+            <Stack.Screen
+              name="Avatar"
+              options={{ headerShown: false }}
+              component={AvatarScreen}
             />
             <Stack.Screen
               name="Settings"

@@ -12,6 +12,11 @@ export default function BottomNav({ navigation, activeTab }) {
     navigation.navigate("TryOn");
   };
 
+  const handleAvatarPress = () => {
+    triggerHaptic();
+    navigation.navigate("Avatar");
+  };
+
   const handleSizingPress = () => {
     triggerHaptic();
     navigation.navigate("Sizing");
@@ -36,6 +41,13 @@ export default function BottomNav({ navigation, activeTab }) {
               name="home"
               size={24}
               color={activeTab === "TryOn" ? "#4052FF" : "#000"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleAvatarPress} style={styles.navItem}>
+            <Feathericons
+              name="user"
+              size={24}
+              color={activeTab === "Avatar" ? "#4052FF" : "#000"}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleSizingPress} style={styles.navItem}>
