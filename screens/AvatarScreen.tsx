@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, SafeAreaView, ScrollView, ActivityIndicator, Dimensions } from "react-native";
+import { View, Text, Alert, SafeAreaView, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity } from "react-native";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
-import BottomNav from "../components/BottomNav";
+import AvatarBottomNav from "../components/AvatarBottomNav";
 import Avatars from "../components/Avatars";
-import ClothesImages from "../components/ClothesImages";
+import AvatarClothesCarousel from "../components/AvatarClothesCarousel";
 import AvatarTryOnButton from "../components/AvatarTryOnButton";
 import AvatarTryOnImages from "../components/AvatarTryOnImages";
-import TokensBox from "../components/TokensBox";
 import { FONTS } from "../constants/fonts";
-import { getStyles } from "../stylesheets/avatarScreen";
+import { getStyles, tabStyles } from "../stylesheets/avatarScreen";
+import { triggerHaptic } from "../utils/haptics";
 
 export default function AvatarScreen({ navigation, route }: { navigation: any, route: any }) {
   const [loading, setLoading] = useState(true);
@@ -19,6 +19,8 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
   const [plan, setPlan] = useState(null);
   const [tokensTotal, setTokensTotal] = useState(0);
   const [extraTokensTotal, setExtraTokensTotal] = useState(0);
+  const [activeTab, setActiveTab] = useState("avatar");
+  const [showCreatePicker, setShowCreatePicker] = useState(false);
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
@@ -79,6 +81,16 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
     checkSession();
   }, [supabase]);
 
+  const handleTabPress = (tab) => {
+    triggerHaptic();
+    setActiveTab(tab);
+  };
+
+  const handlePlusPress = () => {
+    setActiveTab("avatar");
+    setShowCreatePicker(true);
+  };
+
   if (loading) {
     return (
       <View className={styles.loadingContainer}>
@@ -96,13 +108,34 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
   return (
     <SafeAreaView className={styles.container}>
       <HeaderNav navigation={navigation} />
+
+      <View style={tabStyles.tabsRow}>
+        <TouchableOpacity style={tabStyles.tab} onPress={() => handleTabPress("avatar")}>
+          <Text style={[tabStyles.tabText, activeTab === "avatar" && tabStyles.tabTextActive]}>
+            Avatar
+          </Text>
+          {activeTab === "avatar" && <View style={tabStyles.tabUnderline} />}
+        </TouchableOpacity>
+        <TouchableOpacity style={tabStyles.tab} onPress={() => handleTabPress("tryons")}>
+          <Text style={[tabStyles.tabText, activeTab === "tryons" && tabStyles.tabTextActive]}>
+            Try-Ons
+          </Text>
+          {activeTab === "tryons" && <View style={tabStyles.tabUnderline} />}
+        </TouchableOpacity>
+      </View>
+
+      {/* Both panes stay mounted so the try-on results polling and
+          failure alerts keep running while the Avatar tab is active */}
       <ScrollView
-        className={styles.content}
-        contentContainerStyle={{ paddingHorizontal: 5 }}
+        style={{ flex: 1, display: activeTab === "avatar" ? "flex" : "none" }}
       >
-        <AvatarTryOnImages profile={profile} navigation={navigation} />
-        <Avatars setSelectedAvatar={setSelectedAvatar} profile={profile} navigation={navigation} />
-        <ClothesImages setInputClothImage={setInputClothImage} profile={profile} navigation={navigation} returnScreen="Avatar" />
+        <Avatars
+          setSelectedAvatar={setSelectedAvatar}
+          profile={profile}
+          navigation={navigation}
+          showPicker={showCreatePicker}
+          setShowPicker={setShowCreatePicker}
+        />
         <AvatarTryOnButton
           disabled={false}
           inputClothImage={inputClothImage}
@@ -114,16 +147,21 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
           navigation={navigation}
           extraTokensTotal={extraTokensTotal}
         />
-        <TokensBox
-          tokensUsed={profile.tokens_used}
-          tokensTotal={tokensTotal}
-          plan={plan}
-          extraTokensTotal={extraTokensTotal}
-          referralCode={profile.referral_code}
+        <AvatarClothesCarousel
+          profile={profile}
+          setInputClothImage={setInputClothImage}
         />
         <View className={styles.bottomPadding} />
       </ScrollView>
-      <BottomNav navigation={navigation} activeTab="Avatar" />
+
+      <ScrollView
+        style={{ flex: 1, display: activeTab === "tryons" ? "flex" : "none" }}
+      >
+        <AvatarTryOnImages profile={profile} navigation={navigation} />
+        <View className={styles.bottomPadding} />
+      </ScrollView>
+
+      <AvatarBottomNav navigation={navigation} onPlusPress={handlePlusPress} />
     </SafeAreaView>
   );
 }

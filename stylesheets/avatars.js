@@ -1,36 +1,11 @@
 import { FONTS } from "../constants/fonts";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-  },
-  container: {
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    paddingTop: 30,
-    paddingHorizontal: 30,
-    marginTop: 15,
-    marginHorizontal: 15,
-    marginBottom: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  heading: {
-    fontSize: 16,
-    fontWeight: "400",
-    marginBottom: 10,
-    fontFamily: FONTS.SWITZER,
-  },
-  subheading: {
-    fontSize: 10,
-    marginBottom: 20,
-    fontFamily: FONTS.SATOSHI,
-    fontWeight: "400",
-    color: "#868686"
   },
   loadingContainer: {
     flex: 1,
@@ -43,117 +18,119 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: "black",
   },
-  selectedImageContainer: {
+  heroContainer: {
     width: "100%",
-    height: 300,
-    borderRadius: 20,
-    overflow: "hidden",
-    marginTop: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 24,
   },
-  selectedImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 20,
+  heroImage: {
+    width: width * 0.62,
+    height: 280,
   },
-  actionButtonsContainer: {
+  heroActions: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 15,
-    marginBottom: 15,
+    marginTop: 8,
   },
-  actionButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 20,
-    padding: 8,
+  heroActionButton: {
+    paddingHorizontal: 18,
+    paddingVertical: 6,
   },
-  createSection: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    marginBottom: 20,
-  },
-  createIconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#F0F0F0",
+  emptyHeroCircle: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: "#F4F4F4",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20,
+    marginVertical: 60,
   },
-  createButton: {
-    alignItems: "center",
-  },
-  createText: {
-    fontSize: 16,
-    fontWeight: "400",
+  heading: {
+    fontSize: 22,
+    fontWeight: "600",
+    color: "#000",
+    textAlign: "center",
+    marginTop: 28,
     fontFamily: FONTS.SWITZER,
   },
-  hintText: {
-    fontSize: 12,
+  subtext: {
+    fontSize: 14,
+    color: "#6B6B6B",
     textAlign: "center",
-    marginBottom: 20,
+    lineHeight: 20,
+    marginTop: 10,
+    paddingHorizontal: 40,
     fontFamily: FONTS.SATOSHI,
-    color: "#868686",
   },
   pendingItem: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   loadingBar: {
     width: "100%",
-    height: 16,
-    backgroundColor: "#6666FF",
-    borderRadius: 8,
-    opacity: 0.7,
+    height: 14,
+    backgroundColor: "#000",
+    opacity: 0.12,
+    borderRadius: 7,
   },
   pendingText: {
-    fontSize: 14,
+    fontSize: 13,
     color: "#000",
     marginTop: 8,
+    textAlign: "center",
     fontFamily: FONTS.SATOSHI,
+  },
+  switcherContainer: {
+    paddingHorizontal: 16,
+    marginTop: 16,
+    alignSelf: "center",
+  },
+  switcherThumbnail: {
+    width: 48,
+    height: 60,
+    marginHorizontal: 4,
+    borderRadius: 6,
+    overflow: "hidden",
+  },
+  switcherThumbnailSelected: {
+    borderWidth: 1.5,
+    borderColor: "#000",
+  },
+  switcherThumbnailImage: {
+    width: "100%",
+    height: "100%",
   },
   pickerHeading: {
     fontSize: 14,
-    fontWeight: "400",
-    marginTop: 10,
-    marginBottom: 10,
+    fontWeight: "500",
+    color: "#000",
+    textAlign: "center",
+    marginTop: 24,
+    marginBottom: 12,
     fontFamily: FONTS.SWITZER,
   },
   pickerScrollContainer: {
-    paddingBottom: 10,
+    paddingHorizontal: 16,
+    paddingBottom: 4,
   },
-  pickerActionsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 15,
-  },
-  yourAvatarsHeading: {
-    fontSize: 16,
-    fontWeight: "400",
-    marginLeft: 15,
-    marginTop: 10,
-    marginBottom: 20,
-    fontFamily: FONTS.SWITZER,
-  },
-  horizontalScrollContainer: {
-    paddingHorizontal: 15,
-    paddingBottom: 20,
-  },
-  thumbnailContainer: {
-    width: 120,
-    height: 150,
+  pickerThumbnail: {
+    width: 110,
+    height: 140,
     marginRight: 10,
-    borderRadius: 8,
+    borderRadius: 6,
     overflow: "hidden",
+    backgroundColor: "#F4F4F4",
   },
-  selectedThumbnail: {
-    borderWidth: 2,
-    borderColor: "#4052FF",
-  },
-  thumbnailImage: {
+  pickerThumbnailImage: {
     width: "100%",
     height: "100%",
+  },
+  hintText: {
+    fontSize: 13,
+    color: "#6B6B6B",
+    textAlign: "center",
+    marginTop: 20,
+    fontFamily: FONTS.SATOSHI,
   },
 });

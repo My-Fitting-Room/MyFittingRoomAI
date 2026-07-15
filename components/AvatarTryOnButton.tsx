@@ -112,7 +112,7 @@ export default function AvatarTryOnButton({ disabled = false, inputClothImage, s
         onPress={handleTryOn}
       >
         <Text style={styles.buttonText}>
-          {loading ? "Processing..." : "Try On Avatar"}
+          {loading ? "Processing..." : "Try It On"}
         </Text>
       </TouchableOpacity>
     </View>

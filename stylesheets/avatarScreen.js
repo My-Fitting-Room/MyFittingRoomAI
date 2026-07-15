@@ -1,4 +1,37 @@
 import { getDeviceGroup } from "../utils/device";
+import { FONTS } from "../constants/fonts";
+import { StyleSheet } from "react-native";
+
+export const tabStyles = StyleSheet.create({
+  tabsRow: {
+    flexDirection: "row",
+    marginTop: 56,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8E8E8",
+  },
+  tab: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 12,
+  },
+  tabText: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#9A9A9A",
+    fontFamily: FONTS.SATOSHI,
+  },
+  tabTextActive: {
+    color: "#000",
+  },
+  tabUnderline: {
+    position: "absolute",
+    bottom: -1,
+    left: 24,
+    right: 24,
+    height: 2,
+    backgroundColor: "#000",
+  },
+});
 
 export const getStyles = (width, height) => {
   const deviceGroup = getDeviceGroup(width, height);
