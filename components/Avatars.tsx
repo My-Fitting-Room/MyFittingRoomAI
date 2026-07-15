@@ -23,7 +23,9 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation 
   };
 
   useEffect(() => {
-    let currentFailedAvatars = [];
+    // null until the first fetch seeds the baseline, so pre-existing
+    // failed rows don't fire the alert on every remount
+    let currentFailedAvatars: any[] | null = null;
 
     const fetchAvatars = async () => {
       const { data: avatarsData, error: avatarsError } = await supabase
@@ -40,7 +42,7 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation 
       const succAvatars = (avatarsData || []).filter(avatar => avatar.status === "success");
       const pendAvatars = (avatarsData || []).filter(avatar => avatar.status === "pending");
 
-      if (failAvatars.length > currentFailedAvatars.length) {
+      if (currentFailedAvatars !== null && failAvatars.length > currentFailedAvatars.length) {
         Alert.alert("Error", "Your avatar creation failed!");
       }
 
