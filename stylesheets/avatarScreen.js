@@ -43,7 +43,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-sm text-black",
       content: "flex-1 pt-12",
       contentContainer: "px-1",
-      bottomPadding: "h-32"
+      bottomPadding: "h-40"
     },
     group2: {
       container: "flex-1 bg-white",
@@ -51,7 +51,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-sm text-black",
       content: "flex-1 pt-12",
       contentContainer: "px-1",
-      bottomPadding: "h-32"
+      bottomPadding: "h-40"
     },
     group3: {
       container: "flex-1 bg-white",
@@ -59,7 +59,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-sm text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1",
-      bottomPadding: "h-32"
+      bottomPadding: "h-40"
     },
     group4: {
       container: "flex-1 bg-white",
@@ -67,7 +67,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     },
     group5: {
       container: "flex-1 bg-white",
@@ -75,7 +75,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     },
     group6: {
       container: "flex-1 bg-white",
@@ -83,7 +83,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     },
     group7: {
       container: "flex-1 bg-white",
@@ -91,7 +91,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     },
     group8: {
       container: "flex-1 bg-white",
@@ -99,7 +99,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     },
     group9: {
       container: "flex-1 bg-white",
@@ -107,7 +107,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     },
     group10: {
       container: "flex-1 bg-white",
@@ -115,7 +115,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     },
     unknown: {
       container: "flex-1 bg-white",
@@ -123,7 +123,7 @@ export const getStyles = (width, height) => {
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
       contentContainer: "px-1.5",
-      bottomPadding: "h-20"
+      bottomPadding: "h-40"
     }
   };
 
