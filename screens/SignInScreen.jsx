@@ -19,7 +19,7 @@ export default function SignInScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
   GoogleSignin.configure({
-    iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
+    iosClientId: Config.GOOGLE_IOS_CLIENT_ID?.trim(),
   });
 
   const handleForgotPassword = () => {
@@ -42,11 +42,13 @@ export default function SignInScreen({ navigation }) {
       triggerHaptic();
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      console.log("[sign-in] Google result type:", userInfo?.type, "idToken present:", !!userInfo?.data?.idToken);
       if (userInfo.data.idToken) {
         const { data, error } = await supabase.auth.signInWithIdToken({
           provider: "google",
           token: userInfo.data.idToken,
         });
+        console.log("[sign-in] signInWithIdToken error:", error ? `${error.name}: ${error.message} (status ${error.status})` : "none");
 
         if (error) {
           Alert.alert(
@@ -80,6 +82,7 @@ export default function SignInScreen({ navigation }) {
         );
       }
     } catch (error) {
+      console.log("[sign-in] Google flow threw:", error?.message, error);
       Alert.alert(
         "Sign In Error",
         "Please Try Again Later!",

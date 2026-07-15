@@ -50,8 +50,25 @@ import OnboardingScreenA from "./screens/OnboardingScreenA";
 import OnboardingScreenB from "./screens/OnboardingScreenB";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-const supabaseUrl = Config.SUPABASE_URL;
-const supabaseKey = Config.SUPABASE_KEY;
+// Trim guards against stray whitespace in .env values, which react-native-config
+// bakes into the binary verbatim and which mangles every request URL
+const supabaseUrl = Config.SUPABASE_URL?.trim();
+const supabaseKey = Config.SUPABASE_KEY?.trim();
+
+const loggingFetch = async (url, options = {}) => {
+  const response = await fetch(url, options);
+  if (__DEV__) {
+    try {
+      const raw = await response.clone().text();
+      console.log(
+        `[supabase] ${options.method || "GET"} ${url} -> ${response.status} body: ${raw ? raw.slice(0, 300) : "<empty>"}`
+      );
+    } catch (e) {
+      console.log(`[supabase] ${options.method || "GET"} ${url} -> ${response.status} (body unreadable: ${e.message})`);
+    }
+  }
+  return response;
+};
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
@@ -59,6 +76,9 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: false,
+  },
+  global: {
+    fetch: loggingFetch,
   },
 })
 
