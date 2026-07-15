@@ -41,7 +41,9 @@ export default function TryOnImages({ profile = null, navigation }) {
   useEffect(() => {
     let currentTryonImages = [];
     let currentPendingImages = [];
-    let currentFailedImages = [];
+    // null until the first fetch seeds the baseline, so pre-existing
+    // failed rows don't fire the alert on every remount
+    let currentFailedImages: any[] | null = null;
   
     const fetchImages = async () => {
       let tryonImagesData = await getImages(profile.id, "tryon_images");
@@ -50,7 +52,7 @@ export default function TryOnImages({ profile = null, navigation }) {
       const succImages = tryonImagesData.filter(img => img.status === "success");
       const pendImages = tryonImagesData.filter(img => img.status === "pending");
   
-      if (failImages.length > currentFailedImages.length) {
+      if (currentFailedImages !== null && failImages.length > currentFailedImages.length) {
         Alert.alert("Error", "Your virtual try on failed!");
       }
   
