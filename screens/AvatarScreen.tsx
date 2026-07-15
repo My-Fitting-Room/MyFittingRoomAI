@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Alert, SafeAreaView, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity } from "react-native";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
-import AvatarBottomNav from "../components/AvatarBottomNav";
+import BottomNav from "../components/BottomNav";
 import Avatars from "../components/Avatars";
 import AvatarClothesCarousel from "../components/AvatarClothesCarousel";
 import AvatarTryOnButton from "../components/AvatarTryOnButton";
@@ -86,11 +86,6 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
     setActiveTab(tab);
   };
 
-  const handlePlusPress = () => {
-    setActiveTab("avatar");
-    setShowCreatePicker(true);
-  };
-
   if (loading) {
     return (
       <View className={styles.loadingContainer}>
@@ -161,7 +156,7 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
         <View className={styles.bottomPadding} />
       </ScrollView>
 
-      <AvatarBottomNav navigation={navigation} onPlusPress={handlePlusPress} />
+      <BottomNav navigation={navigation} activeTab="Avatar" />
     </SafeAreaView>
   );
 }
