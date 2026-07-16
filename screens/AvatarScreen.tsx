@@ -7,6 +7,7 @@ import Avatars from "../components/Avatars";
 import AvatarClothesCarousel from "../components/AvatarClothesCarousel";
 import AvatarTryOnButton from "../components/AvatarTryOnButton";
 import AvatarTryOnImages from "../components/AvatarTryOnImages";
+import Feathericons from "react-native-vector-icons/Feather";
 import { FONTS } from "../constants/fonts";
 import { getStyles, tabStyles } from "../stylesheets/avatarScreen";
 import { triggerHaptic } from "../utils/haptics";
@@ -86,6 +87,12 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
     setActiveTab(tab);
   };
 
+  const handleNewAvatarPress = () => {
+    triggerHaptic();
+    setActiveTab("avatar");
+    setShowCreatePicker(true);
+  };
+
   if (loading) {
     return (
       <View className={styles.loadingContainer}>
@@ -116,6 +123,13 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
             Try-Ons
           </Text>
           {activeTab === "tryons" && <View style={tabStyles.tabUnderline} />}
+        </TouchableOpacity>
+      </View>
+
+      <View style={tabStyles.actionsRow}>
+        <TouchableOpacity style={tabStyles.newAvatarButton} onPress={handleNewAvatarPress}>
+          <Feathericons name="user-plus" size={14} color="#000" />
+          <Text style={tabStyles.newAvatarButtonText}>New avatar</Text>
         </TouchableOpacity>
       </View>
 

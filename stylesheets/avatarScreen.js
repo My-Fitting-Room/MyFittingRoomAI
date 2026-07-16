@@ -31,6 +31,29 @@ export const tabStyles = StyleSheet.create({
     height: 2,
     backgroundColor: "#000",
   },
+  actionsRow: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingHorizontal: 16,
+    paddingTop: 10,
+  },
+  newAvatarButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    backgroundColor: "#FFF",
+  },
+  newAvatarButtonText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#000",
+    fontFamily: FONTS.SATOSHI,
+  },
 });
 
 export const getStyles = (width, height) => {
