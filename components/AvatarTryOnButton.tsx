@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TouchableOpacity, Text, View, Alert } from "react-native";
 import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
-import { styles } from "../stylesheets/avatarTryonButton";
+import { styles } from "../stylesheets/primaryButton";
 import mixpanel from "../utils/mixpanel";
 import { trackAppsFlyerPurchase } from "../utils/appsflyer";
 import { triggerHaptic } from "../utils/haptics";

@@ -1,6 +1,8 @@
 import { FONTS } from "../constants/fonts";
 import { StyleSheet } from "react-native";
 
+// Shared primary action button (TryOnButton + AvatarTryOnButton):
+// full-width rounded black pill
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
