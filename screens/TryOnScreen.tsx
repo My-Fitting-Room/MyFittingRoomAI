@@ -175,17 +175,21 @@ export default function TryOnScreen({ navigation, route }: { navigation: any, ro
         <TryOnImages profile={profile} navigation={navigation} />
         <ModelImages setInputModelImage={setInputModelImage} profile={profile} navigation={navigation} />
         <ClothesImages setInputClothImage={setInputClothImage} profile={profile} navigation={navigation} />
-        <TryOnButton
-          disabled={false}
-          inputClothImage={inputClothImage}
-          inputModelImage={inputModelImage}
-          tokensUsed={profile.tokens_used}
-          tokensTotal={tokensTotal}
-          profile={profile}
-          plan={plan}
-          navigation={navigation}
-          extraTokensTotal={extraTokensTotal}
-        />
+        {/* Cancel the ScrollView's 5pt content padding so the button's
+            insets match the Avatar screen's exactly */}
+        <View style={{ marginHorizontal: -5 }}>
+          <TryOnButton
+            disabled={false}
+            inputClothImage={inputClothImage}
+            inputModelImage={inputModelImage}
+            tokensUsed={profile.tokens_used}
+            tokensTotal={tokensTotal}
+            profile={profile}
+            plan={plan}
+            navigation={navigation}
+            extraTokensTotal={extraTokensTotal}
+          />
+        </View>
         <TokensBox
           tokensUsed={profile.tokens_used}
           tokensTotal={tokensTotal}
