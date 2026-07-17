@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "../App";
+import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
 import { styles } from "../stylesheets/avatars";
 import { triggerHaptic } from "../utils/haptics";
@@ -8,7 +9,6 @@ import { triggerHaptic } from "../utils/haptics";
 export default function Avatars({ profile = null, setSelectedAvatar, navigation, showPicker = false, setShowPicker = (_visible: boolean) => {} }) {
   const [avatars, setAvatars] = useState([]);
   const [pendingAvatars, setPendingAvatars] = useState([]);
-  const [modelImages, setModelImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -67,25 +67,13 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
       }
     };
 
-    const loadModelImages = async () => {
-      const { data: modelImagesData, error: imageError } = await supabase
-        .from("model_images")
-        .select("*")
-        .eq("profiles_id", profile.id)
-        .order("created_at", { ascending: false });
-
-      if (!imageError) {
-        setModelImages(modelImagesData || []);
-      }
-    };
-
     const load = async () => {
       if (!profile) {
         setLoading(false);
         return;
       }
 
-      await Promise.all([fetchAvatars(), loadModelImages()]);
+      await fetchAvatars();
       setLoading(false);
     };
 
@@ -145,16 +133,95 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
     }
   };
 
-  const confirmCreateAvatar = (modelImage) => {
-    Alert.alert(
-      "Create Avatar",
-      "Create an avatar from this photo? We'll extract you onto a clean studio background.",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Create", onPress: () => handleCreateAvatar(modelImage) },
-      ]
-    );
+  const handleUploadSelfie = async () => {
+    try {
+      triggerHaptic();
+      setCreating(true);
+
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError || !session) {
+        Alert.alert("Error", "You must be logged in to create an avatar.");
+        return;
+      }
+
+      const result = await launchImageLibrary({
+        mediaType: "photo",
+        includeBase64: false,
+        maxHeight: 2000,
+        maxWidth: 2000,
+        quality: 0.8,
+      });
+
+      if (result.didCancel) {
+        return;
+      }
+
+      if (result.errorCode) {
+        Alert.alert("Error", `Image picker error: ${result.errorMessage}`);
+        return;
+      }
+
+      const asset = result.assets?.[0];
+      if (!asset) {
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", {
+        uri: asset.uri,
+        type: asset.type || "image/jpeg",
+        name: asset.fileName || "image.jpg",
+      });
+      formData.append("image_bucket", "models");
+      formData.append("image_table", "model_images");
+
+      const uploadResponse = await fetch(
+        "https://my-fitting-room-server.onrender.com/api/image/upload",
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${session.access_token}`,
+          },
+          body: formData,
+        }
+      );
+
+      const uploadData = await uploadResponse.json();
+
+      if (!uploadResponse.ok) {
+        throw new Error(uploadData.message || "Failed to upload image");
+      }
+
+      // The upload response doesn't include the new row's slug, so fetch it
+      const { data: modelImage, error: modelImageError } = await supabase
+        .from("model_images")
+        .select("*")
+        .eq("profiles_id", profile.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+
+      if (modelImageError || !modelImage) {
+        throw new Error("Failed to load uploaded image");
+      }
+
+      await handleCreateAvatar(modelImage);
+    } catch (error) {
+      Alert.alert("Error", "Failed to upload your photo. Please try again.");
+    } finally {
+      setCreating(false);
+    }
   };
+
+  // The parent's "New avatar" button toggles showPicker; the picker carousel
+  // is gone, so treat it as a request to start the selfie upload flow
+  useEffect(() => {
+    if (showPicker) {
+      setShowPicker(false);
+      handleUploadSelfie();
+    }
+  }, [showPicker]);
 
   const handleDeleteAvatar = async () => {
     try {
@@ -228,7 +295,7 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
           <View style={styles.heroActions}>
             <TouchableOpacity
               style={styles.heroActionButton}
-              onPress={() => setShowPicker(!showPicker)}
+              onPress={handleUploadSelfie}
               disabled={creating}
             >
               {creating ? (
@@ -282,56 +349,35 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
         </>
       ) : (
         pendingAvatars.length === 0 && (
-          <>
+          <View style={styles.emptyStateContainer}>
             <TouchableOpacity
-              style={styles.heroContainer}
-              onPress={() => setShowPicker(!showPicker)}
+              onPress={handleUploadSelfie}
               disabled={creating}
+              activeOpacity={0.8}
             >
-              <View style={styles.emptyHeroCircle}>
-                {creating ? (
-                  <ActivityIndicator size="large" color="#000" />
-                ) : (
-                  <Feathericons name="user-plus" size={40} color="black" />
-                )}
-              </View>
+              <Image
+                source={require("../assets/mannequin.png")}
+                style={styles.emptyFigureImage}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
 
-            <Text style={styles.heading}>Create your avatar</Text>
-            <Text style={styles.subtext}>
-              You don't have an avatar yet. Pick one of your model photos and we'll place you on a clean studio background!
+            <Text style={styles.heading}>
+              Upload a selfie to create{"\n"}your first avatar
             </Text>
-          </>
-        )
-      )}
 
-      {showPicker && (
-        modelImages.length > 0 ? (
-          <>
-            <Text style={styles.pickerHeading}>Choose a model photo for your avatar</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.pickerScrollContainer}
+            <TouchableOpacity
+              style={styles.uploadPillButton}
+              onPress={handleUploadSelfie}
+              disabled={creating}
             >
-              {modelImages.map((image, index) => (
-                <TouchableOpacity
-                  key={image.id || index}
-                  style={styles.pickerThumbnail}
-                  onPress={() => confirmCreateAvatar(image)}
-                  disabled={creating}
-                >
-                  <Image
-                    source={{ uri: image.url }}
-                    style={styles.pickerThumbnailImage}
-                    resizeMode="cover"
-                  />
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </>
-        ) : (
-          <Text style={styles.hintText}>Upload a model image on the Try-On tab first</Text>
+              {creating ? (
+                <ActivityIndicator size="small" color="#6B6B6B" />
+              ) : (
+                <Text style={styles.uploadPillText}>Upload selfie</Text>
+              )}
+            </TouchableOpacity>
+          </View>
         )
       )}
     </View>

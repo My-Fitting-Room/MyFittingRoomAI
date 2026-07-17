@@ -1,7 +1,7 @@
 import { FONTS } from "../constants/fonts";
 import { StyleSheet, Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
   rootContainer: {
@@ -37,14 +37,30 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 6,
   },
-  emptyHeroCircle: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: "#F4F4F4",
+  emptyStateContainer: {
+    width: "100%",
     alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 60,
+    marginTop: 24,
+    paddingBottom: 24,
+  },
+  emptyFigureImage: {
+    width: width * 0.4,
+    height: height * 0.32,
+  },
+  uploadPillButton: {
+    marginTop: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 36,
+    borderRadius: 999,
+    backgroundColor: "#FAFAFA",
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+  },
+  uploadPillText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#6B6B6B",
+    fontFamily: FONTS.SATOSHI,
   },
   heading: {
     fontSize: 22,
@@ -100,37 +116,5 @@ export const styles = StyleSheet.create({
   switcherThumbnailImage: {
     width: "100%",
     height: "100%",
-  },
-  pickerHeading: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#000",
-    textAlign: "center",
-    marginTop: 24,
-    marginBottom: 12,
-    fontFamily: FONTS.SWITZER,
-  },
-  pickerScrollContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 4,
-  },
-  pickerThumbnail: {
-    width: 110,
-    height: 140,
-    marginRight: 10,
-    borderRadius: 6,
-    overflow: "hidden",
-    backgroundColor: "#F4F4F4",
-  },
-  pickerThumbnailImage: {
-    width: "100%",
-    height: "100%",
-  },
-  hintText: {
-    fontSize: 13,
-    color: "#6B6B6B",
-    textAlign: "center",
-    marginTop: 20,
-    fontFamily: FONTS.SATOSHI,
   },
 });
