@@ -67,7 +67,7 @@ const TokensBox = ({ tokensUsed, tokensTotal,plan, extraTokensTotal, referralCod
     );
   } else {
     return (
-      <View>
+      <View style={styles.container}>
         <Text style={styles.tokenText}>
           Referral tokens left: {extraTokensTotal}
         </Text>
