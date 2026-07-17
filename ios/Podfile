@@ -30,13 +30,30 @@ target 'MyFittingRoomAI' do
   )
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    # Patch fmt at the source so consteval is OFF for every target (Xcode 26 fix)
+    fmt_base = File.join(__dir__, 'Pods', 'fmt', 'include', 'fmt', 'base.h')
+    if File.exist?(fmt_base)
+      original = File.read(fmt_base)
+      patched = original.gsub(/define\s+FMT_USE_CONSTEVAL\s+1\b/, 'define FMT_USE_CONSTEVAL 0')
+      File.chmod(0644, fmt_base)
+      File.write(fmt_base, patched) if patched != original
+    end
+    # Fix for fmt consteval build errors on Xcode 26 (facebook/react-native#55601)
+    installer.pods_project.targets.each do |target|
+      if target.name == 'fmt' || target.name == 'RCT-Folly'
+        target.build_configurations.each do |build_config|
+          build_config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+          build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FMT_USE_CONSTEVAL=0'
+        end
+      end
+    end
     
     # Fix for header file conflicts - disable strict include checks
     installer.pods_project.targets.each do |target|
@@ -49,7 +66,7 @@ target 'MyFittingRoomAI' do
         
         # Force C++20 for most pods (required by RN 0.78)
         # BUT use C++17 for fmt to avoid consteval bugs in modern Xcode
-        if target.name == 'fmt'
+        if target.name == 'fmt' || target.name == 'RCT-Folly'
           config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'gnu++17'
         else
           config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'gnu++20'
@@ -62,7 +79,8 @@ target 'MyFittingRoomAI' do
           ['GCC_PREPROCESSOR_DEFINITIONS', 'FMT_USE_CONSTEXPR=0'],
           ['OTHER_CPLUSPLUSFLAGS', '-DFMT_USE_CONSTEVAL=0'],
           ['OTHER_CPLUSPLUSFLAGS', '-DFMT_USE_CONSTEXPR=0'],
-          ['OTHER_CPLUSPLUSFLAGS', '-DFMT_HEADER_ONLY=1']
+          ['OTHER_CPLUSPLUSFLAGS', '-DFMT_HEADER_ONLY=1'],
+          ['OTHER_CPLUSPLUSFLAGS', '-Wno-invalid-constexpr']
         ].each do |key, value|
           existing = config.build_settings[key]
           if existing.nil?
