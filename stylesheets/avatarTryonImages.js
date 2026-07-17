@@ -1,6 +1,42 @@
+import { FONTS } from "../constants/fonts";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+  filterRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 8,
+    marginBottom: 16,
+  },
+  filterChip: {
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    backgroundColor: "#FFF",
+  },
+  filterChipActive: {
+    backgroundColor: "#000",
+    borderColor: "#000",
+  },
+  filterChipText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#000",
+    fontFamily: FONTS.SATOSHI,
+  },
+  filterChipTextActive: {
+    color: "#FFF",
+  },
+  savedEmptyText: {
+    fontSize: 13,
+    color: "#6B6B6B",
+    textAlign: "center",
+    marginTop: 24,
+    marginBottom: 24,
+    fontFamily: FONTS.SATOSHI,
+  },
   container: {
     paddingTop: 20,
     paddingHorizontal: 20,

@@ -12,6 +12,7 @@ import FastImage from "react-native-fast-image";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
 import { styles } from "../stylesheets/tryonImages";
+import { triggerHaptic } from "../utils/haptics";
 
 import { supabase } from "../App";
 
@@ -31,7 +32,7 @@ const getImages = async (profileId, table) => {
 };
 
 export default function TryOnImages({ profile = null, navigation }) {
-  const [tryonImages, setTryonImages] = useState([]);
+  const [tryonImages, setTryonImages] = useState<any[]>([]);
   const [pendingImages, setPendingImages] = useState([]);
   const [failedImages, setFailedImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -80,6 +81,34 @@ export default function TryOnImages({ profile = null, navigation }) {
   }, [profile]);
 
   
+  const handleToggleFavorite = async () => {
+    const currentImage = tryonImages[currentImageIndex];
+
+    if (!currentImage) {
+      return;
+    }
+
+    triggerHaptic();
+    const nextValue = !currentImage.is_favorite;
+
+    // Optimistic flip; the 15s poll re-syncs with server truth either way
+    setTryonImages(prevImages => prevImages.map(img =>
+      img.id === currentImage.id ? { ...img, is_favorite: nextValue } : img
+    ));
+
+    const { error } = await supabase
+      .from("tryon_images")
+      .update({ is_favorite: nextValue })
+      .eq("id", currentImage.id);
+
+    if (error) {
+      setTryonImages(prevImages => prevImages.map(img =>
+        img.id === currentImage.id ? { ...img, is_favorite: !nextValue } : img
+      ));
+      Alert.alert("Error", "Failed to update saved looks. Please try again.");
+    }
+  };
+
   const handleDeleteImage = async () => {
     let tryonImage =  tryonImages[currentImageIndex]
 
@@ -259,6 +288,13 @@ export default function TryOnImages({ profile = null, navigation }) {
               <View style={styles.actionButtons}>
                 <TouchableOpacity onPress={() => viewImage(tryonImages[currentImageIndex].slug)}>
                   <Feathericons name="eye" size={24} color="#000" style={styles.viewIcon} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleToggleFavorite()}>
+                  <Ionicons
+                    name={tryonImages[currentImageIndex].is_favorite ? "heart" : "heart-outline"}
+                    size={24}
+                    color="#000"
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleDeleteImage()} disabled={deleting}>
                   {deleting ? (

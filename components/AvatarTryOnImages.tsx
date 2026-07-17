@@ -12,6 +12,7 @@ import FastImage from "react-native-fast-image";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
 import { styles } from "../stylesheets/avatarTryonImages";
+import { triggerHaptic } from "../utils/haptics";
 
 import { supabase } from "../App";
 
@@ -31,12 +32,13 @@ const getImages = async (profileId) => {
 };
 
 export default function AvatarTryOnImages({ profile = null, navigation }) {
-  const [tryonImages, setTryonImages] = useState([]);
+  const [tryonImages, setTryonImages] = useState<any[]>([]);
   const [pendingImages, setPendingImages] = useState([]);
   const [failedImages, setFailedImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     // null until the first fetch seeds the baseline, so pre-existing
@@ -75,9 +77,46 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
     return () => clearInterval(interval);
   }, [profile]);
 
+  const visibleImages = filter === "saved"
+    ? tryonImages.filter(img => img.is_favorite)
+    : tryonImages;
+  const safeIndex = Math.min(currentImageIndex, Math.max(visibleImages.length - 1, 0));
+  const currentImage = visibleImages[safeIndex];
+
+  const handleFilterChange = (nextFilter) => {
+    triggerHaptic();
+    setFilter(nextFilter);
+    setCurrentImageIndex(0);
+  };
+
+  const handleToggleFavorite = async () => {
+    if (!currentImage) {
+      return;
+    }
+
+    triggerHaptic();
+    const nextValue = !currentImage.is_favorite;
+
+    // Optimistic flip; the 15s poll re-syncs with server truth either way
+    setTryonImages(prevImages => prevImages.map(img =>
+      img.id === currentImage.id ? { ...img, is_favorite: nextValue } : img
+    ));
+
+    const { error } = await supabase
+      .from("avatar_tryon_images")
+      .update({ is_favorite: nextValue })
+      .eq("id", currentImage.id);
+
+    if (error) {
+      setTryonImages(prevImages => prevImages.map(img =>
+        img.id === currentImage.id ? { ...img, is_favorite: !nextValue } : img
+      ));
+      Alert.alert("Error", "Failed to update saved looks. Please try again.");
+    }
+  };
 
   const handleDeleteImage = async () => {
-    let tryonImage = tryonImages[currentImageIndex]
+    let tryonImage = currentImage;
 
     try {
       setDeleting(true);
@@ -131,13 +170,13 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
 
   const goToPrevious = () => {
     setCurrentImageIndex(prevIndex =>
-      prevIndex > 0 ? prevIndex - 1 : tryonImages.length - 1
+      prevIndex > 0 ? prevIndex - 1 : visibleImages.length - 1
     );
   };
 
   const goToNext = () => {
     setCurrentImageIndex(prevIndex =>
-      prevIndex < tryonImages.length - 1 ? prevIndex + 1 : 0
+      prevIndex < visibleImages.length - 1 ? prevIndex + 1 : 0
     );
   };
 
@@ -179,14 +218,41 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
           )}
 
           {tryonImages.length > 0 && (
+            <View style={styles.filterRow}>
+              <TouchableOpacity
+                style={[styles.filterChip, filter === "all" && styles.filterChipActive]}
+                onPress={() => handleFilterChange("all")}
+              >
+                <Text style={[styles.filterChipText, filter === "all" && styles.filterChipTextActive]}>
+                  All
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.filterChip, filter === "saved" && styles.filterChipActive]}
+                onPress={() => handleFilterChange("saved")}
+              >
+                <Text style={[styles.filterChipText, filter === "saved" && styles.filterChipTextActive]}>
+                  Saved
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {tryonImages.length > 0 && visibleImages.length === 0 && (
+            <Text style={styles.savedEmptyText}>
+              No saved looks yet — tap the heart on a try-on to save it.
+            </Text>
+          )}
+
+          {visibleImages.length > 0 && (
             <View style={styles.carouselContainer}>
               <View style={styles.imageContainer}>
-                {(tryonImages[currentImageIndex].clothes_images !== null && tryonImages[currentImageIndex].avatars !== null) ? (
+                {(currentImage.clothes_images !== null && currentImage.avatars !== null) ? (
                   <View style={styles.splitImageContainer}>
                     <View style={styles.leftColumn}>
                       <FastImage
                         source={{
-                          uri: tryonImages[currentImageIndex].avatars.url,
+                          uri: currentImage.avatars.url,
                           priority: FastImage.priority.normal
                         }}
                         style={styles.avatarImage}
@@ -194,7 +260,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                       />
                       <FastImage
                         source={{
-                          uri: tryonImages[currentImageIndex].clothes_images.url,
+                          uri: currentImage.clothes_images.url,
                           priority: FastImage.priority.normal
                         }}
                         style={styles.clothingImage}
@@ -204,7 +270,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                     <View style={styles.rightColumn}>
                       <FastImage
                         source={{
-                          uri: tryonImages[currentImageIndex].url,
+                          uri: currentImage.url,
                           priority: FastImage.priority.high
                         }}
                         style={styles.resultImage}
@@ -216,7 +282,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                   <View style={styles.fullImageContainer}>
                     <FastImage
                       source={{
-                        uri: tryonImages[currentImageIndex].url,
+                        uri: currentImage.url,
                         priority: FastImage.priority.high
                       }}
                       style={styles.fullImage}
@@ -225,7 +291,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                   </View>
                 )}
 
-                {tryonImages.length > 1 && (
+                {visibleImages.length > 1 && (
                   <>
                     <TouchableOpacity
                       style={[styles.navArrow, styles.leftArrow]}
@@ -250,13 +316,20 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
 
               <View style={styles.imageCounter}>
                 <Text style={styles.counterText}>
-                  {currentImageIndex + 1} / {tryonImages.length}
+                  {safeIndex + 1} / {visibleImages.length}
                 </Text>
               </View>
 
               <View style={styles.actionButtons}>
-                <TouchableOpacity onPress={() => viewImage(tryonImages[currentImageIndex].slug)}>
+                <TouchableOpacity onPress={() => viewImage(currentImage.slug)}>
                   <Feathericons name="eye" size={24} color="#000" style={styles.viewIcon} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleToggleFavorite()}>
+                  <Ionicons
+                    name={currentImage.is_favorite ? "heart" : "heart-outline"}
+                    size={24}
+                    color="#000"
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleDeleteImage()} disabled={deleting}>
                   {deleting ? (
