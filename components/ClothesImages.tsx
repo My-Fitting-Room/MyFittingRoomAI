@@ -261,7 +261,7 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
                 <Image 
                   source={{ uri: image.url }}
                   style={styles.thumbnailImage}
-                  resizeMode="cover"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
             ))}
