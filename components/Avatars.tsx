@@ -42,7 +42,20 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
       const pendAvatars = (avatarsData || []).filter(avatar => avatar.status === "pending");
 
       if (currentFailedAvatars !== null && failAvatars.length > currentFailedAvatars.length) {
-        Alert.alert("Error", "Your avatar creation failed!");
+        const previousFailedIds = new Set(currentFailedAvatars.map(avatar => avatar.id));
+        const newlyFailed = failAvatars.filter(avatar => !previousFailedIds.has(avatar.id));
+        // Server stores the raw OpenAI error; safety rejections mention the
+        // safety system / moderation (or the stable safety_rejected code)
+        const safetyRejected = newlyFailed.some(avatar => /safety|moderation/i.test(avatar.error_message || ""));
+
+        if (safetyRejected) {
+          Alert.alert(
+            "Couldn't Create Avatar",
+            "This photo couldn't be processed. Try a photo with a bit more coverage — fitted is fine, but very revealing shots sometimes get rejected."
+          );
+        } else {
+          Alert.alert("Error", "Your avatar creation failed!");
+        }
       }
 
       setAvatars(succAvatars);
