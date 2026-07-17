@@ -2,12 +2,10 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     paddingTop: 20,
     paddingHorizontal: 20,
     marginTop: 15,
     marginHorizontal: 15,
-    elevation: 3,
   },
   loadingContainer: {
     flex: 1,
@@ -60,15 +58,6 @@ export const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "relative",
-    borderRadius: 12,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
   },
   splitImageContainer: {
     flexDirection: "row",
@@ -85,18 +74,14 @@ export const styles = StyleSheet.create({
   avatarImage: {
     width: "100%",
     height: "50%",
-    borderTopLeftRadius: 12,
   },
   clothingImage: {
     width: "100%",
     height: "50%",
-    borderBottomLeftRadius: 12,
   },
   resultImage: {
     width: "100%",
     height: "100%",
-    borderTopRightRadius: 12,
-    borderBottomRightRadius: 12,
   },
   fullImageContainer: {
     height: 400,
@@ -104,7 +89,6 @@ export const styles = StyleSheet.create({
   fullImage: {
     width: "100%",
     height: "100%",
-    borderRadius: 12,
   },
   navArrow: {
     position: "absolute",
