@@ -3,6 +3,7 @@ import Feathericons from "react-native-vector-icons/Feather";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
+import ClothesTile from "./ClothesTile";
 import { styles } from "../stylesheets/clothesImages";
 
 export default function ClothesImages({ profile = null, setInputClothImage, navigation, returnScreen = "TryOn" }) {
@@ -253,17 +254,12 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
             contentContainerStyle={styles.horizontalScrollContainer}
           >
             {clothesImages.map((image, index) => (
-              <TouchableOpacity 
-                key={image.id || index} 
-                style={styles.thumbnailContainer}
+              <ClothesTile
+                key={image.id || index}
+                image={image}
+                selected={selectedClothesImage?.id === image.id}
                 onPress={() => handleImageSelect(image)}
-              >
-                <Image 
-                  source={{ uri: image.url }}
-                  style={styles.thumbnailImage}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
+              />
             ))}
           </ScrollView>
         </>

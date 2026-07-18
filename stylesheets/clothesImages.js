@@ -102,25 +102,15 @@ export const styles = StyleSheet.create({
   },
   yourClothesHeading: {
     fontSize: 16,
-    fontWeight: "400",
-    marginLeft: 15,
+    fontWeight: "600",
+    color: "#000",
+    marginLeft: 16,
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 12,
     fontFamily: FONTS.SWITZER,
   },
   horizontalScrollContainer: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     paddingBottom: 20,
-  },
-  thumbnailContainer: {
-    width: 120,
-    height: 150,
-    marginRight: 10,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  thumbnailImage: {
-    width: "100%",
-    height: "100%",
   },
 });
