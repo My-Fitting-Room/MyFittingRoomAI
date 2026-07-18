@@ -87,8 +87,11 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: FONTS.SATOSHI
   },
+  // Vertical padding keeps the cards' shadows and the 1.04 selected-state
+  // scale inside the horizontal ScrollView's clip bounds
   horizontalScrollContainer: {
     paddingHorizontal: 16,
+    paddingTop: 8,
     paddingBottom: 20,
   },
 });
