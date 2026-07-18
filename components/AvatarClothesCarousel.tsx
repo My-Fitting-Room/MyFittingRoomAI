@@ -2,6 +2,7 @@ import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../App";
 import ClothesTile from "./ClothesTile";
+import SectionHeader from "./SectionHeader";
 import { styles } from "../stylesheets/avatarClothesCarousel";
 
 export default function AvatarClothesCarousel({ profile = null, setInputClothImage }) {
@@ -52,7 +53,7 @@ export default function AvatarClothesCarousel({ profile = null, setInputClothIma
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Your clothes</Text>
+      <SectionHeader title="Your clothes" />
       {clothesImages.length > 0 ? (
         <ScrollView
           horizontal

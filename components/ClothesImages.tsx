@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
 import ClothesTile from "./ClothesTile";
+import SectionHeader from "./SectionHeader";
 import { styles } from "../stylesheets/clothesImages";
 
 export default function ClothesImages({ profile = null, setInputClothImage, navigation, returnScreen = "TryOn" }) {
@@ -190,8 +191,11 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
   return (
     <View style={styles.rootContainer}>
       <View style={styles.container}>
-        <Text style={styles.heading}>Clothing</Text>
-        <Text style={styles.subheading}>For best results, use well-lit, front-facing photos</Text>
+        <SectionHeader
+          title="Clothing"
+          subtitle="For best results, use well-lit, front-facing photos"
+          inset={false}
+        />
 
         {clothesImages.length > 0 ? (
           <>
@@ -247,7 +251,7 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
 
       {clothesImages.length > 0 && (
         <>
-          <Text style={styles.yourClothesHeading}>Your clothes</Text>
+          <SectionHeader title="Your clothes" />
           <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false}

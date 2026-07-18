@@ -19,19 +19,6 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  heading: {
-    fontSize: 16,
-    fontWeight: "400",
-    marginBottom: 10,
-    fontFamily: FONTS.SWITZER,
-  },
-  subheading: {
-    fontSize: 10,
-    marginBottom: 20,
-    fontFamily: FONTS.SATOSHI,
-    fontWeight: "400",
-    color:"#868686"
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
@@ -99,14 +86,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     fontFamily: FONTS.SATOSHI
-  },
-  yourModelsHeading: {
-    fontSize: 16,
-    fontWeight: "400",
-    marginLeft: 15,
-    marginTop: 10,
-    marginBottom: 20,
-    fontFamily: FONTS.SWITZER,
   },
   horizontalScrollContainer: {
     paddingHorizontal: 15,

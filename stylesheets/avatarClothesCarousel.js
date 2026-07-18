@@ -3,20 +3,12 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: 36,
+    marginTop: 20,
   },
   loadingContainer: {
-    marginTop: 36,
+    marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
-  },
-  heading: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#000",
-    marginLeft: 16,
-    marginBottom: 12,
-    fontFamily: FONTS.SWITZER,
   },
   scrollContainer: {
     paddingHorizontal: 16,

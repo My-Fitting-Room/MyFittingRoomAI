@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
+import SectionHeader from "./SectionHeader";
 import { styles } from "../stylesheets/modelImages";
 
 export default function ModelImages({ profile = null, setInputModelImage, navigation }) {
@@ -188,8 +189,11 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
   return (
     <View style={styles.rootContainer}>
       <View style={styles.container}>
-        <Text style={styles.heading}>Model</Text>
-        <Text style={styles.subheading}>For best results, use well-lit, front-facing photos</Text>
+        <SectionHeader
+          title="Model"
+          subtitle="For best results, use well-lit, front-facing photos"
+          inset={false}
+        />
 
         {modelImages.length > 0 ? (
           <>
@@ -247,7 +251,7 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
 
       {modelImages.length > 0 && (
         <>
-          <Text style={styles.yourModelsHeading}>Your models</Text>
+          <SectionHeader title="Your models" />
           <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false}
