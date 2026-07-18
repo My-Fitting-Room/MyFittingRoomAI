@@ -40,15 +40,20 @@ export const styles = StyleSheet.create({
   emptyStateContainer: {
     width: "100%",
     alignItems: "center",
-    marginTop: 24,
-    paddingBottom: 24,
+    marginTop: 8,
+    paddingBottom: 12,
   },
   emptyFigureImage: {
-    width: width * 0.4,
-    height: height * 0.32,
+    width: width * 0.32,
+    height: height * 0.256,
+  },
+  // Tighter spacing than the has-avatar heading so the clothes carousel
+  // fits above the fold in the empty state
+  emptyHeading: {
+    marginTop: 16,
   },
   uploadPillButton: {
-    marginTop: 20,
+    marginTop: 14,
     paddingVertical: 12,
     paddingHorizontal: 36,
     borderRadius: 999,

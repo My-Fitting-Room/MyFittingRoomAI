@@ -133,7 +133,7 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
     }
   };
 
-  const handleUploadSelfie = async () => {
+  const handleUploadPhoto = async () => {
     try {
       triggerHaptic();
       setCreating(true);
@@ -215,11 +215,11 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
   };
 
   // The parent's "New avatar" button toggles showPicker; the picker carousel
-  // is gone, so treat it as a request to start the selfie upload flow
+  // is gone, so treat it as a request to start the photo upload flow
   useEffect(() => {
     if (showPicker) {
       setShowPicker(false);
-      handleUploadSelfie();
+      handleUploadPhoto();
     }
   }, [showPicker]);
 
@@ -295,7 +295,7 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
           <View style={styles.heroActions}>
             <TouchableOpacity
               style={styles.heroActionButton}
-              onPress={handleUploadSelfie}
+              onPress={handleUploadPhoto}
               disabled={creating}
             >
               {creating ? (
@@ -351,7 +351,7 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
         pendingAvatars.length === 0 && (
           <View style={styles.emptyStateContainer}>
             <TouchableOpacity
-              onPress={handleUploadSelfie}
+              onPress={handleUploadPhoto}
               disabled={creating}
               activeOpacity={0.8}
             >
@@ -362,19 +362,19 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
               />
             </TouchableOpacity>
 
-            <Text style={styles.heading}>
-              Upload a selfie to create{"\n"}your first avatar
+            <Text style={[styles.heading, styles.emptyHeading]}>
+              Upload a full-body photo to{"\n"}create your first avatar
             </Text>
 
             <TouchableOpacity
               style={styles.uploadPillButton}
-              onPress={handleUploadSelfie}
+              onPress={handleUploadPhoto}
               disabled={creating}
             >
               {creating ? (
                 <ActivityIndicator size="small" color="#6B6B6B" />
               ) : (
-                <Text style={styles.uploadPillText}>Upload selfie</Text>
+                <Text style={styles.uploadPillText}>Upload photo</Text>
               )}
             </TouchableOpacity>
           </View>
