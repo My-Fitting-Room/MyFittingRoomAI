@@ -15,7 +15,7 @@ import { triggerHaptic } from "../utils/haptics";
 export default function AvatarScreen({ navigation, route }: { navigation: any, route: any }) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
-  const [inputClothImage, setInputClothImage] = useState(null);
+  const [selectedOutfit, setSelectedOutfit] = useState({});
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [plan, setPlan] = useState(null);
   const [tokensTotal, setTokensTotal] = useState(0);
@@ -144,7 +144,7 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
           {selectedAvatar && (
             <AvatarTryOnButton
               disabled={false}
-              inputClothImage={inputClothImage}
+              selectedOutfit={selectedOutfit}
               selectedAvatar={selectedAvatar}
               tokensUsed={profile.tokens_used}
               tokensTotal={tokensTotal}
@@ -156,7 +156,7 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
           )}
           <AvatarClothesCarousel
             profile={profile}
-            setInputClothImage={setInputClothImage}
+            setSelectedOutfit={setSelectedOutfit}
           />
           <View className={styles.bottomPadding} />
         </ScrollView>

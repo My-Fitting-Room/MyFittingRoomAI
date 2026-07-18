@@ -18,9 +18,11 @@ import { supabase } from "../App";
 
 
 const getImages = async (profileId) => {
+  // Multiple FKs point at clothes_images, so every embed needs a column
+  // hint or PostgREST rejects the query as ambiguous
   const { data, error } = await supabase
     .from("avatar_tryon_images")
-    .select("*, avatars(*), clothes_images(*)")
+    .select("*, avatars(*), clothes_images!clothes_images_id(*), top_item:clothes_images!top_clothes_images_id(*), bottom_item:clothes_images!bottom_clothes_images_id(*), shoes_item:clothes_images!shoes_clothes_images_id(*)")
     .eq("profiles_id", profileId)
     .order("created_at", { ascending: false });
 
@@ -82,6 +84,16 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
     : tryonImages;
   const safeIndex = Math.min(currentImageIndex, Math.max(visibleImages.length - 1, 0));
   const currentImage = visibleImages[safeIndex];
+
+  // The garments that went into this generation; legacy rows only carry the
+  // single clothes_images relation
+  const outfitItems = currentImage
+    ? [currentImage.top_item, currentImage.bottom_item, currentImage.shoes_item].filter(Boolean)
+    : [];
+
+  if (outfitItems.length === 0 && currentImage?.clothes_images) {
+    outfitItems.push(currentImage.clothes_images);
+  }
 
   const handleFilterChange = (nextFilter) => {
     triggerHaptic();
@@ -247,19 +259,22 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
           {visibleImages.length > 0 && (
             <View style={styles.carouselContainer}>
               <View style={styles.imageContainer}>
-                {currentImage.clothes_images !== null ? (
+                {outfitItems.length > 0 ? (
                   <View style={styles.splitImageContainer}>
                     {/* The outfit that went into the generation — the plain
                         avatar is deliberately not shown */}
                     <View style={styles.leftColumn}>
-                      <FastImage
-                        source={{
-                          uri: currentImage.clothes_images.url,
-                          priority: FastImage.priority.normal
-                        }}
-                        style={styles.clothingImage}
-                        resizeMode={FastImage.resizeMode.contain}
-                      />
+                      {outfitItems.map((item) => (
+                        <FastImage
+                          key={item.id}
+                          source={{
+                            uri: item.url,
+                            priority: FastImage.priority.normal
+                          }}
+                          style={styles.clothingImage}
+                          resizeMode={FastImage.resizeMode.contain}
+                        />
+                      ))}
                     </View>
                     <View style={styles.rightColumn}>
                       <FastImage

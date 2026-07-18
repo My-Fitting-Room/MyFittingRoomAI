@@ -107,9 +107,10 @@ export const styles = StyleSheet.create({
     width: "67%",
     height: "100%",
   },
+  // Splits the column evenly between however many garments went in (1-3)
   clothingImage: {
     width: "100%",
-    height: "100%",
+    flex: 1,
   },
   resultImage: {
     width: "100%",

@@ -8,8 +8,11 @@ import { trackAppsFlyerPurchase } from "../utils/appsflyer";
 import { triggerHaptic } from "../utils/haptics";
 import Purchases from "react-native-purchases";
 
-export default function AvatarTryOnButton({ disabled = false, inputClothImage, selectedAvatar, tokensUsed, tokensTotal, profile, plan, navigation, extraTokensTotal }) {
+export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {}, selectedAvatar, tokensUsed, tokensTotal, profile, plan, navigation, extraTokensTotal }) {
   const [loading, setLoading] = useState(false);
+
+  // One item per category (top/bottom/shoes); any non-empty subset works
+  const selectedItems = Object.values(selectedOutfit || {}).filter((item) => item?.slug);
 
   const presentPaywallIfNeeded = async () => {
     if (profile.price_id === null && !profile.all_access && plan === null && extraTokensTotal < 1) {
@@ -45,8 +48,8 @@ export default function AvatarTryOnButton({ disabled = false, inputClothImage, s
       return;
     }
 
-    if (!inputClothImage || !inputClothImage.slug) {
-      Alert.alert("Error", "Please select a clothing image");
+    if (selectedItems.length === 0) {
+      Alert.alert("Error", "Please select at least one clothing item");
       return;
     }
 
@@ -73,7 +76,7 @@ export default function AvatarTryOnButton({ disabled = false, inputClothImage, s
 
       const requestBody = {
         avatar_slug: selectedAvatar.slug,
-        clothes_image_slug: inputClothImage.slug
+        clothes_image_slugs: selectedItems.map((item) => item.slug)
       };
 
       const response = await fetch("https://my-fitting-room-server.onrender.com/api/avatar/try-on", {
@@ -105,10 +108,10 @@ export default function AvatarTryOnButton({ disabled = false, inputClothImage, s
       <TouchableOpacity
         style={[
           styles.buttonContainer,
-          disabled && styles.disabledButton,
+          (disabled || selectedItems.length === 0) && styles.disabledButton,
           loading && styles.loadingButton
         ]}
-        disabled={disabled || loading}
+        disabled={disabled || loading || selectedItems.length === 0}
         onPress={handleTryOn}
       >
         <Text style={styles.buttonText}>

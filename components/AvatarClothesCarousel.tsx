@@ -5,14 +5,31 @@ import ClothesTile from "./ClothesTile";
 import SectionHeader from "./SectionHeader";
 import { styles } from "../stylesheets/avatarClothesCarousel";
 
-export default function AvatarClothesCarousel({ profile = null, setInputClothImage }) {
+const CATEGORY_SECTIONS = [
+  { key: "top", title: "Tops" },
+  { key: "bottom", title: "Bottoms" },
+  { key: "shoes", title: "Shoes" },
+];
+
+export default function AvatarClothesCarousel({ profile = null, setSelectedOutfit }) {
   const [clothesImages, setClothesImages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedClothesImage, setSelectedClothesImage] = useState(null);
+  const [selection, setSelection] = useState({});
 
-  const updateSelectedImage = (image) => {
-    setSelectedClothesImage(image);
-    setInputClothImage(image);
+  // One selected item per category; tapping the selected tile deselects it,
+  // so any subset of categories can compose the try-on
+  const toggleItem = (image) => {
+    const category = image.category || "top";
+    const next = { ...selection };
+
+    if (next[category]?.id === image.id) {
+      delete next[category];
+    } else {
+      next[category] = image;
+    }
+
+    setSelection(next);
+    setSelectedOutfit(next);
   };
 
   useEffect(() => {
@@ -33,9 +50,6 @@ export default function AvatarClothesCarousel({ profile = null, setInputClothIma
         return;
       }
 
-      if (clothesImagesData && clothesImagesData.length > 0) {
-        updateSelectedImage(clothesImagesData[0]);
-      }
       setClothesImages(clothesImagesData || []);
       setLoading(false);
     };
@@ -53,24 +67,41 @@ export default function AvatarClothesCarousel({ profile = null, setInputClothIma
 
   return (
     <View style={styles.container}>
-      <SectionHeader title="Your clothes" />
       {clothesImages.length > 0 ? (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContainer}
-        >
-          {clothesImages.map((image, index) => (
-            <ClothesTile
-              key={image.id || index}
-              image={image}
-              selected={selectedClothesImage?.id === image.id}
-              onPress={() => updateSelectedImage(image)}
-            />
-          ))}
-        </ScrollView>
+        CATEGORY_SECTIONS.map(({ key, title }) => {
+          const sectionImages = clothesImages.filter(
+            (image) => (image.category || "top") === key
+          );
+
+          if (sectionImages.length === 0) {
+            return null;
+          }
+
+          return (
+            <View key={key}>
+              <SectionHeader title={title} />
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContainer}
+              >
+                {sectionImages.map((image, index) => (
+                  <ClothesTile
+                    key={image.id || index}
+                    image={image}
+                    selected={selection[key]?.id === image.id}
+                    onPress={() => toggleItem(image)}
+                  />
+                ))}
+              </ScrollView>
+            </View>
+          );
+        })
       ) : (
-        <Text style={styles.hintText}>No clothes yet — upload some on the Try-On tab</Text>
+        <>
+          <SectionHeader title="Your clothes" />
+          <Text style={styles.hintText}>No clothes yet — upload some on the Try-On tab</Text>
+        </>
       )}
     </View>
   );
