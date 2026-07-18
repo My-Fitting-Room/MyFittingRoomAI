@@ -247,24 +247,18 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
           {visibleImages.length > 0 && (
             <View style={styles.carouselContainer}>
               <View style={styles.imageContainer}>
-                {(currentImage.clothes_images !== null && currentImage.avatars !== null) ? (
+                {currentImage.clothes_images !== null ? (
                   <View style={styles.splitImageContainer}>
+                    {/* The outfit that went into the generation — the plain
+                        avatar is deliberately not shown */}
                     <View style={styles.leftColumn}>
-                      <FastImage
-                        source={{
-                          uri: currentImage.avatars.url,
-                          priority: FastImage.priority.normal
-                        }}
-                        style={styles.avatarImage}
-                        resizeMode={FastImage.resizeMode.cover}
-                      />
                       <FastImage
                         source={{
                           uri: currentImage.clothes_images.url,
                           priority: FastImage.priority.normal
                         }}
                         style={styles.clothingImage}
-                        resizeMode={FastImage.resizeMode.cover}
+                        resizeMode={FastImage.resizeMode.contain}
                       />
                     </View>
                     <View style={styles.rightColumn}>

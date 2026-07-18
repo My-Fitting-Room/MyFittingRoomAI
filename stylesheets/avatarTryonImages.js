@@ -107,13 +107,9 @@ export const styles = StyleSheet.create({
     width: "67%",
     height: "100%",
   },
-  avatarImage: {
-    width: "100%",
-    height: "50%",
-  },
   clothingImage: {
     width: "100%",
-    height: "50%",
+    height: "100%",
   },
   resultImage: {
     width: "100%",
