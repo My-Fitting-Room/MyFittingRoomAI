@@ -126,49 +126,56 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
         </TouchableOpacity>
       </View>
 
-      <View style={tabStyles.actionsRow}>
-        <TouchableOpacity style={tabStyles.newAvatarButton} onPress={handleNewAvatarPress}>
+      <View style={tabStyles.contentArea}>
+        {/* Both panes stay mounted so the try-on results polling and
+            failure alerts keep running while the Avatar tab is active */}
+        <ScrollView
+          style={{ flex: 1, display: activeTab === "avatar" ? "flex" : "none" }}
+        >
+          <Avatars
+            setSelectedAvatar={setSelectedAvatar}
+            profile={profile}
+            navigation={navigation}
+            showPicker={showCreatePicker}
+            setShowPicker={setShowCreatePicker}
+          />
+          {/* No button until the first avatar exists; selectedAvatar is only
+              set once a success avatar loads */}
+          {selectedAvatar && (
+            <AvatarTryOnButton
+              disabled={false}
+              inputClothImage={inputClothImage}
+              selectedAvatar={selectedAvatar}
+              tokensUsed={profile.tokens_used}
+              tokensTotal={tokensTotal}
+              profile={profile}
+              plan={plan}
+              navigation={navigation}
+              extraTokensTotal={extraTokensTotal}
+            />
+          )}
+          <AvatarClothesCarousel
+            profile={profile}
+            setInputClothImage={setInputClothImage}
+          />
+          <View className={styles.bottomPadding} />
+        </ScrollView>
+
+        <ScrollView
+          style={{ flex: 1, display: activeTab === "tryons" ? "flex" : "none" }}
+        >
+          <AvatarTryOnImages profile={profile} navigation={navigation} />
+          <View className={styles.bottomPadding} />
+        </ScrollView>
+
+        <TouchableOpacity
+          style={[tabStyles.newAvatarButton, tabStyles.newAvatarAnchor]}
+          onPress={handleNewAvatarPress}
+        >
           <Feathericons name="user-plus" size={14} color="#000" />
           <Text style={tabStyles.newAvatarButtonText}>New avatar</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Both panes stay mounted so the try-on results polling and
-          failure alerts keep running while the Avatar tab is active */}
-      <ScrollView
-        style={{ flex: 1, display: activeTab === "avatar" ? "flex" : "none" }}
-      >
-        <Avatars
-          setSelectedAvatar={setSelectedAvatar}
-          profile={profile}
-          navigation={navigation}
-          showPicker={showCreatePicker}
-          setShowPicker={setShowCreatePicker}
-        />
-        <AvatarTryOnButton
-          disabled={false}
-          inputClothImage={inputClothImage}
-          selectedAvatar={selectedAvatar}
-          tokensUsed={profile.tokens_used}
-          tokensTotal={tokensTotal}
-          profile={profile}
-          plan={plan}
-          navigation={navigation}
-          extraTokensTotal={extraTokensTotal}
-        />
-        <AvatarClothesCarousel
-          profile={profile}
-          setInputClothImage={setInputClothImage}
-        />
-        <View className={styles.bottomPadding} />
-      </ScrollView>
-
-      <ScrollView
-        style={{ flex: 1, display: activeTab === "tryons" ? "flex" : "none" }}
-      >
-        <AvatarTryOnImages profile={profile} navigation={navigation} />
-        <View className={styles.bottomPadding} />
-      </ScrollView>
 
       <BottomNav navigation={navigation} activeTab="Avatar" />
     </SafeAreaView>

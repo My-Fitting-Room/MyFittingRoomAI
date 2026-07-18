@@ -31,11 +31,16 @@ export const tabStyles = StyleSheet.create({
     height: 2,
     backgroundColor: "#000",
   },
-  actionsRow: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    paddingHorizontal: 16,
-    paddingTop: 10,
+  contentArea: {
+    flex: 1,
+  },
+  // Floats over the content area below the tab bar so it doesn't move
+  // with scrolling or empty/has-avatar layout changes
+  newAvatarAnchor: {
+    position: "absolute",
+    top: 10,
+    right: 16,
+    zIndex: 10,
   },
   newAvatarButton: {
     flexDirection: "row",
