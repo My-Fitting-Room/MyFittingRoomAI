@@ -21,6 +21,7 @@ import { initMixpanel } from "./utils/mixpanel";
 import { getTrackingStatus, requestTrackingPermission } from "react-native-tracking-transparency";
 import { initAppsFlyerSDK, appsFlyerLogin, appsFlyerLogout, trackAppsFlyerPurchase } from "./utils/appsflyer";
 import SplashScreen from "./screens/SplashScreen";
+import OutfitPlannerScreen from "./screens/OutfitPlannerScreen";
 import OnboardingScreen1 from "./screens/OnboardingScreen1";
 import OnboardingScreen2 from "./screens/OnboardingScreen2";
 import OnboardingScreen3 from "./screens/OnboardingScreen3";
@@ -216,6 +217,11 @@ const App = () => {
               name="Sizing"
               options={{ headerShown: false }}
               component={SizingScreen}
+            />
+            <Stack.Screen
+              name="OutfitPlanner"
+              options={{ headerShown: false }}
+              component={OutfitPlannerScreen}
             />
             <Stack.Screen
               name="Onboarding"

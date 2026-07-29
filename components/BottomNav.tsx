@@ -22,6 +22,11 @@ export default function BottomNav({ navigation, activeTab }) {
     navigation.navigate("Sizing");
   };
 
+  const handleOutfitPlannerPress = () => {
+    triggerHaptic();
+    navigation.navigate("OutfitPlanner");
+  };
+
   const handleSettingsPress = () => {
     triggerHaptic();
     navigation.navigate("Settings");
@@ -55,6 +60,13 @@ export default function BottomNav({ navigation, activeTab }) {
               name="sliders"
               size={24}
               color={activeTab === "Sizing" ? "#4052FF" : "#000"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleOutfitPlannerPress} style={styles.navItem}>
+            <Feathericons
+              name="calendar"
+              size={24}
+              color={activeTab === "OutfitPlanner" ? "#4052FF" : "#000"}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleSettingsPress} style={styles.navItem}>
