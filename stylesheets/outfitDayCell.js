@@ -19,16 +19,25 @@ export const styles = StyleSheet.create({
   },
   dayNumber: {
     fontSize: 10,
-    color: "#000",
+    color: "#9A9A9A",
     marginBottom: 2,
     fontFamily: FONTS.SATOSHI,
   },
   dayNumberOutside: {
-    color: "#C9C9C9",
+    color: "#D0D0D0",
   },
   dayNumberToday: {
     color: "#4052FF",
     fontWeight: "700",
+  },
+  plusMark: {
+    position: "absolute",
+    bottom: 4,
+    right: 4,
+    fontSize: 14,
+    lineHeight: 14,
+    color: "#D0D0D0",
+    fontFamily: FONTS.SATOSHI,
   },
   thumb: {
     flex: 1,

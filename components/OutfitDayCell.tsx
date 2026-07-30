@@ -44,6 +44,8 @@ export default function OutfitDayCell({
           style={styles.thumb}
           resizeMode={FastImage.resizeMode.cover}
         />
+      ) : cell.inMonth ? (
+        <Text style={styles.plusMark}>+</Text>
       ) : null}
     </ScaleButton>
   );
