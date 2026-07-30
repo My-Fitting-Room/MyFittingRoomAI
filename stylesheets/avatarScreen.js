@@ -66,7 +66,7 @@ export const getStyles = (width, height) => {
 
   const deviceGroupStyles = {
     group1: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-sm text-black",
       content: "flex-1 pt-12",
@@ -74,7 +74,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group2: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-sm text-black",
       content: "flex-1 pt-12",
@@ -82,7 +82,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group3: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-sm text-black",
       content: "flex-1 pt-14",
@@ -90,7 +90,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group4: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
@@ -98,7 +98,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group5: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
@@ -106,7 +106,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group6: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
@@ -114,7 +114,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group7: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
@@ -122,7 +122,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group8: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
@@ -130,7 +130,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group9: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
@@ -138,7 +138,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     group10: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",
@@ -146,7 +146,7 @@ export const getStyles = (width, height) => {
       bottomPadding: "h-40"
     },
     unknown: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       loadingContainer: "flex-1 justify-center items-center bg-white",
       loadingText: "mt-2.5 text-2xl text-black",
       content: "flex-1 pt-14",

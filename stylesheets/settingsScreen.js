@@ -5,7 +5,7 @@ export const getStyles = (width, height) => {
 
   const deviceGroupStyles = {
     group1: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-4 py-2",
       backButton: "p-1",
       profileSection: "items-center mt-2 mb-10",
@@ -26,7 +26,7 @@ export const getStyles = (width, height) => {
       userIconSize: 42
     },
     group2: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-4 py-2",
       backButton: "p-1",
       profileSection: "items-center mt-2 mb-10",
@@ -47,7 +47,7 @@ export const getStyles = (width, height) => {
       userIconSize: 42
     },
     group3: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-4 py-2",
       backButton: "p-1",
       profileSection: "items-center mt-2 mb-10",
@@ -68,7 +68,7 @@ export const getStyles = (width, height) => {
       userIconSize: 42
     },
     group4: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-4 py-3",
       backButton: "p-1.5",
       profileSection: "items-center mt-4 mb-12",
@@ -91,7 +91,7 @@ export const getStyles = (width, height) => {
       userIconSize: 50
     },
     group5: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-5 py-3",
       backButton: "p-2",
       profileSection: "items-center mt-6 mb-16",
@@ -114,7 +114,7 @@ export const getStyles = (width, height) => {
       userIconSize: 56
     },
     group6: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-5 py-3",
       backButton: "p-2",
       profileSection: "items-center mt-6 mb-16",
@@ -135,7 +135,7 @@ export const getStyles = (width, height) => {
       userIconSize: 56
     },
     group7: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-5 py-3",
       backButton: "p-2",
       profileSection: "items-center mt-6 mb-16",
@@ -156,7 +156,7 @@ export const getStyles = (width, height) => {
       userIconSize: 56
     },
     group8: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-5 py-3",
       backButton: "p-2",
       profileSection: "items-center mt-6 mb-16",
@@ -177,7 +177,7 @@ export const getStyles = (width, height) => {
       userIconSize: 56
     },
     group9: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-5 py-3",
       backButton: "p-2",
       profileSection: "items-center mt-6 mb-16",
@@ -198,7 +198,7 @@ export const getStyles = (width, height) => {
       userIconSize: 56
     },
     group10: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-5 py-3",
       backButton: "p-2",
       profileSection: "items-center mt-6 mb-16",
@@ -219,7 +219,7 @@ export const getStyles = (width, height) => {
       userIconSize: 56
     },
     unknown: {
-      container: "flex-1 bg-white",
+      container: "flex-1 bg-gray-100",
       header: "flex-row items-center px-5 py-3",
       backButton: "p-2",
       profileSection: "items-center mt-6 mb-16",

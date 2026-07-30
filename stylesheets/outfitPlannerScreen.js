@@ -4,7 +4,7 @@ export const getStyles = (width, height) => {
   const deviceGroup = getDeviceGroup(width, height);
 
   const base = {
-    container: "flex-1 bg-white",
+    container: "flex-1 bg-gray-100",
     loadingContainer: "flex-1 justify-center items-center bg-white",
     loadingText: "mt-2.5 text-sm text-black",
     content: "flex-1 pt-12",
@@ -12,7 +12,7 @@ export const getStyles = (width, height) => {
   };
 
   const large = {
-    container: "flex-1 bg-white",
+    container: "flex-1 bg-gray-100",
     loadingContainer: "flex-1 justify-center items-center bg-white",
     loadingText: "mt-2.5 text-2xl text-black",
     content: "flex-1 pt-14",
