@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 160,
+    height: 260,
     zIndex: 1,
   },
   container: {

@@ -15,7 +15,7 @@ import { triggerHaptic } from "../utils/haptics";
 // mid-curve so the dissolve stays perceptible across most of the 60pt
 // zone even over flat backgrounds (gray-100 pages), where the glass is
 // only visible through its light tint.
-const FADE_EXT = 60;
+const FADE_EXT = 180;
 
 function headerFade(logoRowH, padBottom, tint) {
   const total = logoRowH + FADE_EXT;

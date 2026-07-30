@@ -11,9 +11,9 @@ const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 1
 
 // Mirror of the header's glass fade, running upward from the screen
 // bottom: solid glass behind the pill + home-indicator zone (bottom
-// 100pt of the 160pt panel), then the same eased dissolve across the
-// top 60pt. Same curve as HeaderNav, reversed.
-const NAV_FADE_F = 60 / 160;
+// 80pt of the 260pt panel), then the eased dissolve across the top
+// 180pt. Solid zone kicks in 180pt from the panel top.
+const NAV_FADE_F = 180 / 260;
 const NAV_GLASS_MASK_COLORS = [0, 0.04, 0.12, 0.3, 0.6, 1, 1].map(a => `rgba(0,0,0,${a})`);
 const NAV_GLASS_MASK_LOCATIONS = [
   0,
