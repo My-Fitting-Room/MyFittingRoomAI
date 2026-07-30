@@ -48,6 +48,27 @@ export const styles = StyleSheet.create({
     top: 107,
     height: 160,
   },
+  // Glass-variant layout — same dimensions as smallHeader/header but no backgroundColor.
+  // Used only on iOS 26+ where GlassEffectView provides the material background.
+  headerBase: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 2,
+  },
+  smallHeaderGlass: {
+    paddingTop: 30,
+    paddingBottom: 8,
+  },
+  headerGlass: {
+    paddingTop: 55,
+    paddingBottom: 12,
+  },
   logoContainer: {
     flexDirection: "row",
     alignItems: "center",
