@@ -3,11 +3,12 @@ import {
   View,
   Text,
   Alert,
-  SafeAreaView,
   ScrollView,
   ActivityIndicator,
   Dimensions,
+  Platform,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
@@ -24,7 +25,10 @@ type Mode =
   | { type: "normal" }
   | { type: "move"; fromDate: string };
 
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
+
 export default function OutfitPlannerScreen({ navigation }: { navigation: any }) {
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>(null);
 
@@ -49,6 +53,8 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
+  const isSmall = width === 375 && height === 667;
+  const headerHeight = IS_IOS26 ? (isSmall ? 79 : 107) : 0;
 
   const entriesByDate = cache.get(monthKey(year, month)) ?? {};
 
@@ -207,7 +213,7 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
   }
 
   return (
-    <SafeAreaView className={styles.container}>
+    <View className={styles.container} style={{ paddingTop: IS_IOS26 ? 0 : insets.top, paddingBottom: insets.bottom }}>
       <HeaderNav navigation={navigation} />
 
       {mode.type === "move" && (
@@ -231,7 +237,7 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
         </View>
       )}
 
-      <ScrollView className={styles.content}>
+      <ScrollView className={styles.content} contentContainerStyle={{ paddingTop: headerHeight }}>
         {monthLoading && (
           <ActivityIndicator size="small" color="#4052FF" style={{ marginBottom: 8 }} />
         )}
@@ -277,6 +283,6 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
           onReplace={handleReplace}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }

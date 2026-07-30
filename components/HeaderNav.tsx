@@ -1,20 +1,48 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, Dimensions, Platform } from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions, Platform, StyleSheet } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import MaskedView from "@react-native-masked-view/masked-view";
 import { GlassEffectView } from "react-native-glass-effect-view";
 import { styles } from "../stylesheets/headerNav";
 import { triggerHaptic } from "../utils/haptics";
 
-// Eased multi-stop fade so the falloff is curved, not linear.
-// Starts at full opacity so there's no jump from the solid white header.
-const GRADIENT_COLORS = [
-  "rgba(255,255,255,1)",
-  "rgba(255,255,255,0.7)",
-  "rgba(255,255,255,0.4)",
-  "rgba(255,255,255,0.15)",
-  "rgba(255,255,255,0)",
-];
-const GRADIENT_LOCATIONS = [0, 0.4, 0.65, 0.85, 1.0];
+// The header background extends FADE_EXT below the logo row; that whole
+// extension is the fade zone. Overlay only — screens inset content by the
+// logo-row height (107/79), so content scrolls underneath the fade.
+//
+// Single glass layer with one continuous eased fade starting at the very
+// bottom of the logo/text (padBottom above the row's edge). Softened
+// mid-curve so the dissolve stays perceptible across most of the 60pt
+// zone even over flat backgrounds (gray-100 pages), where the glass is
+// only visible through its light tint.
+const FADE_EXT = 60;
+
+function headerFade(logoRowH, padBottom, tint) {
+  const total = logoRowH + FADE_EXT;
+  const start = (logoRowH - padBottom) / total;
+  const ext = 1 - start;
+  return {
+    colors: [1, 1, 0.6, 0.3, 0.12, 0.04, 0].map(a => `rgba(${tint},${a})`),
+    locations: [
+      0,
+      start,
+      start + ext * 0.2,
+      start + ext * 0.45,
+      start + ext * 0.65,
+      start + ext * 0.85,
+      1,
+    ],
+  };
+}
+// padBottom mirrors headerGlass/smallHeaderGlass paddingBottom (12/8).
+const GLASS_MASK_REGULAR = headerFade(107, 12, "0,0,0");
+const GLASS_MASK_SMALL = headerFade(79, 8, "0,0,0");
+
+const FALLBACK_FADE_REGULAR = headerFade(107, 12, "255,255,255");
+const FALLBACK_FADE_SMALL = headerFade(79, 8, "255,255,255");
+
+// Absolute background layer extending past the header's bottom edge.
+const bgFill = { position: "absolute", top: 0, left: 0, right: 0, bottom: -FADE_EXT } as const;
 
 const isIOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
 
@@ -34,27 +62,40 @@ export default function HeaderNav({ navigation }) {
     </TouchableOpacity>
   );
 
+  const layoutStyle = [styles.headerBase, isSmall ? styles.smallHeaderGlass : styles.headerGlass];
+
   if (isIOS26) {
+    const mask = isSmall ? GLASS_MASK_SMALL : GLASS_MASK_REGULAR;
     return (
-      <GlassEffectView
-        style={[styles.headerBase, isSmall ? styles.smallHeaderGlass : styles.headerGlass]}
-      >
+      <View style={layoutStyle} pointerEvents="box-none">
+        <MaskedView
+          style={bgFill}
+          pointerEvents="none"
+          maskElement={
+            <LinearGradient
+              colors={mask.colors}
+              locations={mask.locations}
+              style={StyleSheet.absoluteFillObject}
+            />
+          }
+        >
+          <GlassEffectView style={StyleSheet.absoluteFillObject} />
+        </MaskedView>
         {logoContent}
-      </GlassEffectView>
+      </View>
     );
   }
 
+  const fallback = isSmall ? FALLBACK_FADE_SMALL : FALLBACK_FADE_REGULAR;
   return (
-    <>
-      <View style={isSmall ? styles.smallHeader : styles.header}>
-        {logoContent}
-      </View>
+    <View style={layoutStyle} pointerEvents="box-none">
       <LinearGradient
-        colors={GRADIENT_COLORS}
-        locations={GRADIENT_LOCATIONS}
-        style={[styles.gradient, isSmall ? styles.smallGradient : styles.regularGradient]}
+        colors={fallback.colors}
+        locations={fallback.locations}
+        style={bgFill}
         pointerEvents="none"
       />
-    </>
+      {logoContent}
+    </View>
   );
 }

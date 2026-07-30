@@ -50,6 +50,7 @@ import OnboardingScreen24 from "./screens/OnboardingScreen24";
 import OnboardingScreenA from "./screens/OnboardingScreenA";
 import OnboardingScreenB from "./screens/OnboardingScreenB";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Trim guards against stray whitespace in .env values, which react-native-config
 // bakes into the binary verbatim and which mangles every request URL
@@ -147,6 +148,7 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
       <OnboardingProvider>
         <NavigationContainer>
           <Stack.Navigator
@@ -231,6 +233,7 @@ const App = () => {
           </Stack.Navigator>
         </NavigationContainer>
       </OnboardingProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

@@ -4,13 +4,14 @@ import {
   Text,
   Alert,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   ActivityIndicator,
   TextInput,
   Dimensions,
-  Modal
+  Modal,
+  Platform,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
@@ -289,7 +290,10 @@ const DropdownSelect = ({ label, placeholder, value, options, onChange, width, h
   );
 };
 
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
+
 export default function SizingScreen({ navigation, route }: { navigation: any, route: any }) {
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [sizing, setSizing] = useState(null);
@@ -301,6 +305,8 @@ export default function SizingScreen({ navigation, route }: { navigation: any, r
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
+  const isSmall = width === 375 && height === 667;
+  const headerHeight = IS_IOS26 ? (isSmall ? 79 : 107) : 0;
 
   const [formData, setFormData] = useState({
     brand: "",
@@ -662,11 +668,11 @@ export default function SizingScreen({ navigation, route }: { navigation: any, r
   );
 
   return (
-    <SafeAreaView className={styles.container}>
+    <View className={styles.container} style={{ paddingTop: IS_IOS26 ? 0 : insets.top, paddingBottom: insets.bottom }}>
       <HeaderNav navigation={navigation} />
       <ScrollView
         className={styles.content}
-        contentContainerStyle={{ paddingHorizontal: 15 }}
+        contentContainerStyle={{ paddingHorizontal: 15, paddingTop: headerHeight }}
         showsVerticalScrollIndicator={false}
       >
         <View
@@ -684,6 +690,6 @@ export default function SizingScreen({ navigation, route }: { navigation: any, r
         <View className={styles.bottomPadding} />
       </ScrollView>
       <BottomNav navigation={navigation} activeTab="Sizing" />
-    </SafeAreaView>
+    </View>
   );
 }

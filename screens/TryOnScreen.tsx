@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, SafeAreaView, ScrollView, StatusBar, Platform, ActivityIndicator, Dimensions } from "react-native";
+import { View, Text, Alert, ScrollView, StatusBar, Platform, ActivityIndicator, Dimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import HeaderNav from "../components/HeaderNav";
@@ -15,7 +16,10 @@ import mixpanel from "../utils/mixpanel";
 import { trackAppsFlyerPurchase } from "../utils/appsflyer";
 import Purchases from "react-native-purchases";
 
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
+
 export default function TryOnScreen({ navigation, route }: { navigation: any, route: any }) {
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [inputClothImage, setInputClothImage] = useState(null);
@@ -27,6 +31,8 @@ export default function TryOnScreen({ navigation, route }: { navigation: any, ro
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
+  const isSmall = width === 375 && height === 667;
+  const headerHeight = IS_IOS26 ? (isSmall ? 79 : 107) : 0;
 
   const shouldShowPaywall = (profileData, planData, extraTokens) => {
     return profileData.price_id === null &&
@@ -166,11 +172,11 @@ export default function TryOnScreen({ navigation, route }: { navigation: any, ro
   }
 
   return (
-    <SafeAreaView className={styles.container}>
+    <View className={styles.container} style={{ paddingTop: IS_IOS26 ? 0 : insets.top, paddingBottom: insets.bottom }}>
       <HeaderNav navigation={navigation} />
       <ScrollView
         className={styles.content}
-        contentContainerStyle={{ paddingHorizontal: 5 }}
+        contentContainerStyle={{ paddingHorizontal: 5, paddingTop: headerHeight }}
       >
         <TryOnImages profile={profile} navigation={navigation} />
         <ModelImages setInputModelImage={setInputModelImage} profile={profile} navigation={navigation} />
@@ -200,7 +206,7 @@ export default function TryOnScreen({ navigation, route }: { navigation: any, ro
         <View className={styles.bottomPadding} />
       </ScrollView>
       <BottomNav navigation={navigation} activeTab="TryOn" />
-    </SafeAreaView>
+    </View>
   );
 }
 

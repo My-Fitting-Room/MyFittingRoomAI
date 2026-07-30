@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, SafeAreaView, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, Alert, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
@@ -12,7 +13,10 @@ import { FONTS } from "../constants/fonts";
 import { getStyles, tabStyles } from "../stylesheets/avatarScreen";
 import { triggerHaptic } from "../utils/haptics";
 
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
+
 export default function AvatarScreen({ navigation, route }: { navigation: any, route: any }) {
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [selectedOutfit, setSelectedOutfit] = useState({});
@@ -25,6 +29,8 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
+  const isSmall = width === 375 && height === 667;
+  const headerHeight = IS_IOS26 ? (isSmall ? 79 : 107) : 0;
 
   useEffect(() => {
     const checkSession = async () => {
@@ -108,10 +114,10 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
   }
 
   return (
-    <SafeAreaView className={styles.container}>
+    <View className={styles.container} style={{ paddingTop: IS_IOS26 ? 0 : insets.top, paddingBottom: insets.bottom }}>
       <HeaderNav navigation={navigation} />
 
-      <View style={tabStyles.tabsRow}>
+      <View style={[tabStyles.tabsRow, { marginTop: headerHeight }]}>
         <TouchableOpacity style={tabStyles.tab} onPress={() => handleTabPress("avatar")}>
           <Text style={[tabStyles.tabText, activeTab === "avatar" && tabStyles.tabTextActive]}>
             Avatar
@@ -178,6 +184,6 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
       </View>
 
       <BottomNav navigation={navigation} activeTab="Avatar" />
-    </SafeAreaView>
+    </View>
   );
 }
