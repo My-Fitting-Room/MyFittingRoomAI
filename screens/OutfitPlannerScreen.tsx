@@ -13,12 +13,11 @@ import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
 import OutfitMonthGrid from "../components/OutfitMonthGrid";
-import OutfitAddEntryModal from "../components/OutfitAddEntryModal";
+import OutfitLookPickerModal from "../components/OutfitLookPickerModal";
 import OutfitDetailModal from "../components/OutfitDetailModal";
-import OutfitBulkAssignConfirm from "../components/OutfitBulkAssignConfirm";
 import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/outfitPlannerScreen";
-import { fetchMonth, movePlan, OutfitPlan } from "../utils/outfitPlans";
+import { fetchMonth, createFromLook, movePlan, OutfitPlan } from "../utils/outfitPlans";
 import { addMonths, monthKey, shortDateLabel } from "../utils/date";
 
 type Mode =
@@ -38,11 +37,15 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
   const [monthLoading, setMonthLoading] = useState(false);
 
   const [mode, setMode] = useState<Mode>({ type: "normal" });
-  const [addEntryDate, setAddEntryDate] = useState<string | null>(null);
+
+  // Look picker — the single entry point for adding/replacing an outfit
+  const [lookPickerDate, setLookPickerDate] = useState<string | null>(null);
+  const [lookPickerExisting, setLookPickerExisting] = useState<OutfitPlan | null>(null);
+  const [lookPickerSaving, setLookPickerSaving] = useState(false);
+
+  // Detail view for an occupied date
   const [detailPlan, setDetailPlan] = useState<OutfitPlan | null>(null);
   const [detailDate, setDetailDate] = useState<string | null>(null);
-  const [bulkAssets, setBulkAssets] = useState<any[] | null>(null);
-  const [bulkStartDate, setBulkStartDate] = useState<string | null>(null);
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
@@ -87,13 +90,12 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
     }
   }, []);
 
-  // Fetch when month changes (skip if cached, but always refetch on focus)
   useEffect(() => {
     if (!profile) return;
     loadMonth(year, month, profile.id);
   }, [year, month, profile]);
 
-  // Refetch on focus in case a try-on was deleted elsewhere (cascades entries)
+  // Refetch on focus in case a try-on was deleted elsewhere (ON DELETE CASCADE)
   useFocusEffect(
     useCallback(() => {
       if (!profile) return;
@@ -108,18 +110,16 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
     setMode({ type: "normal" });
   };
 
-  const handleDayPress = async (dateStr: string) => {
+  const handleDayPress = (dateStr: string) => {
     if (mode.type === "move") {
       const from = mode.fromDate;
       setMode({ type: "normal" });
       if (from === dateStr) return;
 
       const targetPlan = entriesByDate[dateStr] ?? null;
-      const label = shortDateLabel(dateStr);
-      const fromLabel = shortDateLabel(from);
       const msg = targetPlan
-        ? `Swap "${fromLabel}" outfit with "${label}"?`
-        : `Move outfit to ${label}?`;
+        ? `Swap ${shortDateLabel(from)} outfit with ${shortDateLabel(dateStr)}?`
+        : `Move outfit to ${shortDateLabel(dateStr)}?`;
 
       Alert.alert("Move outfit", msg, [
         { text: "Cancel", style: "cancel" },
@@ -128,13 +128,11 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
           onPress: async () => {
             try {
               await movePlan(from, dateStr);
-              // Invalidate both months (move may cross a boundary)
               setCache((prev) => {
+                const [fy, fm] = from.split("-").map(Number);
                 const next = new Map(prev);
                 next.delete(monthKey(year, month));
-                const fromDate = new Date(from);
-                const fromMonthKey = monthKey(fromDate.getFullYear(), fromDate.getMonth() + 1);
-                next.delete(fromMonthKey);
+                next.delete(monthKey(fy, fm));
                 return next;
               });
               await loadMonth(year, month, profile.id);
@@ -152,13 +150,28 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
       setDetailPlan(plan);
       setDetailDate(dateStr);
     } else {
-      setAddEntryDate(dateStr);
+      setLookPickerDate(dateStr);
+      setLookPickerExisting(null);
     }
   };
 
-  const handleEntryCreated = async () => {
-    setAddEntryDate(null);
-    await loadMonth(year, month, profile.id);
+  const closeLookPicker = () => {
+    setLookPickerDate(null);
+    setLookPickerExisting(null);
+  };
+
+  const handleLookSelected = async (sourceId: number) => {
+    if (!lookPickerDate) return;
+    setLookPickerSaving(true);
+    try {
+      await createFromLook(profile.id, lookPickerDate, "avatar_tryon", String(sourceId), lookPickerExisting);
+      closeLookPicker();
+      await loadMonth(year, month, profile.id);
+    } catch {
+      Alert.alert("Error", "Failed to save outfit. Please try again.");
+    } finally {
+      setLookPickerSaving(false);
+    }
   };
 
   const handleDetailClose = async (needsRefresh: boolean) => {
@@ -173,6 +186,13 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
     setDetailPlan(null);
     setDetailDate(null);
     setMode({ type: "move", fromDate });
+  };
+
+  const handleReplace = (dateStr: string, plan: OutfitPlan) => {
+    setDetailPlan(null);
+    setDetailDate(null);
+    setLookPickerDate(dateStr);
+    setLookPickerExisting(plan);
   };
 
   if (loading) {
@@ -228,35 +248,22 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
 
       <BottomNav navigation={navigation} activeTab="OutfitPlanner" />
 
-      {addEntryDate && (
-        <OutfitAddEntryModal
-          visible
-          dateStr={addEntryDate}
-          profile={profile}
-          existingPlan={null}
-          onClose={() => setAddEntryDate(null)}
-          onCreated={handleEntryCreated}
-          onBulkAssign={(assets, startDate) => {
-          setBulkAssets(assets);
-          setBulkStartDate(startDate);
-        }}
-        />
-      )}
+      {/* Look picker — always at screen level, never nested inside another Modal */}
+      <OutfitLookPickerModal
+        visible={!!lookPickerDate && !lookPickerSaving}
+        profile={profile}
+        onClose={closeLookPicker}
+        onSelect={handleLookSelected}
+      />
 
-      {bulkAssets && bulkStartDate && (
-        <OutfitBulkAssignConfirm
-          visible
-          assets={bulkAssets}
-          startDate={bulkStartDate}
-          existingByDate={entriesByDate}
-          profile={profile}
-          onClose={() => { setBulkAssets(null); setBulkStartDate(null); }}
-          onComplete={async () => {
-            setBulkAssets(null);
-            setBulkStartDate(null);
-            await loadMonth(year, month, profile.id);
-          }}
-        />
+      {lookPickerSaving && (
+        <View style={{
+          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: "rgba(255,255,255,0.7)",
+          justifyContent: "center", alignItems: "center",
+        }}>
+          <ActivityIndicator size="large" color="#4052FF" />
+        </View>
       )}
 
       {detailPlan && detailDate && (
@@ -267,11 +274,7 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
           profile={profile}
           onClose={handleDetailClose}
           onMoveStart={handleMoveStart}
-          onReplace={(dateStr) => {
-            setDetailPlan(null);
-            setDetailDate(null);
-            setAddEntryDate(dateStr);
-          }}
+          onReplace={handleReplace}
         />
       )}
     </SafeAreaView>

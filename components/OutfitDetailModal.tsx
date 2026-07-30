@@ -28,7 +28,7 @@ export default function OutfitDetailModal({
   profile: any;
   onClose: (needsRefresh: boolean) => void;
   onMoveStart: (dateStr: string) => void;
-  onReplace: (dateStr: string) => void;
+  onReplace: (dateStr: string, plan: OutfitPlan) => void;
 }) {
   const [removing, setRemoving] = useState(false);
   const url = thumbnailUrl(plan);
@@ -60,8 +60,8 @@ export default function OutfitDetailModal({
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={() => onClose(false)}>
-      <View style={styles.backdrop}>
-        <View style={styles.sheet}>
+      <TouchableOpacity style={styles.backdrop} activeOpacity={1} onPress={() => onClose(false)}>
+        <TouchableOpacity activeOpacity={1} style={styles.sheet}>
           <View style={styles.handle} />
           <Text style={styles.sheetTitle}>{shortDateLabel(dateStr)}</Text>
 
@@ -79,7 +79,7 @@ export default function OutfitDetailModal({
             <ActivityIndicator size="large" color="#CC0000" style={{ marginTop: 16 }} />
           ) : (
             <View style={styles.actionRow}>
-              <TouchableOpacity style={styles.actionBtn} onPress={() => onReplace(dateStr)}>
+              <TouchableOpacity style={styles.actionBtn} onPress={() => onReplace(dateStr, plan)}>
                 <Feathericons name="refresh-cw" size={22} color="#000" />
                 <Text style={styles.actionLabel}>Replace</Text>
               </TouchableOpacity>
@@ -95,8 +95,8 @@ export default function OutfitDetailModal({
               </TouchableOpacity>
             </View>
           )}
-        </View>
-      </View>
+        </TouchableOpacity>
+      </TouchableOpacity>
     </Modal>
   );
 }
