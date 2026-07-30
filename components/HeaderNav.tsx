@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, Dimensions, Platform } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import GlassEffectView from "react-native-glass-effect-view";
+import { GlassEffectView } from "react-native-glass-effect-view";
 import { styles } from "../stylesheets/headerNav";
 import { triggerHaptic } from "../utils/haptics";
 
