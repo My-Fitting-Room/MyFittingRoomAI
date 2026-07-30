@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Text, Alert, Image, TextInput, Linking, Pressable, Dimensions } from "react-native";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import { supabase } from "../App";
@@ -82,6 +82,7 @@ export default function SignInScreen({ navigation }) {
         );
       }
     } catch (error) {
+      if (error?.code === statusCodes.SIGN_IN_CANCELLED) return;
       console.log("[sign-in] Google flow threw:", error?.message, error);
       Alert.alert(
         "Sign In Error",
@@ -141,6 +142,7 @@ export default function SignInScreen({ navigation }) {
         );
       }
     } catch (error) {
+      if (error?.code === '1001') return;
       Alert.alert(
         "Sign In Error",
         "Failed to authenticate with Apple. Please try again.",
