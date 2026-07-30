@@ -42,26 +42,34 @@ export default function OutfitMonthGrid({
         </ScaleButton>
       </View>
 
+      {/* Weekday header row — each label cell carries its own right border so
+          the lines align with the date column borders below */}
       <View style={styles.weekdayRow}>
         {WEEKDAY_LABELS.map((label, i) => (
-          <Text key={i} style={styles.weekdayLabel}>{label}</Text>
+          <View key={i} style={styles.weekdayCell}>
+            <Text style={styles.weekdayLabel}>{label}</Text>
+          </View>
         ))}
       </View>
 
-      {weeks.map((week, i) => (
-        <View key={i} style={styles.weekRow}>
-          {week.map((cell) => (
-            <OutfitDayCell
-              key={cell.dateStr}
-              cell={cell}
-              plan={entriesByDate[cell.dateStr] ?? null}
-              isToday={cell.dateStr === today}
-              isMoveSource={cell.dateStr === moveSourceDate}
-              onPress={onDayPress}
-            />
-          ))}
-        </View>
-      ))}
+      {/* Date grid — left + top border on the container, each cell adds
+          right + bottom so the full grid is boxed */}
+      <View style={styles.gridContainer}>
+        {weeks.map((week, i) => (
+          <View key={i} style={styles.weekRow}>
+            {week.map((cell) => (
+              <OutfitDayCell
+                key={cell.dateStr}
+                cell={cell}
+                plan={entriesByDate[cell.dateStr] ?? null}
+                isToday={cell.dateStr === today}
+                isMoveSource={cell.dateStr === moveSourceDate}
+                onPress={onDayPress}
+              />
+            ))}
+          </View>
+        ))}
+      </View>
     </View>
   );
 }

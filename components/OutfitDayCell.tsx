@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import FastImage from "react-native-fast-image";
 import ScaleButton from "./ScaleButton";
 import { styles } from "../stylesheets/outfitDayCell";
@@ -21,7 +21,14 @@ export default function OutfitDayCell({
   const url = plan ? thumbnailUrl(plan) : null;
 
   return (
-    <ScaleButton style={styles.cell} onPress={() => onPress(cell.dateStr)}>
+    <ScaleButton
+      style={[
+        styles.cell,
+        isToday && styles.cellToday,
+        isMoveSource && styles.cellMoveSource,
+      ]}
+      onPress={() => onPress(cell.dateStr)}
+    >
       <Text
         style={[
           styles.dayNumber,
@@ -31,22 +38,13 @@ export default function OutfitDayCell({
       >
         {cell.day}
       </Text>
-      <View
-        style={[
-          styles.thumbWrap,
-          !cell.inMonth && styles.thumbWrapOutside,
-          isToday && styles.todayRing,
-          isMoveSource && styles.moveSource,
-        ]}
-      >
-        {url ? (
-          <FastImage
-            source={{ uri: url, priority: FastImage.priority.normal }}
-            style={styles.thumb}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-        ) : null}
-      </View>
+      {url ? (
+        <FastImage
+          source={{ uri: url, priority: FastImage.priority.normal }}
+          style={styles.thumb}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+      ) : null}
     </ScaleButton>
   );
 }

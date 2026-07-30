@@ -3,13 +3,14 @@ import { FONTS } from "../constants/fonts";
 
 export const styles = StyleSheet.create({
   container: {
+    backgroundColor: "#fff",
     marginHorizontal: 15,
   },
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 12,
   },
   monthTitle: {
     fontSize: 18,
@@ -22,14 +23,26 @@ export const styles = StyleSheet.create({
   },
   weekdayRow: {
     flexDirection: "row",
-    marginBottom: 6,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderColor: "#D0D0D0",
+  },
+  weekdayCell: {
+    flex: 1,
+    paddingVertical: 5,
+    alignItems: "center",
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor: "#D0D0D0",
   },
   weekdayLabel: {
-    flex: 1,
-    textAlign: "center",
     fontSize: 11,
     color: "#9A9A9A",
     fontFamily: FONTS.SATOSHI,
+  },
+  gridContainer: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderColor: "#D0D0D0",
   },
   weekRow: {
     flexDirection: "row",
