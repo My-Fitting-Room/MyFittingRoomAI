@@ -46,7 +46,7 @@ export default function OutfitMonthGrid({
           the lines align with the date column borders below */}
       <View style={styles.weekdayRow}>
         {WEEKDAY_LABELS.map((label, i) => (
-          <View key={i} style={styles.weekdayCell}>
+          <View key={i} style={[styles.weekdayCell, i === 6 && styles.weekdayCellLast]}>
             <Text style={styles.weekdayLabel}>{label}</Text>
           </View>
         ))}
@@ -64,6 +64,7 @@ export default function OutfitMonthGrid({
                 plan={entriesByDate[cell.dateStr] ?? null}
                 isToday={cell.dateStr === today}
                 isMoveSource={cell.dateStr === moveSourceDate}
+                isLastInRow={week.indexOf(cell) === 6}
                 onPress={onDayPress}
               />
             ))}

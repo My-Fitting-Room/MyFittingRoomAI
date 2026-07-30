@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
   weekdayRow: {
     flexDirection: "row",
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderLeftWidth: StyleSheet.hairlineWidth,
     borderColor: "#D0D0D0",
   },
   weekdayCell: {
@@ -34,6 +33,9 @@ export const styles = StyleSheet.create({
     borderRightWidth: StyleSheet.hairlineWidth,
     borderColor: "#D0D0D0",
   },
+  weekdayCellLast: {
+    borderRightWidth: 0,
+  },
   weekdayLabel: {
     fontSize: 11,
     color: "#9A9A9A",
@@ -41,7 +43,6 @@ export const styles = StyleSheet.create({
   },
   gridContainer: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderLeftWidth: StyleSheet.hairlineWidth,
     borderColor: "#D0D0D0",
   },
   weekRow: {

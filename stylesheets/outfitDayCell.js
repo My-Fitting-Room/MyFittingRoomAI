@@ -4,12 +4,15 @@ import { FONTS } from "../constants/fonts";
 export const styles = StyleSheet.create({
   cell: {
     flex: 1,
-    aspectRatio: 0.7,
+    aspectRatio: 0.55,
     borderRightWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: "#D0D0D0",
     backgroundColor: "#fff",
     padding: 3,
+  },
+  cellLast: {
+    borderRightWidth: 0,
   },
   cellToday: {
     backgroundColor: "#F0F3FF",

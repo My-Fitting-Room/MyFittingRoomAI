@@ -10,12 +10,14 @@ export default function OutfitDayCell({
   plan,
   isToday,
   isMoveSource,
+  isLastInRow,
   onPress,
 }: {
   cell: { dateStr: string; day: number; inMonth: boolean };
   plan: OutfitPlan | null;
   isToday: boolean;
   isMoveSource: boolean;
+  isLastInRow: boolean;
   onPress: (dateStr: string) => void;
 }) {
   const url = plan ? thumbnailUrl(plan) : null;
@@ -24,6 +26,7 @@ export default function OutfitDayCell({
     <ScaleButton
       style={[
         styles.cell,
+        isLastInRow && styles.cellLast,
         isToday && styles.cellToday,
         isMoveSource && styles.cellMoveSource,
       ]}
