@@ -34,14 +34,19 @@ export const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    height: 100,
     zIndex: 1,
   },
+  // top aligned to the bottom of each header so the fade starts at
+  // full opacity exactly where the solid white bar ends — no seam.
+  // A few pixels of overlap (hidden by the header's zIndex: 2) ensure
+  // there's zero gap on sub-pixel boundaries.
   smallGradient: {
-    top: 10, 
+    top: 79,
+    height: 140,
   },
   regularGradient: {
-    top: 70, 
+    top: 107,
+    height: 160,
   },
   logoContainer: {
     flexDirection: "row",
