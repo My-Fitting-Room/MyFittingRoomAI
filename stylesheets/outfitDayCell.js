@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     borderRightWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: "#D0D0D0",
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
     padding: 3,
   },
   cellLast: {

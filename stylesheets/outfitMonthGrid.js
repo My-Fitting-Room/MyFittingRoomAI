@@ -2,15 +2,13 @@ import { StyleSheet } from "react-native";
 import { FONTS } from "../constants/fonts";
 
 export const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    marginHorizontal: 15,
-  },
+  container: {},
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 12,
+    paddingHorizontal: 15,
   },
   monthTitle: {
     fontSize: 18,
