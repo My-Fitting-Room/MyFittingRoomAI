@@ -5,15 +5,10 @@ export const styles = StyleSheet.create({
   cell: {
     flex: 1,
     aspectRatio: 0.55,
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: "#D0D0D0",
     backgroundColor: "transparent",
     padding: 3,
   },
-  cellLast: {
-    borderRightWidth: 0,
-  },
+  cellLast: {},
   cellToday: {
     backgroundColor: "#F0F3FF",
   },
@@ -33,12 +28,14 @@ export const styles = StyleSheet.create({
     color: "#4052FF",
     fontWeight: "700",
   },
+  plusWrap: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   plusMark: {
-    position: "absolute",
-    bottom: 4,
-    right: 4,
-    fontSize: 14,
-    lineHeight: 14,
+    fontSize: 24,
+    lineHeight: 24,
     color: "#D0D0D0",
     fontFamily: FONTS.SATOSHI,
   },

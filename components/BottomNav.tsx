@@ -90,7 +90,12 @@ export default function BottomNav({ navigation, activeTab }) {
         />
       )}
       <View style={styles.container}>
-        <View style={styles.navbar} onLayout={onNavbarLayout}>
+        <View style={[styles.navbar, IS_IOS26 && styles.navbarGlass]} onLayout={onNavbarLayout}>
+          {IS_IOS26 && (
+            <View style={styles.navbarGlassClip} pointerEvents="none">
+              <GlassEffectView style={StyleSheet.absoluteFillObject} />
+            </View>
+          )}
           {ready && (
             // Outer view carries the shadow (not clipped), inner clips to circle
             <Animated.View

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { View, Text } from "react-native";
 import FastImage from "react-native-fast-image";
 import ScaleButton from "./ScaleButton";
 import { styles } from "../stylesheets/outfitDayCell";
@@ -48,7 +48,9 @@ export default function OutfitDayCell({
           resizeMode={FastImage.resizeMode.cover}
         />
       ) : cell.inMonth ? (
-        <Text style={styles.plusMark}>+</Text>
+        <View style={styles.plusWrap} pointerEvents="none">
+          <Text style={styles.plusMark}>+</Text>
+        </View>
       ) : null}
     </ScaleButton>
   );

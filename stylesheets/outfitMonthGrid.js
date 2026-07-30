@@ -21,28 +21,19 @@ export const styles = StyleSheet.create({
   },
   weekdayRow: {
     flexDirection: "row",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: "#D0D0D0",
   },
   weekdayCell: {
     flex: 1,
     paddingVertical: 5,
     alignItems: "center",
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor: "#D0D0D0",
   },
-  weekdayCellLast: {
-    borderRightWidth: 0,
-  },
+  weekdayCellLast: {},
   weekdayLabel: {
     fontSize: 11,
     color: "#9A9A9A",
     fontFamily: FONTS.SATOSHI,
   },
-  gridContainer: {
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: "#D0D0D0",
-  },
+  gridContainer: {},
   weekRow: {
     flexDirection: "row",
   },

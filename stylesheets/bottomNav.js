@@ -45,6 +45,16 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  // iOS 26: the pill is glass — background comes from a clipped
+  // GlassEffectView fill instead of the solid white.
+  navbarGlass: {
+    backgroundColor: "transparent",
+  },
+  navbarGlassClip: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 30,
+    overflow: "hidden",
+  },
   navItem: {
     padding: 8,
     alignItems: "center",
