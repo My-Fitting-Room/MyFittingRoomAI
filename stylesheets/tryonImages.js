@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: "hidden",
   },
+  containerGlass: {
+    backgroundColor: "transparent",
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",

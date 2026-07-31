@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  ActivityIndicator, 
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
   ScrollView,
   Linking,
   Alert,
+  Platform,
+  StyleSheet,
 } from "react-native";
 import FastImage from "react-native-fast-image";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
+import { GlassEffectView } from "react-native-glass-effect-view";
 import { styles } from "../stylesheets/tryonImages";
 import { triggerHaptic } from "../utils/haptics";
 
 import { supabase } from "../App";
+
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
 
 
 const getImages = async (profileId, table) => {
@@ -185,7 +190,8 @@ export default function TryOnImages({ profile = null, navigation }) {
 
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <View style={[styles.container, IS_IOS26 && styles.containerGlass]}>
+          {IS_IOS26 && <GlassEffectView style={StyleSheet.absoluteFillObject} pointerEvents="none" />}
           {pendingImages.length > 0 && (
             <View style={styles.sectionContainer}>
               

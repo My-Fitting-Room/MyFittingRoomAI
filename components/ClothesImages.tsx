@@ -1,11 +1,14 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView, Platform, StyleSheet } from "react-native";
 import Feathericons from "react-native-vector-icons/Feather";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
 import ClothesTile from "./ClothesTile";
+import { GlassEffectView } from "react-native-glass-effect-view";
 import SectionHeader from "./SectionHeader";
 import { styles } from "../stylesheets/clothesImages";
+
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
 
 export default function ClothesImages({ profile = null, setInputClothImage, navigation, returnScreen = "TryOn" }) {
   const [clothesImages, setClothesImages] = useState([]);
@@ -190,7 +193,8 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
 
   return (
     <View style={styles.rootContainer}>
-      <View style={styles.container}>
+      <View style={[styles.container, IS_IOS26 && styles.containerGlass]}>
+        {IS_IOS26 && <GlassEffectView style={StyleSheet.absoluteFillObject} pointerEvents="none" />}
         <SectionHeader
           title="Clothing"
           subtitle="For best results, use well-lit, front-facing photos"

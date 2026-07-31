@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     borderRadius: 20,
+    overflow: "hidden",
     paddingTop: 30,
     paddingHorizontal: 30,
     marginTop: 15,
@@ -18,6 +19,9 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  containerGlass: {
+    backgroundColor: "transparent",
   },
   loadingContainer: {
     flex: 1,

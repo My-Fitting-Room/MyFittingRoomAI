@@ -1,10 +1,13 @@
-import { View, Text,  TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView, Platform, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
+import { GlassEffectView } from "react-native-glass-effect-view";
 import SectionHeader from "./SectionHeader";
 import { styles } from "../stylesheets/modelImages";
+
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
 
 export default function ModelImages({ profile = null, setInputModelImage, navigation }) {
   const [modelImages, setModelImages] = useState([]);
@@ -188,7 +191,8 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
 
   return (
     <View style={styles.rootContainer}>
-      <View style={styles.container}>
+      <View style={[styles.container, IS_IOS26 && styles.containerGlass]}>
+        {IS_IOS26 && <GlassEffectView style={StyleSheet.absoluteFillObject} pointerEvents="none" />}
         <SectionHeader
           title="Model"
           subtitle="For best results, use well-lit, front-facing photos"
