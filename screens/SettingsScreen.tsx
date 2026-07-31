@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import Feathericons from "react-native-vector-icons/Feather";
 import { supabase } from "../App";
@@ -27,7 +28,10 @@ export default function SettingsScreen({ navigation }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const insets = useSafeAreaInsets();
-  const headerHeight = IS_IOS26 ? 80 : 0;
+  const { height } = Dimensions.get("window");
+  const isIPad  = Platform.isPad;
+  const isSmall = !isIPad && height < 700;
+  const headerHeight = IS_IOS26 ? (isIPad ? 62 : isSmall ? 59 : 80) : 0;
 
   useEffect(() => {
     getUserInfo();

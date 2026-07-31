@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   gradient: {
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 30,
     paddingHorizontal: 25, 
-    width: "78%",
+    width: Platform.isPad ? 420 : "78%",
     height: 60,
     shadowColor: "#000",
     shadowOffset: {

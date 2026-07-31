@@ -31,8 +31,9 @@ export default function TryOnScreen({ navigation, route }: { navigation: any, ro
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
-  const isSmall = width === 375 && height === 667;
-  const headerHeight = IS_IOS26 ? (isSmall ? 59 : 80) : 0;
+  const isIPad  = Platform.isPad;
+  const isSmall = !isIPad && height < 700;
+  const headerHeight = IS_IOS26 ? (isIPad ? 62 : isSmall ? 59 : 80) : 0;
 
   const shouldShowPaywall = (profileData, planData, extraTokens) => {
     return profileData.price_id === null &&

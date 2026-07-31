@@ -1,5 +1,5 @@
 import { FONTS } from "../constants/fonts";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   rootContainer: {
@@ -12,8 +12,8 @@ export const styles = StyleSheet.create({
     paddingTop: 30,
     paddingHorizontal: 30,
     marginTop: 15,
-    marginHorizontal: 15,
-    marginBottom:20,
+    marginHorizontal: Platform.isPad ? "12%" : 15,
+    marginBottom: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

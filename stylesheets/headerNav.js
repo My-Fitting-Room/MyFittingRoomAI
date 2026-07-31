@@ -23,6 +23,10 @@ export const styles = StyleSheet.create({
     paddingTop: 55,
     paddingBottom: 12,
   },
+  ipadHeaderGlass: {
+    paddingTop: 30,
+    paddingBottom: 12,
+  },
   logoContainer: {
     flexDirection: "row",
     alignItems: "center",

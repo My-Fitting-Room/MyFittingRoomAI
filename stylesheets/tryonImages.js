@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 20,
     marginTop: 15,
-    marginHorizontal: 15,
+    marginHorizontal: Platform.isPad ? "12%" : 15,
     elevation: 3,
     borderRadius: 20,
     overflow: "hidden",

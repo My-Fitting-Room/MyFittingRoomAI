@@ -36,10 +36,12 @@ function headerFade(logoRowH, padBottom, tint) {
 }
 // padBottom mirrors headerGlass/smallHeaderGlass paddingBottom (12/8).
 const GLASS_MASK_REGULAR = headerFade(107, 12, "0,0,0");
-const GLASS_MASK_SMALL = headerFade(79, 8, "0,0,0");
+const GLASS_MASK_SMALL   = headerFade(79,  8,  "0,0,0");
+const GLASS_MASK_IPAD    = headerFade(82,  12, "0,0,0");
 
 const FALLBACK_FADE_REGULAR = headerFade(107, 12, "255,255,255");
-const FALLBACK_FADE_SMALL = headerFade(79, 8, "255,255,255");
+const FALLBACK_FADE_SMALL   = headerFade(79,  8,  "255,255,255");
+const FALLBACK_FADE_IPAD    = headerFade(82,  12, "255,255,255");
 
 // Absolute background layer extending past the header's bottom edge.
 const bgFill = { position: "absolute", top: 0, left: 0, right: 0, bottom: -FADE_EXT } as const;
@@ -47,8 +49,9 @@ const bgFill = { position: "absolute", top: 0, left: 0, right: 0, bottom: -FADE_
 const isIOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
 
 export default function HeaderNav({ navigation }) {
-  const { width, height } = Dimensions.get("window");
-  const isSmall = width === 375 && height === 667;
+  const { height } = Dimensions.get("window");
+  const isIPad  = Platform.isPad;
+  const isSmall = !isIPad && height < 700;
 
   const handleLogoPress = () => {
     triggerHaptic();
@@ -62,10 +65,17 @@ export default function HeaderNav({ navigation }) {
     </TouchableOpacity>
   );
 
-  const layoutStyle = [styles.headerBase, isSmall ? styles.smallHeaderGlass : styles.headerGlass];
+  const layoutStyle = [
+    styles.headerBase,
+    isIPad  ? styles.ipadHeaderGlass  :
+    isSmall ? styles.smallHeaderGlass :
+              styles.headerGlass,
+  ];
 
   if (isIOS26) {
-    const mask = isSmall ? GLASS_MASK_SMALL : GLASS_MASK_REGULAR;
+    const mask = isIPad  ? GLASS_MASK_IPAD  :
+                 isSmall ? GLASS_MASK_SMALL :
+                           GLASS_MASK_REGULAR;
     return (
       <View style={layoutStyle} pointerEvents="box-none">
         <MaskedView
@@ -86,7 +96,9 @@ export default function HeaderNav({ navigation }) {
     );
   }
 
-  const fallback = isSmall ? FALLBACK_FADE_SMALL : FALLBACK_FADE_REGULAR;
+  const fallback = isIPad  ? FALLBACK_FADE_IPAD  :
+                   isSmall ? FALLBACK_FADE_SMALL :
+                             FALLBACK_FADE_REGULAR;
   return (
     <View style={layoutStyle} pointerEvents="box-none">
       <LinearGradient

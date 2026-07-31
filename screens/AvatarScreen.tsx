@@ -29,8 +29,9 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
 
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
-  const isSmall = width === 375 && height === 667;
-  const headerHeight = IS_IOS26 ? (isSmall ? 82 : 105) : 0;
+  const isIPad  = Platform.isPad;
+  const isSmall = !isIPad && height < 700;
+  const headerHeight = IS_IOS26 ? (isIPad ? 70 : isSmall ? 82 : 105) : 0;
 
   useEffect(() => {
     const checkSession = async () => {
