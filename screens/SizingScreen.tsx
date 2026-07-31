@@ -306,7 +306,7 @@ export default function SizingScreen({ navigation, route }: { navigation: any, r
   const { width, height } = Dimensions.get("window");
   const styles = getStyles(width, height);
   const isSmall = width === 375 && height === 667;
-  const headerHeight = IS_IOS26 ? (isSmall ? 79 : 107) : 0;
+  const headerHeight = IS_IOS26 ? (isSmall ? 59 : 80) : 0;
 
   const [formData, setFormData] = useState({
     brand: "",

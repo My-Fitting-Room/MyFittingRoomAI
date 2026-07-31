@@ -8,6 +8,8 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     marginHorizontal: 15,
     elevation: 3,
+    borderRadius: 20,
+    overflow: "hidden",
   },
   loadingContainer: {
     flex: 1,
