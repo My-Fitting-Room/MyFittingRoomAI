@@ -123,6 +123,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
       setTryonImages(prevImages => prevImages.map(img =>
         img.id === currentImage.id ? { ...img, is_favorite: !nextValue } : img
       ));
+      console.error("Toggle favorite error:", error);
       Alert.alert("Error", "Failed to update saved looks. Please try again.");
     }
   };
