@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Dimensions, ScrollView, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import ScaleButton from "./ScaleButton";
 import OutfitDayCell from "./OutfitDayCell";
@@ -30,6 +30,10 @@ export default function OutfitMonthGrid({
     weeks.push(grid.slice(i, i + 7));
   }
 
+  const cellWidth = Dimensions.get("window").width / 7;
+  const cellHeight = cellWidth / 0.45;
+  const gridHeight = cellHeight * 4;
+
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
@@ -52,9 +56,13 @@ export default function OutfitMonthGrid({
         ))}
       </View>
 
-      {/* Date grid — left + top border on the container, each cell adds
-          right + bottom so the full grid is boxed */}
-      <View style={styles.gridContainer}>
+      {/* Date grid — capped to 4 visible weeks; scroll to reach week 5–6 */}
+      <ScrollView
+        style={[styles.gridContainer, { height: gridHeight }]}
+        scrollEnabled={weeks.length > 4}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled
+      >
         {weeks.map((week, i) => (
           <View key={i} style={styles.weekRow}>
             {week.map((cell) => (
@@ -70,7 +78,7 @@ export default function OutfitMonthGrid({
             ))}
           </View>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }

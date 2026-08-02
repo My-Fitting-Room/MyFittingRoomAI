@@ -4,7 +4,7 @@ import { FONTS } from "../constants/fonts";
 export const styles = StyleSheet.create({
   cell: {
     flex: 1,
-    aspectRatio: 0.55,
+    aspectRatio: 0.45,
     backgroundColor: "transparent",
     padding: 3,
   },
@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     color: "#9A9A9A",
     marginBottom: 2,
     fontFamily: FONTS.SATOSHI,
+    textAlign: "center",
   },
   dayNumberOutside: {
     color: "#D0D0D0",
