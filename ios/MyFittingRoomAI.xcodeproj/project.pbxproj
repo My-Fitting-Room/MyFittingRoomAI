@@ -504,7 +504,7 @@
 				CODE_SIGN_ENTITLEMENTS = MyFittingRoomAI/MyFittingRoomAI.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = AY2XS3RM73;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
@@ -545,7 +545,7 @@
 				CODE_SIGN_ENTITLEMENTS = MyFittingRoomAI/MyFittingRoomAI.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = AY2XS3RM73;
 				INFOPLIST_FILE = MyFittingRoomAI/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Fitting Room";
@@ -757,7 +757,7 @@
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = AY2XS3RM73;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -802,7 +802,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = AY2XS3RM73;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
