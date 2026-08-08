@@ -11,7 +11,7 @@ import Purchases from "react-native-purchases";
 export default function TryOnButton({ disabled = false, inputClothImage, inputModelImage, tokensUsed, tokensTotal, profile, plan, navigation, extraTokensTotal }) {
   const [loading, setLoading] = useState(false);
 
-  const presentPaywallIfNeeded = async () => {
+  const presentPaywallIfNeeded = async (): Promise<boolean> => {
     if (profile.price_id === null && !profile.all_access && plan === null && extraTokensTotal < 1) {
       const offerings = await Purchases.getOfferings();
 
@@ -26,7 +26,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
           navigation.replace("TryOn");
-          break;
+          return false;
         case PAYWALL_RESULT.PURCHASED:
           await trackAppsFlyerPurchase();
           mixpanel.track("Paywall CTA Clicked On Try On Screen");
@@ -36,6 +36,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
           break;
       }
     }
+    return true;
   }
 
   const handleTryOn = async () => {
@@ -45,7 +46,8 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
       return;
     }
 
-    await presentPaywallIfNeeded();
+    const allowed = await presentPaywallIfNeeded();
+    if (!allowed) return;
 
     setLoading(true);
 

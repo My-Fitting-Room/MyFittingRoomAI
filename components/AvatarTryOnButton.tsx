@@ -14,7 +14,7 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
   // One item per category (top/bottom/shoes); any non-empty subset works
   const selectedItems = Object.values(selectedOutfit || {}).filter((item) => item?.slug);
 
-  const presentPaywallIfNeeded = async () => {
+  const presentPaywallIfNeeded = async (): Promise<boolean> => {
     if (profile.price_id === null && !profile.all_access && plan === null && extraTokensTotal < 1) {
       const offerings = await Purchases.getOfferings();
 
@@ -29,7 +29,7 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
         case PAYWALL_RESULT.ERROR:
         case PAYWALL_RESULT.CANCELLED:
           navigation.replace("Avatar");
-          break;
+          return false;
         case PAYWALL_RESULT.PURCHASED:
           await trackAppsFlyerPurchase();
           mixpanel.track("Paywall CTA Clicked On Avatar Screen");
@@ -39,6 +39,7 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
           break;
       }
     }
+    return true;
   }
 
   const handleTryOn = async () => {
@@ -53,7 +54,8 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
       return;
     }
 
-    await presentPaywallIfNeeded();
+    const allowed = await presentPaywallIfNeeded();
+    if (!allowed) return;
 
     setLoading(true);
 
