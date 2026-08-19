@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '../utils/fonts';
 import GradientProgressBar from './GradientProgressBar';
 import { triggerHaptic } from '../utils/haptics';
@@ -18,8 +19,16 @@ const OnboardingHeader = ({
     topRowStyle = {},
     textColor = '#000',
     subTextColor = '#BBBBBB',
-    textAlign = 'left'
+    textAlign = 'left',
+    showSkip = true
 }) => {
+    const navigation = useNavigation();
+
+    const handleSkip = () => {
+        triggerHaptic();
+        navigation.navigate('OnboardingScreenReferralInput');
+    };
+
     return (
         <View style={[styles.container, containerStyle]}>
             {/* Top Row: Back Button & Progress Bar */}
@@ -37,6 +46,12 @@ const OnboardingHeader = ({
                         color={textColor}
                     />
                 </View>
+
+                {showSkip && (
+                    <TouchableOpacity onPress={handleSkip} style={styles.skipButton} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                        <Text style={[styles.skipText, { color: subTextColor }]}>Skip</Text>
+                    </TouchableOpacity>
+                )}
             </View>
 
             {/* Title Section */}
@@ -73,6 +88,14 @@ const styles = StyleSheet.create({
     progressContainer: {
         flex: 1,
         marginRight: 10,
+    },
+    skipButton: {
+        paddingVertical: 5,
+        paddingLeft: 4,
+    },
+    skipText: {
+        fontFamily: Fonts.SemiBold,
+        fontSize: 14,
     },
     titleContainer: {
         gap: 8,

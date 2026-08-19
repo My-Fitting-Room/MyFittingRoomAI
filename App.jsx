@@ -49,6 +49,8 @@ import OnboardingScreen23b from "./screens/OnboardingScreen23b";
 import OnboardingScreen24 from "./screens/OnboardingScreen24";
 import OnboardingScreenA from "./screens/OnboardingScreenA";
 import OnboardingScreenB from "./screens/OnboardingScreenB";
+import OnboardingScreenReferralInput from "./screens/OnboardingScreenReferralInput";
+import OnboardingScreenReferral from "./screens/OnboardingScreenReferral";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -197,6 +199,8 @@ const App = () => {
             <Stack.Screen name="OnboardingScreen22" component={OnboardingScreen22} />
             <Stack.Screen name="OnboardingScreen23" component={OnboardingScreen23} />
             <Stack.Screen name="OnboardingScreen23b" component={OnboardingScreen23b} />
+            <Stack.Screen name="OnboardingScreenReferralInput" component={OnboardingScreenReferralInput} />
+            <Stack.Screen name="OnboardingScreenReferral" component={OnboardingScreenReferral} />
             <Stack.Screen name="OnboardingScreen24" component={OnboardingScreen24} />
             <Stack.Screen name="OnboardingScreenA" component={OnboardingScreenA} />
             <Stack.Screen name="OnboardingScreenB" component={OnboardingScreenB} />

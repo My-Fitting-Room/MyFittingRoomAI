@@ -144,6 +144,7 @@ const OnboardingScreen24 = ({ navigation }) => {
                 containerStyle={{ paddingHorizontal: 0 }}
                 title="Your Fit Profile is Ready"
                 textAlign="center"
+                showSkip={false}
             />
 
             <View style={styles.content}>

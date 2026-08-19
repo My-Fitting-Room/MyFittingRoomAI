@@ -37,6 +37,7 @@ const OnboardingScreenB = ({ navigation }) => {
                 onBackPress={() => navigation.goBack()}
                 containerStyle={{ paddingHorizontal: 0 }}
                 textAlign="center"
+                showSkip={false}
                 title={
                     <View style={{ alignItems: 'center' }}>
                         <Text style={styles.titleText}>

@@ -38,6 +38,7 @@ const OnboardingScreenA = ({ navigation }) => {
                 onBackPress={() => navigation.goBack()}
                 containerStyle={{ paddingHorizontal: 0 }}
                 textAlign="center"
+                showSkip={false}
                 title={
                     <Text style={styles.titleText}>
                         We want you to try My {"\n"}Fitting Room for <Text style={{ color: '#6ac9f1' }}>FREE</Text>

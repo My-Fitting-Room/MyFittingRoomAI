@@ -14,6 +14,7 @@ export const OnboardingProvider = ({ children }) => {
         confidence: '',
         orderAction: '',
         userImage: null,
+        referredByCode: '',
         styles: [], // If any screen collects it
     });
 

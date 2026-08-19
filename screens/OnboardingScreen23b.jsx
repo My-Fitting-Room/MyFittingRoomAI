@@ -48,7 +48,7 @@ const OnboardingScreen23b = ({ navigation }) => {
 
     const handleContinue = () => {
         mixpanel.track('Onboarding step completed', { screen: 'OnboardingScreen23b' });
-        navigation.navigate('OnboardingScreen24');
+        navigation.navigate('OnboardingScreenReferralInput');
     };
 
     return (
