@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Linking,
   Alert,
+  Animated,
 } from "react-native";
 import FastImage from "react-native-fast-image";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -41,6 +42,34 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
   const [deleting, setDeleting] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [filter, setFilter] = useState("all");
+  const [failedVisible, setFailedVisible] = useState(false);
+  const failedOpacity = useRef(new Animated.Value(0)).current;
+
+  // Show the error toast as a transient popup: fade in, hold 3s, fade out.
+  // Keyed on the count so it only re-fires when the number of failures changes,
+  // not on every 15s poll that re-sets the same failed rows.
+  useEffect(() => {
+    if (failedImages.length === 0) {
+      return;
+    }
+
+    setFailedVisible(true);
+    Animated.timing(failedOpacity, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+
+    const timer = setTimeout(() => {
+      Animated.timing(failedOpacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => setFailedVisible(false));
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [failedImages.length]);
 
   useEffect(() => {
     // null until the first fetch seeds the baseline, so pre-existing
@@ -219,15 +248,17 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
             </View>
           )}
 
-          {failedImages.length > 0 && (
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionHeading}>Failed Avatar Try On Images</Text>
-              {failedImages.map((image, index) => (
-                <View key={index} style={styles.failedItem}>
-                  <Text style={styles.failedText}>Failed to generate image ID: {image.task_id}</Text>
+          {failedVisible && (
+            <Animated.View style={[styles.sectionContainer, { opacity: failedOpacity }]}>
+              <View style={styles.failedItem}>
+                <View style={styles.failedIcon}>
+                  <Ionicons name="close" size={14} color="#000" />
                 </View>
-              ))}
-            </View>
+                <Text style={styles.failedText} numberOfLines={1}>
+                  Generation error, try to use a different item
+                </Text>
+              </View>
+            </Animated.View>
           )}
 
           {tryonImages.length > 0 && (
