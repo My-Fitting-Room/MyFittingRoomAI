@@ -28,11 +28,5 @@ export const styles = StyleSheet.create({
   },
   loadingButton: {
     backgroundColor: "#333",
-  },
-  // Mirrors the onboarding Continue button's tap feedback
-  // (active:bg-neutral-800 + active:scale-[0.98]).
-  buttonPressed: {
-    backgroundColor: "#262626",
-    transform: [{ scale: 0.98 }],
   }
 });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, Text, StyleSheet, Dimensions, View, Alert } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Alert } from "react-native";
 import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { styles } from "../stylesheets/primaryButton";
@@ -99,12 +99,11 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
 
   return (
     <View style={styles.container}>
-      <Pressable
-        style={({ pressed }) => [
+      <TouchableOpacity
+        style={[
           styles.buttonContainer,
           disabled && styles.disabledButton,
-          loading && styles.loadingButton,
-          pressed && !(disabled || loading) && styles.buttonPressed
+          loading && styles.loadingButton
         ]}
         disabled={disabled || loading}
         onPress={handleTryOn}
@@ -112,7 +111,7 @@ export default function TryOnButton({ disabled = false, inputClothImage, inputMo
         <Text style={styles.buttonText}>
           {loading ? "Processing..." : "Try On"}
         </Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 }
