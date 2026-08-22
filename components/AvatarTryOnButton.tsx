@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TouchableOpacity, Text, View, Alert } from "react-native";
+import { Pressable, Text, View, Alert } from "react-native";
 import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { styles } from "../stylesheets/primaryButton";
@@ -107,11 +107,12 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[
+      <Pressable
+        style={({ pressed }) => [
           styles.buttonContainer,
           (disabled || selectedItems.length === 0) && styles.disabledButton,
-          loading && styles.loadingButton
+          loading && styles.loadingButton,
+          pressed && !(disabled || loading || selectedItems.length === 0) && styles.buttonPressed
         ]}
         disabled={disabled || loading || selectedItems.length === 0}
         onPress={handleTryOn}
@@ -119,7 +120,7 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
         <Text style={styles.buttonText}>
           {loading ? "Processing..." : "Try It On"}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
