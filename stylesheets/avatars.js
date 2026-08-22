@@ -22,11 +22,11 @@ export const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 24,
+    marginTop: 48,
   },
   heroImage: {
-    width: width * 0.62,
-    height: 280,
+    width: width * 0.56,
+    height: 252,
   },
   heroActions: {
     flexDirection: "row",
