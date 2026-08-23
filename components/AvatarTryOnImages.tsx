@@ -8,6 +8,7 @@ import {
   Linking,
   Alert,
   Animated,
+  Platform,
 } from "react-native";
 import FastImage from "react-native-fast-image";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -17,6 +18,12 @@ import { triggerHaptic } from "../utils/haptics";
 
 import { supabase } from "../App";
 
+// On iPad the result box is wider than the tall portrait render, so `cover`
+// crops the model's head/feet. Fit the whole image instead; phone keeps the
+// edge-to-edge `cover` look it ships with.
+const MODEL_RESIZE = Platform.isPad
+  ? FastImage.resizeMode.contain
+  : FastImage.resizeMode.cover;
 
 const getImages = async (profileId) => {
   // Multiple FKs point at clothes_images, so every embed needs a column
@@ -315,7 +322,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                           priority: FastImage.priority.high
                         }}
                         style={styles.resultImage}
-                        resizeMode={FastImage.resizeMode.cover}
+                        resizeMode={MODEL_RESIZE}
                       />
                     </View>
                   </View>
@@ -327,7 +334,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                         priority: FastImage.priority.high
                       }}
                       style={styles.fullImage}
-                      resizeMode={FastImage.resizeMode.cover}
+                      resizeMode={MODEL_RESIZE}
                     />
                   </View>
                 )}
