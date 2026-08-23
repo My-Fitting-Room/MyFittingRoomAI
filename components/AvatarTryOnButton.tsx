@@ -76,6 +76,9 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
         }
       }
 
+      // Always generate from the original uploaded model (selectedAvatar), never
+      // from a previously-generated result shown on the avatar page — otherwise
+      // each run would re-reference a lossy output and quality would degrade.
       const requestBody = {
         avatar_slug: selectedAvatar.slug,
         clothes_image_slugs: selectedItems.map((item) => item.slug)

@@ -24,40 +24,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 80,
   },
-  heroImageWrap: {
-    width: width * 0.56,
-    height: 252,
-    position: "relative",
-  },
   heroImage: {
     width: width * 0.56,
     height: 252,
-  },
-  generatingOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  // Non-iOS26 fallback where real glass blur is unavailable
-  generatingScrimFallback: {
-    backgroundColor: "rgba(240, 240, 245, 0.75)",
-  },
-  generatingContent: {
-    alignItems: "center",
-    paddingHorizontal: 18,
-  },
-  generatingTip: {
-    marginTop: 18,
-    fontSize: 14,
-    lineHeight: 20,
-    color: "#000",
-    fontWeight: "500",
-    textAlign: "center",
-    fontFamily: FONTS.SATOSHI,
   },
   heroActions: {
     flexDirection: "row",

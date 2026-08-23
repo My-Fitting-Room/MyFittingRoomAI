@@ -59,6 +59,38 @@ export const tabStyles = StyleSheet.create({
     color: "#000",
     fontFamily: FONTS.SATOSHI,
   },
+  // Blurs the avatar content region only; sits under the New Avatar button
+  // (zIndex 10) and outside the header/tabs/bottom-nav so those stay crisp.
+  generatingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  // Non-iOS26 fallback where real glass blur is unavailable
+  generatingBlurFallback: {
+    backgroundColor: "rgba(255, 255, 255, 0.6)",
+  },
+  generatingContent: {
+    alignItems: "center",
+    paddingHorizontal: 40,
+  },
+  generatingHeadline: {
+    marginTop: 20,
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#000",
+    textAlign: "center",
+    fontFamily: FONTS.SWITZER,
+  },
+  generatingSubtext: {
+    marginTop: 10,
+    maxWidth: 260,
+    fontSize: 14,
+    lineHeight: 20,
+    color: "#6B6B6B",
+    textAlign: "center",
+    fontFamily: FONTS.SATOSHI,
+  },
 });
 
 export const getStyles = (width, height) => {

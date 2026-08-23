@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity, Platform } from "react-native";
+import { View, Text, Alert, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity, Platform, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GlassEffectView } from "react-native-glass-effect-view";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
@@ -8,20 +9,13 @@ import Avatars from "../components/Avatars";
 import AvatarClothesCarousel from "../components/AvatarClothesCarousel";
 import AvatarTryOnButton from "../components/AvatarTryOnButton";
 import AvatarTryOnImages from "../components/AvatarTryOnImages";
+import OrbitLoader from "../components/OrbitLoader";
 import Feathericons from "react-native-vector-icons/Feather";
 import { FONTS } from "../constants/fonts";
 import { getStyles, tabStyles } from "../stylesheets/avatarScreen";
 import { triggerHaptic } from "../utils/haptics";
 
 const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
-
-// Shown over the blurred avatar while a try-on generates; one picked at random per run.
-const GENERATING_TIPS = [
-  "Your try-on is generating — we'll update it here once it's done. Feel free to explore the Calendar in the meantime.",
-  "Tip: you can generate multiple try-ons at once.",
-  "Tip: use the Calendar to plan your outfits for months ahead.",
-  "Tip: try our clothing size calculator to find your best fit for your favorite brands.",
-];
 
 export default function AvatarScreen({ navigation, route }: { navigation: any, route: any }) {
   const insets = useSafeAreaInsets();
@@ -35,7 +29,6 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
   const [activeTab, setActiveTab] = useState("avatar");
   const [showCreatePicker, setShowCreatePicker] = useState(false);
   const [generating, setGenerating] = useState(false);
-  const [activeTip, setActiveTip] = useState("");
   const [resultImageUrl, setResultImageUrl] = useState<string | null>(null);
 
   const { width, height } = Dimensions.get("window");
@@ -92,6 +85,18 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
         setProfile(profileData);
         setLoading(false);
 
+        // Resume the generating state if a try-on is still in flight (e.g. the
+        // user left the screen and came back) so the overlay + poll pick back up
+        const { data: latest } = await supabase
+          .from("avatar_tryon_images")
+          .select("status")
+          .eq("profiles_id", profileData.id)
+          .order("created_at", { ascending: false })
+          .limit(1);
+        if (latest?.[0]?.status === "pending") {
+          setGenerating(true);
+        }
+
       } catch (error) {
         navigation.navigate("SignIn");
       }
@@ -124,7 +129,6 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
   // show a random tip, and let the poll below swap in the result when ready.
   const handleTryOnStarted = () => {
     setResultImageUrl(null);
-    setActiveTip(GENERATING_TIPS[Math.floor(Math.random() * GENERATING_TIPS.length)]);
     setGenerating(true);
     refreshProfile();
   };
@@ -232,8 +236,6 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
             navigation={navigation}
             showPicker={showCreatePicker}
             setShowPicker={setShowCreatePicker}
-            generating={generating}
-            activeTip={activeTip}
             resultImageUrl={resultImageUrl}
           />
           {/* No button until the first avatar exists; selectedAvatar is only
@@ -265,6 +267,26 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
           <AvatarTryOnImages profile={profile} navigation={navigation} />
           <View className={styles.bottomPadding} />
         </ScrollView>
+
+        {/* In-place generating state: blur the avatar content (not header/tabs/
+            new-avatar/bottom-nav) and float a minimal pastel loader + copy over it.
+            The overlay also captures touches so a duplicate generation can't start. */}
+        {generating && activeTab === "avatar" && (
+          <View style={tabStyles.generatingOverlay}>
+            {IS_IOS26 ? (
+              <GlassEffectView style={StyleSheet.absoluteFillObject} />
+            ) : (
+              <View style={[StyleSheet.absoluteFillObject, tabStyles.generatingBlurFallback]} />
+            )}
+            <View style={tabStyles.generatingContent} pointerEvents="none">
+              <OrbitLoader size={44} />
+              <Text style={tabStyles.generatingHeadline}>Your try-on is generating</Text>
+              <Text style={tabStyles.generatingSubtext}>
+                You can keep going — we'll let you know as soon as it's ready.
+              </Text>
+            </View>
+          </View>
+        )}
 
         <TouchableOpacity
           style={[tabStyles.newAvatarButton, tabStyles.newAvatarAnchor]}

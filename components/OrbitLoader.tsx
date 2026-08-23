@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,14 +11,15 @@ import Animated, {
 import LinearGradient from "react-native-linear-gradient";
 import MaskedView from "@react-native-masked-view/masked-view";
 
-// myf brand gradient (onboarding selected buttons / GradientSlider).
+// myf pastel gradient — soft pink / lilac / blue / peach (no teal).
 // First color repeated at the end so the ring wraps seamlessly as it spins.
-const GRADIENT = ["#29D8FF", "#ADFFBC", "#FFFD82", "#F569FF", "#29D8FF"];
+const PASTEL = ["#FCD6FF", "#E0BBE4", "#BDE0FE", "#FAD0C4", "#FCD6FF"];
 
-// Retro-futuristic loader: a brand-gradient ring rotating continuously.
+// Minimal retro-futuristic loader: a thin pastel-gradient ring that slowly
+// rotates, with a small static sparkle (MYF logo language) at its center.
 export default function OrbitLoader({
-  size = 84,
-  thickness = 6,
+  size = 44,
+  thickness = 3,
 }: {
   size?: number;
   thickness?: number;
@@ -27,7 +28,7 @@ export default function OrbitLoader({
 
   useEffect(() => {
     rotation.value = withRepeat(
-      withTiming(360, { duration: 2400, easing: Easing.linear }),
+      withTiming(360, { duration: 3000, easing: Easing.linear }),
       -1,
       false
     );
@@ -39,29 +40,35 @@ export default function OrbitLoader({
   }));
 
   return (
-    <Animated.View style={[{ width: size, height: size }, spinStyle]}>
-      <MaskedView
-        style={{ width: size, height: size }}
-        maskElement={
-          <View
-            style={{
-              width: size,
-              height: size,
-              borderRadius: size / 2,
-              borderWidth: thickness,
-              borderColor: "#000",
-              backgroundColor: "transparent",
-            }}
-          />
-        }
-      >
-        <LinearGradient
-          colors={GRADIENT}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+    <View style={{ width: size, height: size, alignItems: "center", justifyContent: "center" }}>
+      <Animated.View style={[StyleSheet.absoluteFillObject, spinStyle]}>
+        <MaskedView
           style={{ width: size, height: size }}
-        />
-      </MaskedView>
-    </Animated.View>
+          maskElement={
+            <View
+              style={{
+                width: size,
+                height: size,
+                borderRadius: size / 2,
+                borderWidth: thickness,
+                borderColor: "#000",
+                backgroundColor: "transparent",
+              }}
+            />
+          }
+        >
+          <LinearGradient
+            colors={PASTEL}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{ width: size, height: size }}
+          />
+        </MaskedView>
+      </Animated.View>
+
+      <Text style={{ fontSize: size * 0.34, color: "#C9A0E6", lineHeight: size * 0.4 }}>
+        ✦
+      </Text>
+    </View>
   );
 }
