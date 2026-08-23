@@ -1,12 +1,16 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView, StyleSheet, Platform } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
+import { GlassEffectView } from "react-native-glass-effect-view";
 import { styles } from "../stylesheets/avatars";
 import { triggerHaptic } from "../utils/haptics";
+import OrbitLoader from "./OrbitLoader";
 
-export default function Avatars({ profile = null, setSelectedAvatar, navigation, showPicker = false, setShowPicker = (_visible: boolean) => {} }) {
+const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
+
+export default function Avatars({ profile = null, setSelectedAvatar, navigation, showPicker = false, setShowPicker = (_visible: boolean) => {}, generating = false, activeTip = "", resultImageUrl = null }) {
   const [avatars, setAvatars] = useState([]);
   const [pendingAvatars, setPendingAvatars] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -285,11 +289,26 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
       {avatars.length > 0 ? (
         <>
           <View style={styles.heroContainer}>
-            <Image
-              source={{ uri: selectedAvatarImage?.url }}
-              style={styles.heroImage}
-              resizeMode="contain"
-            />
+            <View style={styles.heroImageWrap}>
+              <Image
+                source={{ uri: (resultImageUrl || selectedAvatarImage?.url) }}
+                style={styles.heroImage}
+                resizeMode="contain"
+              />
+              {generating && (
+                <View style={styles.generatingOverlay} pointerEvents="none">
+                  {IS_IOS26 ? (
+                    <GlassEffectView style={StyleSheet.absoluteFillObject} />
+                  ) : (
+                    <View style={[StyleSheet.absoluteFillObject, styles.generatingScrimFallback]} />
+                  )}
+                  <View style={styles.generatingContent}>
+                    <OrbitLoader size={84} />
+                    <Text style={styles.generatingTip}>{activeTip}</Text>
+                  </View>
+                </View>
+              )}
+            </View>
           </View>
 
           <View style={styles.heroActions}>

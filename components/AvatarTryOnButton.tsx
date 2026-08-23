@@ -8,7 +8,7 @@ import { trackAppsFlyerPurchase } from "../utils/appsflyer";
 import { triggerHaptic } from "../utils/haptics";
 import Purchases from "react-native-purchases";
 
-export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {}, selectedAvatar, tokensUsed, tokensTotal, profile, plan, navigation, extraTokensTotal }) {
+export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {}, selectedAvatar, tokensUsed, tokensTotal, profile, plan, navigation, extraTokensTotal, onTryOnStarted = () => {} }) {
   const [loading, setLoading] = useState(false);
 
   // One item per category (top/bottom/shoes); any non-empty subset works
@@ -96,7 +96,8 @@ export default function AvatarTryOnButton({ disabled = false, selectedOutfit = {
 
       mixpanel.track("Avatar Try On Clicked");
 
-      navigation.replace("Avatar");
+      // In-place: blur the avatar + show the generating state instead of a full remount
+      onTryOnStarted();
 
     } catch (error) {
       Alert.alert("Try-on Failed", "Failed to process your request. Please try again later.");
