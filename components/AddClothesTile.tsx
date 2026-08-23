@@ -1,9 +1,13 @@
-import { View, ActivityIndicator, Dimensions } from "react-native";
+import { View, ActivityIndicator, Dimensions, Platform } from "react-native";
 import React from "react";
 import Feathericons from "react-native-vector-icons/Feather";
 import { StyleSheet } from "react-native";
 
 const { width } = Dimensions.get("window");
+
+// Match ClothesTile: smaller fraction on the wider iPad screen.
+const TILE_W = width * (Platform.isPad ? 0.2 : 0.31);
+const TILE_H = width * (Platform.isPad ? 0.226 : 0.35);
 
 export default function AddClothesTile({ onPress, uploading = false }) {
   return (
@@ -20,8 +24,8 @@ export default function AddClothesTile({ onPress, uploading = false }) {
 
 const styles = StyleSheet.create({
   tileWrapper: {
-    width: width * 0.31,
-    height: width * 0.35,
+    width: TILE_W,
+    height: TILE_H,
     marginRight: 10,
   },
   card: {

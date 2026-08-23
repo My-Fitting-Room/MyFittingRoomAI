@@ -1,11 +1,16 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const { width } = Dimensions.get("window");
 
+// Phone fractions were tuned for narrow screens; on the much wider iPad they
+// produce oversized tiles, so use a smaller fraction there (same aspect ratio).
+const TILE_W = width * (Platform.isPad ? 0.2 : 0.31);
+const TILE_H = width * (Platform.isPad ? 0.226 : 0.35);
+
 export const styles = StyleSheet.create({
   tileWrapper: {
-    width: width * 0.31,
-    height: width * 0.35,
+    width: TILE_W,
+    height: TILE_H,
     marginRight: 10,
   },
   tileScaler: {
