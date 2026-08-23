@@ -40,7 +40,9 @@ export const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
     paddingHorizontal: 20,
-    marginTop: 15,
+    // Extra top space on iPad so the content clears the taller header fade
+    // instead of starting underneath it.
+    marginTop: Platform.isPad ? 80 : 15,
     marginHorizontal: Platform.isPad ? "12%" : 15,
   },
   loadingContainer: {
@@ -110,7 +112,7 @@ export const styles = StyleSheet.create({
   },
   splitImageContainer: {
     flexDirection: "row",
-    height: 400,
+    height: Platform.isPad ? 330 : 400,
   },
   leftColumn: {
     width: "33%",
@@ -130,7 +132,7 @@ export const styles = StyleSheet.create({
     height: "100%",
   },
   fullImageContainer: {
-    height: 400,
+    height: Platform.isPad ? 330 : 400,
   },
   fullImage: {
     width: "100%",
