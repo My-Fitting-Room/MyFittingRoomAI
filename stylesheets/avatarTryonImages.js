@@ -1,42 +1,6 @@
-import { FONTS } from "../constants/fonts";
 import { Platform, StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  filterRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 8,
-    marginBottom: 16,
-  },
-  filterChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
-    backgroundColor: "#FFF",
-  },
-  filterChipActive: {
-    backgroundColor: "#000",
-    borderColor: "#000",
-  },
-  filterChipText: {
-    fontSize: 13,
-    fontWeight: "500",
-    color: "#000",
-    fontFamily: FONTS.SATOSHI,
-  },
-  filterChipTextActive: {
-    color: "#FFF",
-  },
-  savedEmptyText: {
-    fontSize: 13,
-    color: "#6B6B6B",
-    textAlign: "center",
-    marginTop: 24,
-    marginBottom: 24,
-    fontFamily: FONTS.SATOSHI,
-  },
   container: {
     paddingTop: 20,
     paddingHorizontal: 20,
@@ -105,6 +69,9 @@ export const styles = StyleSheet.create({
     color: "#000",
   },
   carouselContainer: {
+    // Small top gap that used to come from the removed All/Saved pills, so the
+    // hero still clears the header fade neatly.
+    marginTop: 8,
     marginBottom: 24,
   },
   imageContainer: {
@@ -170,13 +137,72 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    gap: 20,
     paddingTop: 16,
     paddingHorizontal: 16,
   },
-  viewIcon: {
-    marginRight: 32,
+  // Floating soft-surface control: white fill, hairline stroke, soft shadow.
+  actionButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "rgba(0,0,0,0.08)",
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
-  deleteIcon: {
-    marginLeft: 32,
+  // Tasteful accent when the look is saved.
+  actionButtonActive: {
+    backgroundColor: "rgba(255,77,109,0.08)",
+    borderColor: "rgba(255,77,109,0.22)",
+  },
+  // Grid of every generation beneath the hero: more columns on the roomier
+  // iPad layout, three-up on phone.
+  thumbGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    // Extra breathing room so the grid clears the action icons above it.
+    marginTop: 40,
+  },
+  thumb: {
+    width: Platform.isPad ? "18%" : "31%",
+    aspectRatio: 3 / 4,
+    borderRadius: 12,
+    overflow: "hidden",
+    backgroundColor: "#F2F2F7",
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  // The look currently featured in the hero gets a solid ring.
+  thumbActive: {
+    borderColor: "#000",
+  },
+  thumbImage: {
+    width: "100%",
+    height: "100%",
+  },
+  // Small favourite marker tucked into a tile's top-right corner.
+  thumbFavoriteBadge: {
+    position: "absolute",
+    top: 6,
+    right: 6,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: "rgba(255,255,255,0.92)",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 2,
   },
 });

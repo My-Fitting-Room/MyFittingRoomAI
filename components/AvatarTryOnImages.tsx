@@ -25,6 +25,37 @@ const MODEL_RESIZE = Platform.isPad
   ? FastImage.resizeMode.contain
   : FastImage.resizeMode.cover;
 
+// Neutral icon tone (iOS label) and the accent used for a saved look.
+const ICON_COLOR = "#1C1C1E";
+const FAVORITE_COLOR = "#FF4D6D";
+
+// A floating circular control with a smooth press animation. Icons are
+// centered; the button surface styling lives in the stylesheet.
+function ActionButton({ children, onPress, disabled = false, style }: any) {
+  const scale = useRef(new Animated.Value(1)).current;
+  const animateTo = (toValue: number) =>
+    Animated.spring(scale, {
+      toValue,
+      friction: 6,
+      tension: 220,
+      useNativeDriver: true,
+    }).start();
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={onPress}
+      onPressIn={() => animateTo(0.92)}
+      onPressOut={() => animateTo(1)}
+      disabled={disabled}
+    >
+      <Animated.View style={[styles.actionButton, style, { transform: [{ scale }] }]}>
+        {children}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+}
+
 const getImages = async (profileId) => {
   // Multiple FKs point at clothes_images, so every embed needs a column
   // hint or PostgREST rejects the query as ambiguous
@@ -48,9 +79,9 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [filter, setFilter] = useState("all");
   const [failedVisible, setFailedVisible] = useState(false);
   const failedOpacity = useRef(new Animated.Value(0)).current;
+  const heartPop = useRef(new Animated.Value(1)).current;
 
   // Show the error toast as a transient popup: fade in, hold 3s, fade out.
   // Keyed on the count so it only re-fires when the number of failures changes,
@@ -115,9 +146,7 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
     return () => clearInterval(interval);
   }, [profile]);
 
-  const visibleImages = filter === "saved"
-    ? tryonImages.filter(img => img.is_favorite)
-    : tryonImages;
+  const visibleImages = tryonImages;
   const safeIndex = Math.min(currentImageIndex, Math.max(visibleImages.length - 1, 0));
   const currentImage = visibleImages[safeIndex];
 
@@ -131,12 +160,6 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
     outfitItems.push(currentImage.clothes_images);
   }
 
-  const handleFilterChange = (nextFilter) => {
-    triggerHaptic();
-    setFilter(nextFilter);
-    setCurrentImageIndex(0);
-  };
-
   const handleToggleFavorite = async () => {
     if (!currentImage) {
       return;
@@ -144,6 +167,13 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
 
     triggerHaptic();
     const nextValue = !currentImage.is_favorite;
+
+    // A subtle pop so the toggle feels tactile
+    heartPop.setValue(1);
+    Animated.sequence([
+      Animated.timing(heartPop, { toValue: 1.25, duration: 120, useNativeDriver: true }),
+      Animated.spring(heartPop, { toValue: 1, friction: 4, tension: 220, useNativeDriver: true }),
+    ]).start();
 
     // Optimistic flip; the 15s poll re-syncs with server truth either way
     setTryonImages(prevImages => prevImages.map(img =>
@@ -162,6 +192,20 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
       console.error("Toggle favorite error:", error);
       Alert.alert("Error", "Failed to update saved looks. Please try again.");
     }
+  };
+
+  // Confirm before the destructive action; red emphasis lives in the alert.
+  const confirmDelete = () => {
+    if (!currentImage || deleting) return;
+    triggerHaptic();
+    Alert.alert(
+      "Delete try-on?",
+      "This will permanently remove this look.",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Delete", style: "destructive", onPress: handleDeleteImage },
+      ]
+    );
   };
 
   const handleDeleteImage = async () => {
@@ -205,7 +249,10 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
         throw new Error(data.message || "Failed to delete image");
       }
 
-      navigation.replace("Avatar");
+      // Drop the deleted look from local state instead of remounting the whole
+      // Avatar screen — that full reload is what triggered the old loading
+      // spinner. safeIndex re-clamps so the hero lands on a valid neighbour.
+      setTryonImages(prev => prev.filter(img => img.id !== tryonImage.id));
     } catch (error) {
       Alert.alert("Error", "Failed to delete image. Please try again.");
     } finally {
@@ -215,18 +262,6 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
 
   const viewImage = (slug) => {
     Linking.openURL(`https://app.myfittingroom.ai/image/avatar_tryon_images/${slug}`);
-  };
-
-  const goToPrevious = () => {
-    setCurrentImageIndex(prevIndex =>
-      prevIndex > 0 ? prevIndex - 1 : visibleImages.length - 1
-    );
-  };
-
-  const goToNext = () => {
-    setCurrentImageIndex(prevIndex =>
-      prevIndex < visibleImages.length - 1 ? prevIndex + 1 : 0
-    );
   };
 
   if (loading) {
@@ -266,33 +301,6 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                 </Text>
               </View>
             </Animated.View>
-          )}
-
-          {tryonImages.length > 0 && (
-            <View style={styles.filterRow}>
-              <TouchableOpacity
-                style={[styles.filterChip, filter === "all" && styles.filterChipActive]}
-                onPress={() => handleFilterChange("all")}
-              >
-                <Text style={[styles.filterChipText, filter === "all" && styles.filterChipTextActive]}>
-                  All
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.filterChip, filter === "saved" && styles.filterChipActive]}
-                onPress={() => handleFilterChange("saved")}
-              >
-                <Text style={[styles.filterChipText, filter === "saved" && styles.filterChipTextActive]}>
-                  Saved
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          {tryonImages.length > 0 && visibleImages.length === 0 && (
-            <Text style={styles.savedEmptyText}>
-              No saved looks yet — tap the heart on a try-on to save it.
-            </Text>
           )}
 
           {visibleImages.length > 0 && (
@@ -339,54 +347,67 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
                   </View>
                 )}
 
-                {visibleImages.length > 1 && (
-                  <>
-                    <TouchableOpacity
-                      style={[styles.navArrow, styles.leftArrow]}
-                      onPress={goToPrevious}
-                    >
-                      <View style={styles.arrowCircle}>
-                        <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={[styles.navArrow, styles.rightArrow]}
-                      onPress={goToNext}
-                    >
-                      <View style={styles.arrowCircle}>
-                        <Ionicons name="chevron-forward" size={24} color="#FFFFFF" />
-                      </View>
-                    </TouchableOpacity>
-                  </>
-                )}
-              </View>
-
-              <View style={styles.imageCounter}>
-                <Text style={styles.counterText}>
-                  {safeIndex + 1} / {visibleImages.length}
-                </Text>
               </View>
 
               <View style={styles.actionButtons}>
-                <TouchableOpacity onPress={() => viewImage(currentImage.slug)}>
-                  <Feathericons name="eye" size={24} color="#000" style={styles.viewIcon} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleToggleFavorite()}>
-                  <Ionicons
-                    name={currentImage.is_favorite ? "heart" : "heart-outline"}
-                    size={24}
-                    color="#000"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDeleteImage()} disabled={deleting}>
+                <ActionButton onPress={() => viewImage(currentImage.slug)}>
+                  <Feathericons name="eye" size={22} color={ICON_COLOR} />
+                </ActionButton>
+
+                <ActionButton
+                  onPress={handleToggleFavorite}
+                  style={currentImage.is_favorite && styles.actionButtonActive}
+                >
+                  <Animated.View style={{ transform: [{ scale: heartPop }] }}>
+                    <Ionicons
+                      name={currentImage.is_favorite ? "heart" : "heart-outline"}
+                      size={22}
+                      color={currentImage.is_favorite ? FAVORITE_COLOR : ICON_COLOR}
+                    />
+                  </Animated.View>
+                </ActionButton>
+
+                <ActionButton onPress={confirmDelete} disabled={deleting}>
                   {deleting ? (
-                    <ActivityIndicator size="small" color="#FF0000" />
+                    <ActivityIndicator size="small" color="#8E8E93" />
                   ) : (
-                    <Feathericons name="trash" size={24} color="#000" style={styles.deleteIcon} />
+                    <Feathericons name="trash" size={22} color={ICON_COLOR} />
                   )}
-                </TouchableOpacity>
+                </ActionButton>
               </View>
+
+              {/* Every generation as a tappable tile; the most recent leads
+                  (rows are ordered newest-first). Tapping promotes a look to
+                  the hero above. */}
+              {visibleImages.length > 1 && (
+                <View style={styles.thumbGrid}>
+                  {visibleImages.map((image, index) => (
+                    <TouchableOpacity
+                      key={image.id}
+                      activeOpacity={0.85}
+                      style={[
+                        styles.thumb,
+                        index === safeIndex && styles.thumbActive,
+                      ]}
+                      onPress={() => {
+                        triggerHaptic();
+                        setCurrentImageIndex(index);
+                      }}
+                    >
+                      <FastImage
+                        source={{ uri: image.url, priority: FastImage.priority.normal }}
+                        style={styles.thumbImage}
+                        resizeMode={FastImage.resizeMode.contain}
+                      />
+                      {image.is_favorite && (
+                        <View style={styles.thumbFavoriteBadge}>
+                          <Ionicons name="heart" size={12} color={FAVORITE_COLOR} />
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
             </View>
           )}
         </View>
