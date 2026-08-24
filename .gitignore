@@ -52,9 +52,14 @@ yarn-error.log
 **/fastlane/Preview.html
 **/fastlane/screenshots
 **/fastlane/test_output
+**/fastlane/README.md
 
 # Bundle artifact
 *.jsbundle
+
+# Debug symbols
+*.dSYM.zip
+*.dSYM
 
 # Ruby / CocoaPods
 **/Pods/
