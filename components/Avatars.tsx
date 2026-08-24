@@ -1,10 +1,15 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator, Image, Alert, ScrollView, Dimensions } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "../App";
 import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
+import { Skeleton } from "./Skeleton";
 import { styles } from "../stylesheets/avatars";
 import { triggerHaptic } from "../utils/haptics";
+
+// Matches heroImage in the stylesheet (width * 0.56) so the skeleton hero lands
+// where the real avatar will.
+const HERO_WIDTH = Dimensions.get("window").width * 0.56;
 
 export default function Avatars({ profile = null, setSelectedAvatar, navigation, showPicker = false, setShowPicker = (_visible: boolean) => {}, resultImageUrl = null }) {
   const [avatars, setAvatars] = useState<any[]>([]);
@@ -285,9 +290,27 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text style={styles.loadingText}>Loading...</Text>
+      <View style={styles.rootContainer}>
+        {/* Avatar hero */}
+        <View style={styles.heroContainer}>
+          <Skeleton width={HERO_WIDTH} height={252} borderRadius={16} />
+        </View>
+        {/* upload / delete actions */}
+        <View style={styles.heroActions}>
+          <Skeleton width={40} height={26} borderRadius={8} style={{ marginHorizontal: 18 }} />
+          <Skeleton width={40} height={26} borderRadius={8} style={{ marginHorizontal: 18 }} />
+        </View>
+        {/* avatar switcher thumbnails */}
+        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 16 }}>
+          {[0, 1, 2].map(i => (
+            <Skeleton key={i} width={48} height={60} borderRadius={6} style={{ marginHorizontal: 4 }} />
+          ))}
+        </View>
+        {/* "Your Avatar" heading + subtext */}
+        <View style={{ alignItems: "center", marginTop: 28 }}>
+          <Skeleton width={150} height={22} borderRadius={6} />
+          <Skeleton width={240} height={14} borderRadius={6} style={{ marginTop: 12 }} />
+        </View>
       </View>
     );
   }

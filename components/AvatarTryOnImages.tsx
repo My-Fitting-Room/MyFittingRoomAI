@@ -13,6 +13,7 @@ import {
 import FastImage from "react-native-fast-image";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
+import { Skeleton } from "./Skeleton";
 import { styles } from "../stylesheets/avatarTryonImages";
 import { triggerHaptic } from "../utils/haptics";
 
@@ -266,10 +267,30 @@ export default function AvatarTryOnImages({ profile = null, navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text style={styles.loadingText}>Loading...</Text>
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.carouselContainer}>
+            {/* Hero result */}
+            <View style={styles.imageContainer}>
+              <Skeleton width="100%" height="100%" borderRadius={16} />
+            </View>
+            {/* view / favourite / delete */}
+            <View style={styles.actionButtons}>
+              {[0, 1, 2].map(i => (
+                <Skeleton key={i} width={52} height={52} borderRadius={26} />
+              ))}
+            </View>
+            {/* generation thumbnails */}
+            <View style={styles.thumbGrid}>
+              {[0, 1, 2, 3, 4, 5].map(i => (
+                <View key={i} style={styles.thumb}>
+                  <Skeleton width="100%" height="100%" />
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 

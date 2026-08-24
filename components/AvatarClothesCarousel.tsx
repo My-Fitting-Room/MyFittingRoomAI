@@ -1,11 +1,16 @@
-import { View, Text, ActivityIndicator, ScrollView, Alert } from "react-native";
+import { View, Text, ScrollView, Alert, Platform, Dimensions } from "react-native";
 import React, { useEffect, useState, useCallback } from "react";
 import { launchImageLibrary } from "react-native-image-picker";
 import { supabase } from "../App";
 import ClothesTile from "./ClothesTile";
 import AddClothesTile from "./AddClothesTile";
 import SectionHeader from "./SectionHeader";
+import { Skeleton } from "./Skeleton";
 import { styles } from "../stylesheets/avatarClothesCarousel";
+
+// Mirror AddClothesTile's tile size so the skeleton tiles match the real ones.
+const TILE_W = Dimensions.get("window").width * (Platform.isPad ? 0.2 : 0.31);
+const TILE_H = Dimensions.get("window").width * (Platform.isPad ? 0.226 : 0.35);
 
 const CATEGORY_SECTIONS = [
   { key: "top",    title: "Tops" },
@@ -130,8 +135,17 @@ export default function AvatarClothesCarousel({ profile = null, setSelectedOutfi
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="small" color="black" />
+      <View style={styles.container}>
+        {CATEGORY_SECTIONS.map(({ key, title }) => (
+          <View key={key}>
+            <SectionHeader title={title} />
+            <View style={{ flexDirection: "row", paddingHorizontal: 16, paddingTop: 8, paddingBottom: 16 }}>
+              {[0, 1, 2].map(i => (
+                <Skeleton key={i} width={TILE_W} height={TILE_H} borderRadius={12} style={{ marginRight: 10 }} />
+              ))}
+            </View>
+          </View>
+        ))}
       </View>
     );
   }
