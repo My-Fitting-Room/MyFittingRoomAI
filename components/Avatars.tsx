@@ -7,12 +7,12 @@ import { styles } from "../stylesheets/avatars";
 import { triggerHaptic } from "../utils/haptics";
 
 export default function Avatars({ profile = null, setSelectedAvatar, navigation, showPicker = false, setShowPicker = (_visible: boolean) => {}, resultImageUrl = null }) {
-  const [avatars, setAvatars] = useState([]);
-  const [pendingAvatars, setPendingAvatars] = useState([]);
+  const [avatars, setAvatars] = useState<any[]>([]);
+  const [pendingAvatars, setPendingAvatars] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [selectedAvatarImage, setSelectedAvatarImage] = useState(null);
+  const [selectedAvatarImage, setSelectedAvatarImage] = useState<any>(null);
   const selectedAvatarRef = useRef(null);
 
   const updateSelectedAvatar = (avatar) => {
@@ -125,7 +125,21 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
         throw new Error(responseData.message || "Failed to create avatar");
       }
 
-      navigation.replace("Avatar");
+      // Refresh in place so the new "pending" avatar shows immediately, instead
+      // of remounting the screen (the remount is what showed the old loading
+      // spinner). The 15s poll then flips it to success / handles failures.
+      if (profile) {
+        const { data: refreshed } = await supabase
+          .from("avatars")
+          .select("*")
+          .eq("profiles_id", profile.id)
+          .order("created_at", { ascending: false });
+
+        if (refreshed) {
+          setAvatars(refreshed.filter(avatar => avatar.status === "success"));
+          setPendingAvatars(refreshed.filter(avatar => avatar.status === "pending"));
+        }
+      }
     } catch (error) {
       Alert.alert("Error", "Failed to create avatar. Please try again.");
     } finally {
@@ -256,7 +270,12 @@ export default function Avatars({ profile = null, setSelectedAvatar, navigation,
         throw new Error(data.message || "Failed to delete avatar");
       }
 
-      navigation.replace("Avatar");
+      // Remove locally and re-select the next avatar instead of remounting the
+      // screen (the remount is what showed the old loading spinner).
+      // updateSelectedAvatar keeps the ref and parent selection in sync.
+      const remaining = avatars.filter(avatar => avatar.id !== selectedAvatarImage.id);
+      setAvatars(remaining);
+      updateSelectedAvatar(remaining[0] || null);
     } catch (error) {
       Alert.alert("Error", "Failed to delete avatar. Please try again.");
     } finally {
