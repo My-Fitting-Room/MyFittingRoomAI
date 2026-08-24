@@ -8,7 +8,6 @@ import {
   Platform,
   Alert,
   Linking,
-  ActivityIndicator,
   StyleSheet,
   ScrollView,
   Dimensions,
@@ -19,6 +18,7 @@ import { FONTS } from "../constants/fonts";
 import { triggerHaptic } from "../utils/haptics";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
+import SettingsScreenSkeleton from "../components/SettingsScreenSkeleton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
@@ -130,10 +130,12 @@ export default function SettingsScreen({ navigation }) {
 
   if (loading) {
     return (
-      <View style={s.loadingContainer}>
-        <ActivityIndicator size="large" color="black" />
-        <Text style={[s.loadingText, { fontFamily: FONTS.SATOSHI }]}>Loading...</Text>
-      </View>
+      <SettingsScreenSkeleton
+        navigation={navigation}
+        containerStyle={s.container}
+        headerHeight={headerHeight}
+        paddingBottom={insets.bottom}
+      />
     );
   }
 

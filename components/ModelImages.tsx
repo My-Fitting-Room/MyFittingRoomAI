@@ -5,16 +5,17 @@ import { launchImageLibrary } from "react-native-image-picker";
 import Feathericons from "react-native-vector-icons/Feather";
 import { GlassEffectView } from "react-native-glass-effect-view";
 import SectionHeader from "./SectionHeader";
+import ImagePickerSkeleton from "./ImagePickerSkeleton";
 import { styles } from "../stylesheets/modelImages";
 
 const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
 
 export default function ModelImages({ profile = null, setInputModelImage, navigation }) {
-  const [modelImages, setModelImages] = useState([]);
+  const [modelImages, setModelImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [selectedModelImage, setSelectedModelImage] = useState(null);
+  const [selectedModelImage, setSelectedModelImage] = useState<any>(null);
   
   const updateSelectedImage = (image) => {
     setSelectedModelImage(image);
@@ -121,8 +122,23 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
         if (!response.ok) {
           throw new Error(responseData.message || "Failed to upload image");
         }
-        
-        navigation.replace("TryOn");
+
+        // Refresh the list in place and select the new upload instead of
+        // remounting the screen (the remount is what showed the old loading
+        // spinner). The upload endpoint only returns image_url, so re-fetch to
+        // get the full row.
+        if (profile) {
+          const { data: refreshed } = await supabase
+            .from("model_images")
+            .select("*")
+            .eq("profiles_id", profile.id)
+            .order("created_at", { ascending: false });
+
+          setModelImages(refreshed || []);
+          if (refreshed && refreshed.length > 0) {
+            updateSelectedImage(refreshed[0]);
+          }
+        }
       }
     } catch (error) {
       Alert.alert("Error", "Failed to upload image. Please try again.");
@@ -171,8 +187,13 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
       if (!response.ok) {
         throw new Error(data.message || "Failed to delete image");
       }
-  
-      navigation.replace("TryOn"); 
+
+      // Remove locally and re-select the next model instead of remounting the
+      // screen (the remount is what showed the old loading spinner).
+      // updateSelectedImage keeps the parent's input model in sync.
+      const remaining = modelImages.filter(img => img.id !== selectedModelImage.id);
+      setModelImages(remaining);
+      updateSelectedImage(remaining[0] || null);
     } catch (error) {
       Alert.alert("Error", "Failed to delete image. Please try again.");
     } finally {
@@ -181,12 +202,7 @@ export default function ModelImages({ profile = null, setInputModelImage, naviga
   };
 
   if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text style={styles.loadingText}>Loading...</Text>
-      </View>
-    );
+    return <ImagePickerSkeleton styles={styles} />;
   }
 
   return (

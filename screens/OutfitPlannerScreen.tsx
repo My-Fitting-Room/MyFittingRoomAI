@@ -16,6 +16,7 @@ import BottomNav from "../components/BottomNav";
 import OutfitMonthGrid from "../components/OutfitMonthGrid";
 import OutfitLookPickerModal from "../components/OutfitLookPickerModal";
 import OutfitDetailModal from "../components/OutfitDetailModal";
+import OutfitPlannerScreenSkeleton from "../components/OutfitPlannerScreenSkeleton";
 import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/outfitPlannerScreen";
 import { fetchMonth, createFromLook, movePlan, OutfitPlan } from "../utils/outfitPlans";
@@ -204,12 +205,13 @@ export default function OutfitPlannerScreen({ navigation }: { navigation: any })
 
   if (loading) {
     return (
-      <View className={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="black" />
-        <Text className={styles.loadingText} style={{ fontFamily: FONTS.SATOSHI }}>
-          Loading...
-        </Text>
-      </View>
+      <OutfitPlannerScreenSkeleton
+        navigation={navigation}
+        containerClass={styles.container}
+        headerHeight={headerHeight}
+        paddingTop={IS_IOS26 ? 0 : insets.top}
+        paddingBottom={insets.bottom}
+      />
     );
   }
 

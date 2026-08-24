@@ -6,16 +6,17 @@ import { launchImageLibrary } from "react-native-image-picker";
 import ClothesTile from "./ClothesTile";
 import { GlassEffectView } from "react-native-glass-effect-view";
 import SectionHeader from "./SectionHeader";
+import ImagePickerSkeleton from "./ImagePickerSkeleton";
 import { styles } from "../stylesheets/clothesImages";
 
 const IS_IOS26 = Platform.OS === "ios" && parseInt(Platform.Version as string, 10) >= 26;
 
 export default function ClothesImages({ profile = null, setInputClothImage, navigation, returnScreen = "TryOn" }) {
-  const [clothesImages, setClothesImages] = useState([]);
+  const [clothesImages, setClothesImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [selectedClothesImage, setSelectedClothesImage] = useState(null);
+  const [selectedClothesImage, setSelectedClothesImage] = useState<any>(null);
   
   const updateSelectedImage = (image) => {
     setSelectedClothesImage(image);
@@ -95,7 +96,22 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
           throw new Error(responseData.message || "Failed to upload image");
         }
 
-        navigation.replace(returnScreen);
+        // Refresh the list in place and select the new upload instead of
+        // remounting the screen (the remount is what showed the old loading
+        // spinner). A single upload can create several rows (outfit
+        // categories) and the endpoint only returns image_url, so re-fetch.
+        if (profile) {
+          const { data: refreshed } = await supabase
+            .from("clothes_images")
+            .select("*")
+            .eq("profiles_id", profile.id)
+            .order("created_at", { ascending: false });
+
+          setClothesImages(refreshed || []);
+          if (refreshed && refreshed.length > 0) {
+            updateSelectedImage(refreshed[0]);
+          }
+        }
       }
     } catch (error) {
       Alert.alert("Error", "Failed to upload image. Please try again.");
@@ -145,7 +161,12 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
         throw new Error(data.message || "Failed to delete image");
       }
 
-      navigation.replace(returnScreen);
+      // Remove locally and re-select the next item instead of remounting the
+      // screen (the remount is what showed the old loading spinner).
+      // updateSelectedImage keeps the parent's input clothing in sync.
+      const remaining = clothesImages.filter(img => img.id !== selectedClothesImage.id);
+      setClothesImages(remaining);
+      updateSelectedImage(remaining[0] || null);
     } catch (error) {
       Alert.alert("Error", "Failed to delete image. Please try again.");
     } finally {
@@ -183,12 +204,7 @@ export default function ClothesImages({ profile = null, setInputClothImage, navi
   }, [profile]);
 
   if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text style={styles.loadingText}>Loading...</Text>
-      </View>
-    );
+    return <ImagePickerSkeleton styles={styles} />;
   }
 
   return (

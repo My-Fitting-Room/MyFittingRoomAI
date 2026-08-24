@@ -16,6 +16,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { supabase } from "../App";
 import HeaderNav from "../components/HeaderNav";
 import BottomNav from "../components/BottomNav";
+import SizingScreenSkeleton from "../components/SizingScreenSkeleton";
 import { FONTS } from "../constants/fonts";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
 import { getDropdownStyles } from "../stylesheets/dropdownSelect";
@@ -495,15 +496,13 @@ export default function SizingScreen({ navigation, route }: { navigation: any, r
 
   if (loading) {
     return (
-      <View className={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text
-          className={styles.loadingText}
-          style={{ fontFamily: FONTS.SATOSHI }}
-        >
-          Loading...
-        </Text>
-      </View>
+      <SizingScreenSkeleton
+        navigation={navigation}
+        containerClass={styles.container}
+        headerHeight={headerHeight}
+        paddingTop={IS_IOS26 ? 0 : insets.top}
+        paddingBottom={insets.bottom}
+      />
     );
   }
 

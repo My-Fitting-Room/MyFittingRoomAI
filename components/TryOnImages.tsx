@@ -15,6 +15,7 @@ import FastImage from "react-native-fast-image";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feathericons from "react-native-vector-icons/Feather";
 import { GlassEffectView } from "react-native-glass-effect-view";
+import TryOnResultSkeleton from "./TryOnResultSkeleton";
 import { styles } from "../stylesheets/tryonImages";
 import { triggerHaptic } from "../utils/haptics";
 
@@ -147,18 +148,19 @@ export default function TryOnImages({ profile = null, navigation }) {
     let tryonImage =  tryonImages[currentImageIndex]
 
     try {
+      setDeleting(true);
       const { data: { session }, error } = await supabase.auth.getSession();
-    
+
       if (error) {
         Alert.alert("Error", "Failed to delete image. Please try again.");
         return;
       }
-    
+
       if (!session) {
         Alert.alert("Error", "Failed to delete image. Please try again.");
         return;
       }
-    
+
       const supabaseToken = session.access_token;
 
       const response = await fetch(
@@ -176,16 +178,22 @@ export default function TryOnImages({ profile = null, navigation }) {
           }),
         }
       );
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(data.message || "Failed to delete image");
       }
-  
-      navigation.replace("TryOn"); 
+
+      // Drop the deleted look locally rather than remounting the screen — the
+      // remount is what showed the old full-screen loading spinner. Clamp the
+      // index (both updates batch together) so the carousel stays in range.
+      setTryonImages(prev => prev.filter(img => img.id !== tryonImage.id));
+      setCurrentImageIndex(idx => Math.max(0, Math.min(idx, tryonImages.length - 2)));
     } catch (error) {
       Alert.alert("Error", "Failed to delete image. Please try again.");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -207,12 +215,7 @@ export default function TryOnImages({ profile = null, navigation }) {
   };
 
   if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text style={styles.loadingText}>Loading...</Text>
-      </View>
-    );
+    return <TryOnResultSkeleton />;
   }
 
   if(failedImages.length > 0 || pendingImages.length > 0 || tryonImages.length > 0) {

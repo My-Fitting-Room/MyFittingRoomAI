@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, ScrollView, StatusBar, Platform, ActivityIndicator, Dimensions } from "react-native";
+import { View, Alert, ScrollView, StatusBar, Platform, Dimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { supabase } from "../App";
 import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
@@ -9,8 +9,8 @@ import ModelImages from "../components/ModelImages";
 import ClothesImages from "../components/ClothesImages";
 import TryOnButton from "../components/TryOnButton";
 import TryOnImages from "../components/TryOnImages";
+import TryOnScreenSkeleton from "../components/TryOnScreenSkeleton";
 import TokensBox from "../components/TokensBox";
-import { FONTS } from "../constants/fonts";
 import { getStyles } from "../stylesheets/tryonScreen";
 import mixpanel from "../utils/mixpanel";
 import { trackAppsFlyerPurchase } from "../utils/appsflyer";
@@ -160,15 +160,14 @@ export default function TryOnScreen({ navigation, route }: { navigation: any, ro
 
   if (loading) {
     return (
-      <View className={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text
-          className={styles.loadingText}
-          style={{ fontFamily: FONTS.SATOSHI }}
-        >
-          Loading...
-        </Text>
-      </View>
+      <TryOnScreenSkeleton
+        navigation={navigation}
+        containerClass={styles.container}
+        contentClass={styles.content}
+        headerHeight={headerHeight}
+        paddingTop={IS_IOS26 ? 0 : insets.top}
+        paddingBottom={insets.bottom}
+      />
     );
   }
 

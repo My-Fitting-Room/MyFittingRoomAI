@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Alert, ScrollView, ActivityIndicator, Dimensions, TouchableOpacity, Platform, StyleSheet } from "react-native";
+import { View, Text, Alert, ScrollView, Dimensions, TouchableOpacity, Platform, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlassEffectView } from "react-native-glass-effect-view";
 import { supabase } from "../App";
@@ -9,9 +9,9 @@ import Avatars from "../components/Avatars";
 import AvatarClothesCarousel from "../components/AvatarClothesCarousel";
 import AvatarTryOnButton from "../components/AvatarTryOnButton";
 import AvatarTryOnImages from "../components/AvatarTryOnImages";
+import AvatarScreenSkeleton from "../components/AvatarScreenSkeleton";
 import OrbitLoader from "../components/OrbitLoader";
 import Feathericons from "react-native-vector-icons/Feather";
-import { FONTS } from "../constants/fonts";
 import { getStyles, tabStyles } from "../stylesheets/avatarScreen";
 import { triggerHaptic } from "../utils/haptics";
 
@@ -193,15 +193,13 @@ export default function AvatarScreen({ navigation, route }: { navigation: any, r
 
   if (loading) {
     return (
-      <View className={styles.loadingContainer}>
-        <ActivityIndicator size={"large"} color="black" />
-        <Text
-          className={styles.loadingText}
-          style={{ fontFamily: FONTS.SATOSHI }}
-        >
-          Loading...
-        </Text>
-      </View>
+      <AvatarScreenSkeleton
+        navigation={navigation}
+        containerClass={styles.container}
+        headerHeight={headerHeight}
+        paddingTop={IS_IOS26 ? 0 : insets.top}
+        paddingBottom={insets.bottom}
+      />
     );
   }
 
