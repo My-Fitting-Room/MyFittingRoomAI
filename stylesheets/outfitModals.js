@@ -1,5 +1,12 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
 import { FONTS } from "../constants/fonts";
+
+// On iPad the detail sheet is far wider than a portrait render, so a
+// full-width image (aspectRatio 0.75) grows taller than the sheet and the
+// model's head/feet get cropped. Cap the height and let the width follow so
+// the whole figure fits; phone keeps its edge-to-edge full-width look.
+const IS_PAD = Platform.isPad;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export const styles = StyleSheet.create({
   backdrop: {
@@ -103,13 +110,23 @@ export const styles = StyleSheet.create({
   },
 
   // Detail modal
-  detailImage: {
-    width: "100%",
-    aspectRatio: 0.75,
-    borderRadius: 12,
-    marginBottom: 16,
-    backgroundColor: "#F4F4F4",
-  },
+  detailImage: IS_PAD
+    ? {
+        height: Math.round(SCREEN_HEIGHT * 0.6),
+        aspectRatio: 0.75,
+        alignSelf: "center",
+        maxWidth: "100%",
+        borderRadius: 12,
+        marginBottom: 16,
+        backgroundColor: "#F4F4F4",
+      }
+    : {
+        width: "100%",
+        aspectRatio: 0.75,
+        borderRadius: 12,
+        marginBottom: 16,
+        backgroundColor: "#F4F4F4",
+      },
   actionRow: {
     flexDirection: "row",
     justifyContent: "space-around",

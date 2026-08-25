@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import FastImage from "react-native-fast-image";
 import Feathericons from "react-native-vector-icons/Feather";
@@ -69,7 +70,11 @@ export default function OutfitDetailModal({
             <FastImage
               source={{ uri: url, priority: FastImage.priority.high }}
               style={styles.detailImage}
-              resizeMode={FastImage.resizeMode.cover}
+              resizeMode={
+                Platform.isPad
+                  ? FastImage.resizeMode.contain
+                  : FastImage.resizeMode.cover
+              }
             />
           ) : (
             <View style={styles.detailImage} />
